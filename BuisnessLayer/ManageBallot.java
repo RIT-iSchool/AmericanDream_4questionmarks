@@ -1,4 +1,4 @@
-**
+/**
  * This class represents a Data Access Object for managing election ballots in the database.
  */
 public class ManageBallot{
