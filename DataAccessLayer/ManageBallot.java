@@ -1,3 +1,7 @@
+
+
+import BuisnessLayer.BallotObjects.Ballot;
+
 /**
  * This class represents a Data Access Object for managing election ballots in the database.
  */
@@ -8,10 +12,10 @@ public class ManageBallot{
      *
      * @param ballot The Ballot object representing the election ballot to be inserted.
      * @return True if the ballot was successfully inserted, false otherwise.
-     * @throws SQLException If there is an error executing the database query.
      */
-    public boolean addBallot(Ballot ballot) throws SQLException {
+    public boolean addBallot(Ballot ballot) {
         // Inserting a new ballot
+        return false;
     }
 
     /**
@@ -19,10 +23,10 @@ public class ManageBallot{
      *
      * @param ballotId The unique identifier of the ballot to be deleted.
      * @return True if the ballot was successfully deleted, false otherwise.
-     * @throws SQLException If there is an error executing the database query.
      */
-    public boolean deleteBallot(int ballotId) throws SQLException {
+    public boolean deleteBallot(int ballotId) {
         // Deleting a ballot by ID
+        return false;
     }
 
     /**
@@ -30,9 +34,9 @@ public class ManageBallot{
      *
      * @param ballotId The unique identifier of the ballot.
      * @return A Ballot object representing the retrieved election ballot, or null if not found.
-     * @throws SQLException If there is an error executing the database query.
      */
-    public Ballot getBallotInfo(int ballotId) throws SQLException {
+    public Ballot getBallotInfo(int ballotId) {
         // Retrieving ballot information by ID
+        return new Ballot(null, null, null, null, null);
     }
 }
