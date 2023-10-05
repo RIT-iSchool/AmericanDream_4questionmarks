@@ -24,11 +24,11 @@ public abstract class User {
     }
 
     /**
-     * Gets a list of the electoins the user can vote in
-     * @return List of elections a user can vote in, returns an empty list if they have none
+     * Logout a user
+     * @return Boolean Was the logout successfull?
      */
-    public ArrayList<Ballot> getElectionsToVoteIn() {
-        return new ArrayList<>();
+    public Boolean logout() {
+        return false;
     }
 
 }

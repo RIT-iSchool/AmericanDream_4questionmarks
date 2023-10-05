@@ -34,12 +34,43 @@ public class OfficerQuestion {
     } // construstor
 
     /**
-     * This method will validate a user's choice to see if it is a valid option.
+     * Get the office name
+     * @return String office name
+     */
+    public String getOfficeName() { return officeName; }
+    /**
+     * Get the candidates in the election
+     * @return ArrayList of candidates
+     */
+    public ArrayList<Candidate> getCandidates() { return candidates; }
+    /**
+     * Get the number of votes allowed
+     * @return Integer num votes allowed
+     */
+    public Integer getNumVotes() { return numVotes; }
+    /**
+     * Set the office name
+     * @param officName office name
+     */
+    public void setOfficeName( String officeName) { }
+    /**
+     * Set the candidates in the election
+     * @param candidates of candidates
+     */
+    public void setCandidates( ArrayList<Candidate> candidates) { }
+    /**
+     * Set the number of votes allowed
+     * @param numVotes num votes allowed
+     */
+    public void setNumVotes( Integer numVotes ) { }
+
+    /**
+     * This method will validate a user's choice to see if it is a valid option and store the vote if successfull
      * @param candidatesPicked the candidates a user has chosed to vote for
      * @param writeIn any write ins that the user has inputed
      * @return Boolean Wether the vote is valid.
      */
-    public Boolean validateVote(ArrayList<Candidate> candidatesPicked, ArrayList<String> writeIn) {
+    public Boolean vote(ArrayList<Candidate> candidatesPicked, ArrayList<String> writeIn) {
         return false;
     }
 

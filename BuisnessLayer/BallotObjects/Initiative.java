@@ -24,4 +24,35 @@ public class Initiative {
         this.responses = responses;
     }
 
+    // getters and setters
+    /**
+     * Get initiative description
+     * @return String description of the initiative
+     */
+    public String getDesc() { return description; }
+    /**
+     * Get all of the possible responses
+     * @return ArrayList of all the possible responses
+     */
+    public ArrayList<String> getResponses() { return responses; }
+    /**
+     * Set initiative description
+     * @param description description of the initiative
+     */
+    public void setDesc( String description ) { }
+    /**
+     * Set all of the possible responses
+     * @param responses of all the possible responses
+     */
+    public void setResponses( ArrayList<String> responses) { }
+
+    /**
+     * This method will validate a user's choice to see if it is a valid option and store the vote if successfull
+     * @param response the response a user has chosed to vote for
+     * @return Boolean Wether the vote is valid.
+     */
+    public Boolean vote(String response) {
+        return false;
+    }
+
 }

@@ -33,5 +33,49 @@ public class Candidate {
         this.description = description;
         this.pathToPortait = pathToPortait;
 
-    }
-}
+    } // constructor
+
+    // getters and setters
+    /**
+     * Get candidate name
+     * @return String candidate name
+     */
+    public String getName() { return name; }
+    /**
+     * Get candidate titles
+     * @return String candidate titles
+     */
+    public String getTitles() { return titles; }
+    /**
+     * Get candidate Description
+     * @return String description
+     */
+    public String getDescription() { return description; }
+    /**
+     * get the path to the candidates portrait
+     * @return String path to portrait
+     */
+    public String getPathToPortrait() { return pathToPortait; }    
+
+    /**
+     * set candidate name
+     * @param String candidate name
+     */
+    public void setName(String name) { }
+    /**
+     * Set candidate titles
+     * @param titles candidate titles
+     */
+    public void setTitles(String titles) { }
+    /**
+     * Set candidate Description
+     * @param description description
+     */
+    public void setDescription(String description) {}
+    /**
+     * Set the path to the candidates portrait
+     * @param pathToPortrait path to portrait
+     */
+    public void setPathToPortriat(String pathtoPortrait) {} 
+
+} // Candidate
