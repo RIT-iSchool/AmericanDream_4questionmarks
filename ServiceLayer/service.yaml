@@ -7,11 +7,6 @@ info:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.0.00
-externalDocs:
-  description: Find out more about the AmericanDream project
-  url: http://projectDescriptionLink.com
-servers:
-  - url: https://exampleServer.com
 tags:
   - name: user
     description: Operations regarding User
@@ -31,18 +26,16 @@ paths:
       summary: Log into the web application
       description: Get authorized and authenticated to use the web application
       requestBody:
-        description: Email and password in order to authorize and authenticate the use of the web application
+        description: User email and password to authorize and authenticate as well as a session token to start a new session
         content:
           application/json:
             schema:
-              {
-                "type": "object",
-                "properties":
-                  {
-                    "email": { "type": "string", "format": "email" },
-                    "password": { "type": "string", "format": "password" },
-                  },
-              }
+              type: object
+              properties:
+                {
+                  sessionName: { type: string },
+                  userObj: { $ref: "#/components/schemas/User" },
+                }
         required: true
       responses:
         "200":
@@ -59,28 +52,21 @@ paths:
         - user
       summary: Log out of the web application
       description: End the session to log out of the web application
-      parameters:
-        - name: status
-          in: query
-          description: Status values that need to be considered for filter
-          required: false
-          explode: true
-          schema:
-            type: string
-            default: available
-            enum:
-              - available
-              - pending
-              - sold
+      requestBody:
+        description: Session token to end the session
+        content:
+          application/json:
+            schema:
+              type: string
+        required: true
       responses:
         "200":
           description: Succesful Request
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/User"
+                type: boolean
+                description: Returns true if the session was ended
   /signup:
     post:
       tags:
@@ -136,6 +122,7 @@ paths:
         content:
           application/json:
             schema: { $ref: "#/components/schemas/Ballot" }
+        required: true
       responses:
         "200":
           description: Successful Request
@@ -187,6 +174,7 @@ paths:
         content:
           application/json:
             schema: { $ref: "#/components/schemas/Ballot" }
+        required: true
       responses:
         "200":
           description: Succesful Request
@@ -224,6 +212,7 @@ paths:
         content:
           application/json:
             schema: { $ref: "#/components/schemas/Ballot" }
+        required: true
       responses:
         "201":
           description: Successfully Created
@@ -276,7 +265,7 @@ paths:
           {
             name: userRole,
             in: cookie,
-            description: Role of current user,
+            description: Role of current user to make sure they have access to,
             required: true,
             schema:
               { type: object, properties: { userRole: { type: string } } },
@@ -389,7 +378,7 @@ paths:
         [
           {
             name: userRole,
-            in: cookie,
+            in: query,
             description: Role of current user,
             required: true,
             schema:
@@ -417,6 +406,7 @@ paths:
         content:
           application/json:
             schema: { $ref: "#/components/schemas/Member" }
+        required: true
       responses:
         "200":
           description: Succesful Request
@@ -594,3 +584,34 @@ components:
           type: string
         description:
           type: string
+  requestBodies:
+    Pet:
+      description: Pet object that needs to be added to the store
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/User"
+        application/xml:
+          schema:
+            $ref: "#/components/schemas/User"
+    UserArray:
+      description: List of user object
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/User"
+  securitySchemes:
+    petstore_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://petstore3.swagger.io/oauth/authorize
+          scopes:
+            write:pets: modify pets in your account
+            read:pets: read your pets
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
