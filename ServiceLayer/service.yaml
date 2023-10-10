@@ -1,0 +1,684 @@
+openapi: 3.0.3
+info:
+  title: AmericanDream - OpenAPI 3.0
+  description: |-
+    This is AmericanDream's service layer based on the OpenAPI 3.0 specification. You can find out more about ????'s (4questionmarks) AmericanDream project at our [group's repository](https://github.com/RIT-iSchool/AmericanDream_4questionmarks). 
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.00
+externalDocs:
+  description: Find out more about the AmericanDream project
+  url: http://projectDescriptionLink.com
+servers:
+  - url: https://exampleServer.com
+tags:
+  - name: user
+    description: Operations regarding User
+  - name: member
+    description: Operations regarding Member
+  - name: officer
+    description: Operations regarding Officer
+  - name: employee
+    description: Operations regarding Employee
+  - name: administrator
+    description: Operations regarding Administrator
+paths:
+  /login:
+    post:
+      tags:
+        - user
+      summary: Log into the web application
+      description: Get authorized and authenticated to use the web application
+      requestBody:
+        description: Email and password in order to authorize and authenticate the use of the web application
+        content:
+          application/json:
+            schema:
+              {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  }
+                }
+              }
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid email and/or password
+  /logout:
+    post:
+      tags:
+        - user
+      summary: Log out of the web application
+      description: End the session to log out of the web application
+      parameters:
+        - name: status
+          in: query
+          description: Status values that need to be considered for filter
+          required: false
+          explode: true
+          schema:
+            type: string
+            default: available
+            enum:
+              - available
+              - pending
+              - sold
+      responses:
+        '200':
+          description: Succesful Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'   
+  /signup:
+    post:
+      tags:
+        - user
+      summary: Create an account
+      requestBody:
+        description: User details in order to create an account
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        '201':
+          description: Succesfully Created
+          content:
+            application/json:
+              schema: {
+                $ref: '#/components/schemas/User'
+              }
+        '400':
+          description: Invalid Input (Malformed syntax on inputs)
+        '422': 
+          description: Unprocessable Entity (Well formed request with data not conforming to business logic and rules)
+  /ballots:
+    get:
+      tags: 
+        - member
+        - officer
+      summary: Get a list of ballots that are available for voting
+      parameters: [
+          {
+            name: memberRole,
+            in: cookie,
+            description: Role of current member,
+            required: true,
+            schema: {
+              type: object,
+              properties: {
+                userRole: {
+                  type: string
+                }
+              }
+            }
+          }
+        ]
+      responses: 
+        '200':
+          description: Succesful Request
+        '404':
+          description: Not found (No available Ballots)
+    post:
+      tags:
+        - member
+        - officer
+      summary: Submit the ballot
+      description: Implement the user's vote into the web application
+      requestBody: 
+        description: Ballot details
+        content:
+          application/json:
+            schema: {
+                $ref: '#/components/schemas/Ballot'
+            }
+      responses:
+        '200': 
+          description: Successful Request
+        '400':
+          description: Invalid Input (Malformed syntax on inputs)
+        '401':
+          description: Unauthorized (User is not logged in)
+        '403':
+          description: Access to that resource is forbidden (The current user does not have permission to access this Ballot)
+        '404':
+          description: Not found (Ballot not found)
+        '422':
+          description: Unprocessable Entity (Data does not adhere to business rules)
+  /ballots/ballotId:
+    get:
+      tags: 
+        - member
+        - officer
+        - employee
+        - administrator
+      summary: Get a specific Ballot using its id
+      parameters: [
+          {
+           name: ballotId,
+           in: query,
+           description: id of the ballot you would like to pull up,
+           required: true,
+           schema: {
+             type: integer
+           }
+          }
+        ]
+      responses: 
+        '200':
+          description: Succesful Request
+          content: 
+            application/json:
+              schema: {
+                $ref: '#/components/schemas/Ballot'
+              }
+        '404':
+          description: Not Found
+        '405':
+          description: Method Not Allowed (Voting time has expired)
+    put:
+      tags:
+        - employee
+        - administrator
+      summary: Update an existing Ballot using its id
+      requestBody: 
+        description: Updated Ballot details
+        content:
+          application/json:
+            schema: {
+                $ref: '#/components/schemas/Ballot'
+            }
+      responses:
+        '200':
+          description: Succesful Request
+          content: 
+            application/json:
+              schema: {
+                $ref: '#/components/schemas/Ballot'
+              }
+        '400':
+          description: Invalid Input (Malformed syntax on inputs)
+        '401':
+          description: Unauthorized (User is not logged in)
+        '403':
+          description: Access to that resource is forbidden (The current user does not have permission to access this Ballot)
+        '409':
+          description: Conflict (Another client is editing the resource)
+        '413':
+          description: Payload too large
+        '415':
+          description: Unsupported (This media type is not supported by the server)
+        '422':
+          description: Unprocessable Entity (Data does not adhere to business rules)
+        '423':
+          description: Locked (This resource is currently Locked)
+        '428':
+          description: Precondition Required (The server is requiring conditional headers to ensure that the operation is performed only when these conditions are met)
+        '507':
+          description: Insufficient Storage
+  /createBallot:
+    post: 
+      tags:
+        - employee
+        - administrator
+      summary: Create a Ballot for a specific Society
+      requestBody: 
+        description: Ballot details
+        content:
+          application/json:
+            schema: {
+                $ref: '#/components/schemas/Ballot'
+            }
+      responses:
+        '201': 
+          description: Successfully Created
+          content:
+            application/json:
+              schema: {
+                $ref: '#/components/schemas/Ballot'
+              }
+        '400':
+          description: Invalid Input (Malformed syntax on inputs)
+        '401':
+          description: Unauthorized (User is not logged in)
+        '403':
+          description: Access to that resource is forbidden (The current user does not have permission to create a Ballot)
+        '413':
+          description: Payload too large
+        '415':
+          description: Unsupported (This media type is not supported by the server)
+        '422':
+          description: Unprocessable Entity (Data does not adhere to business rules)
+        '507':
+          description: Insufficient Storage
+  /societies:
+    post:
+      tags: 
+        - administrator
+      summary: Create a new Society
+      responses:
+        '201':
+          description: Successfully Created
+          content:
+            application/json:
+              schema: {
+                $ref: '#/components/schemas/Society'
+              }
+        '400':
+          description: Invalid Input (Malformed syntax on inputs)
+        '401':
+          description: Unauthorized (User is not logged in)
+        '413':
+          description: Payload too large
+        '415':
+          description: Unsupported (This media type is not supported by the server)
+        '422':
+          description: Unprocessable Entity (Data does not adhere to business rules)
+        '507':
+          description: Insufficient Storage
+    get:
+      tags:
+        - administrator
+      summary: Get a list of all societies
+      parameters: 
+        [
+          {
+            name: userRole,
+            in: cookie,
+            description: Role of current user,
+            required: true,
+            schema: {
+              type: object,
+              properties: {
+                userRole: {
+                  type: string
+                }
+              }
+            }
+          }
+        ]
+      responses:
+        '200':
+          description: Succesful Request
+          content: 
+            application/json:
+              schema: {
+                $ref: '#/components/schemas/Society'
+              }
+        '401':
+          description: Unauthorized (User is not logged in)
+        '403':
+          description: Access to that resource is forbidden (The current user does not have permission to create a Ballot)
+        '404':
+          description: Not Found
+  /societies/societyId:
+    get:
+      tags:
+        - administrator
+      summary: Get a Society using its id
+      parameters: [
+          {
+           name: societyId,
+           in: query,
+           description: id of the Society you would like to pull up,
+           required: true,
+           schema: {
+             type: integer
+           }
+          }
+        ]
+      responses: 
+        '200':
+          description: Succesful Request
+          content: 
+            application/json:
+              schema: {
+                $ref: '#/components/schemas/Society'
+              }
+        '401':
+          description: Unauthorized (User is not logged in)
+        '404':
+          description: Not Found (Society doesn't exist)
+        '403':
+          description: Access to that resource is forbidden (The current user does not have permission to view this Society)
+    put:
+      tags: 
+        - administrators
+      summary: Edit a Society
+      requestBody: 
+        description: Updated Society details
+        content:
+          application/json:
+            schema: {
+                $ref: '#/components/schemas/Society'
+            }
+      responses:
+        '200':
+          description: Succesful Request
+          content: 
+            application/json:
+              schema: {
+                $ref: '#/components/schemas/Society'
+              }
+        '404':
+          description: Not Found (Society doesn't exist)
+        '401':
+          description: Unauthorized (User is not logged in)
+        '403':
+          description: Access to that resource is forbidden (The current user does not have permission to create a Ballot)
+        '409':
+          description: Conflict (Another client is editing the resource)
+        '413':
+          description: Payload too large
+        '415':
+          description: Unsupported (This media type is not supported by the server)
+        '422':
+          description: Unprocessable Entity (Data does not adhere to business rules)
+        '423':
+          description: Locked (This resource is currently Locked)
+        '428':
+          description: Precondition Required (The server is requiring conditional headers to ensure that the operation is performed only when these conditions are met)
+        '507':
+          description: Insufficient Storage
+  /societies/societyId/members:
+    post:
+      tags:
+        - administrator
+      summary: Create a Member within a given Society
+      responses:
+        '201':
+          description: Successfully Created
+          content:
+            application/json:
+              schema: {
+                $ref: '#/components/schemas/Member'
+              }
+        '400':
+          description: Invalid Input (Malformed syntax on inputs)
+        '401':
+          description: Unauthorized (User is not logged in)
+        '403':
+          description: Access to that resource is forbidden (The current user does not have permission to create a Ballot)
+        '413':
+          description: Payload too large
+        '415':
+          description: Unsupported (This media type is not supported by the server)
+        '422':
+          description: Unprocessable Entity (Data does not adhere to business rules)
+        '507':
+          description: Insufficient Storage
+    get:
+      tags:
+        - administrator
+      summary: Get a list of Members in a given Society
+      parameters: 
+        [
+          {
+            name: userRole,
+            in: cookie,
+            description: Role of current user,
+            required: true,
+            schema: {
+              type: object,
+              properties: {
+                userRole: {
+                  type: string
+                }
+              }
+            }
+          }
+        ]
+      responses:
+        '200':
+          description: Succesful Request
+          content: 
+            application/json:
+              schema: {
+                $ref: '#/components/schemas/Member'
+              }
+        '401':
+          description: Unauthorized (User is not logged in)
+        '403':
+          description: Access to that resource is forbidden (The current user does not have permission to create a Ballot)
+        '404':
+          description: Not Found
+    put:
+      tags:
+        - administrator
+      summary: Edit a Member within a Society
+      requestBody: 
+        description: Updated Member details
+        content:
+          application/json:
+            schema: {
+                $ref: '#/components/schemas/Member'
+            }
+      responses:
+        '200':
+          description: Succesful Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {
+                  societyId: {
+                    type: number
+                  },
+                  memberObj: {
+                    $ref: '#/components/schemas/Member'
+                  }
+                }
+        '404':
+          description: Not Found (Member doesn't exist within that Society)
+        '401':
+          description: Unauthorized (This User is not logged in)
+        '403':
+          description: Access to that resource is forbidden (The current user does not have permission to create a Member)
+        '409':
+          description: Conflict (Another client is editing the resource)
+        '413':
+          description: Payload too large
+        '415':
+          description: Unsupported (This media type is not supported by the server)
+        '422':
+          description: Unprocessable Entity (Data does not adhere to business rules)
+        '423':
+          description: Locked (This resource is currently Locked)
+        '428':
+          description: Precondition Required (The server is requiring conditional headers to ensure that the operation is performed only when these conditions are met)
+        '507':
+          description: Insufficient Storage
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        email: 
+          type: string
+          format: email
+          example: dean.ganskop@rit.edu
+        password:
+          type: string
+          format: password
+          example: password123
+    Member:
+      type: object
+      properties:
+        fName:
+          type: string
+          example: dean
+        lName:
+          type: string
+          example: ganskop
+        email:
+          type: string
+          format: email
+          example: dean.ganskop@rit.edu
+        password:
+          type: string
+          format: password
+          example: password123
+        society:
+          type: string
+          description: society name this member belongs to
+          example: world clown association
+    Officer:
+      type: object
+      properties:
+        fName:
+          type: string
+          example: dean
+        lName:
+          type: string
+          example: ganskop
+        email:
+          type: string
+          format: email
+          example: dean.ganskop@rit.edu
+        password:
+          type: string
+          format: password
+          example: password123
+        society:
+          type: string
+          description: society name this member belongs to
+          example: world clown association
+    Employee:
+      type: object
+      properties:
+        fName:
+          type: string
+          example: dean
+        lName:
+          type: string
+          example: ganskop
+        email:
+          type: string
+          format: email
+          example: dean.ganskop@rit.edu
+        password:
+          type: string
+          format: password
+          example: password123
+        society:
+          type: string
+          description: society name this member belongs to
+          example: world clown association
+    Adminstrator:
+      type: object
+      properties:
+        fName:
+          type: string
+        lName:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+        society:
+          type: string
+          description: society name this member belongs to
+          example: world clown association
+    Ballot:
+      type: object
+      properties:
+        id: 
+          type: integer
+        name:
+          type: string
+        electionStart:
+          type: integer
+          format: date-time
+          example: january 1, 2023
+        electionEnd:
+          type: integer
+          format: date-time
+          example: february 1, 2023
+        offices:
+          type: object
+        ballotInitiatives:
+          type: array
+          items: 
+            $ref: '#/components/schemas/BallotInitiatives'
+        voteCount:
+          type: integer
+        users:
+          type: array
+          items: 
+            $ref: '#/components/schemas/User'
+        usersWhoVoted:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    BallotInitiatives:
+      type: object
+      properties:
+        id: 
+          type: integer
+        description:
+          type: string
+        abstain:
+          type: boolean
+        BallotId: 
+          type: integer
+          description: foreign key from Ballot table
+    Society:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+  requestBodies:
+    Pet:
+      description: Pet object that needs to be added to the store
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/User'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/User'
+    UserArray:
+      description: List of user object
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/User'
+  securitySchemes:
+    petstore_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://petstore3.swagger.io/oauth/authorize
+          scopes:
+            write:pets: modify pets in your account
+            read:pets: read your pets
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
