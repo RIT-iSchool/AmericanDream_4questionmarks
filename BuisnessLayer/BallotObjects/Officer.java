@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * @version 1.0
  * @since 2023-10-04
  */
-public class OfficerQuestion {
+public class Officer {
  
     private String officeName;
     private ArrayList<Candidate> candidates;
@@ -21,7 +21,7 @@ public class OfficerQuestion {
      * @param candidates list of the candidates in the running for this position
      * @param numVotes amount of candidates a user can vote for
      */
-    public OfficerQuestion(
+    public Officer(
         String officeName,
         ArrayList<Candidate> candidates,
         Integer numVotes

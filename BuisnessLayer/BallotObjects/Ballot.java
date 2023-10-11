@@ -18,7 +18,7 @@ public class Ballot {
     private String name;
     private String electionStart;
     private String electionEnd;
-    private ArrayList<OfficerQuestion> officerQuestions;
+    private ArrayList<Officer> officerQuestions;
     private ArrayList<Initiative> ballotInitiatives;
     private Integer voteCount;
 
@@ -36,7 +36,7 @@ public class Ballot {
         String name, 
         String electionStart, 
         String electionEnd, 
-        ArrayList<OfficerQuestion> officerQuestions, 
+        ArrayList<Officer> officerQuestions, 
         ArrayList<Initiative> balloInitiatives,
         ArrayList<User> users) {
 
@@ -70,7 +70,7 @@ public class Ballot {
      * Get the officer position questions on the ballot
      * @return ArrayList of the officer questions
      */
-    public ArrayList<OfficerQuestion> getOfficerQuestions() { 
+    public ArrayList<Officer> getOfficerQuestions() { 
         return officerQuestions; 
     }
     /**
@@ -109,7 +109,7 @@ public class Ballot {
      * Set the officer position questions on the ballot
      * @param officerQuestions of the officer questions
      */
-    public void setOfficerQuestions(ArrayList<OfficerQuestion> officerQuestions){ }
+    public void setOfficerQuestions(ArrayList<Officer> officerQuestions){ }
     /**
      * Set the initive questions on the ballot
      * @param ballotInitiatives of inititve questions

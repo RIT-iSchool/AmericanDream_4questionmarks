@@ -6,6 +6,7 @@ public class Employee extends User {
     private String lastname;
     private String email;
     private Society society;
+    private Integer id;
 
     /**
      * Instantiates an Employee type user
@@ -26,6 +27,7 @@ public class Employee extends User {
         this.email = email;
         this.firstname = firstname;
         this.lastname = lastname;
+        this.id = -1;
     }
 
     // getters and setters
@@ -49,6 +51,11 @@ public class Employee extends User {
      * @return String last name
      */
     public String getLastName() { return lastname; }
+    /**
+     * Gets a user's id, will return -1 if it hasn't been set
+     * @return Integer of users id
+     */
+    public Integer getId() { return id; }
 
     /**
      * set a user's society
@@ -70,6 +77,11 @@ public class Employee extends User {
      * @param lastname last name
      */
     public void setLastName( String lastname ) { }
+    /**
+     * Sets a user's id
+     * @param id sets the new user id
+     */
+    public void setId( Integer id) { }
 
 
 }
