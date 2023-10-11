@@ -10,6 +10,7 @@ public class Member extends User {
     private String lastname;
     private String email;
     private Society society;
+    private Integer id;
 
     /**
      * Instantiates a Member type user
