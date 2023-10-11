@@ -53,6 +53,11 @@ public class Member extends User {
      * @return String last name
      */
     public String getLastName() { return lastname; }
+    /**
+     * Gets a user's id, will return -1 if it hasn't been set
+     * @return Integer of users id
+     */
+    public Integer getId() { return id; }
 
     /**
      * set a user's society
@@ -74,6 +79,11 @@ public class Member extends User {
      * @param lastname last name
      */
     public void setLastName( String lastname ) { }
+    /**
+     * Sets a user's id
+     * @param id sets the new user id
+     */
+    public void setId( Integer id) { }
 
     /**
      * Gets a list of the electoins the user can vote in
