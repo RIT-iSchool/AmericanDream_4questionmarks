@@ -9,7 +9,7 @@ public class DatabaseConnection {
      * @return A Connection object representing the database connection.
      * @throws SQLException If there is an error connecting to the database.
      */
-    public Connection getConnection() throws SQLException {
+    public Connection getConnection() {
         // Connecting to the database
     }
 
@@ -19,7 +19,7 @@ public class DatabaseConnection {
      * @param connection The Connection object to be closed.
      * @throws SQLException If there is an error while closing the connection.
      */
-    public void closeConnection(Connection connection) throws SQLException {
+    public void closeConnection(Connection connection) {
         // Closing the connection
     }
 }
