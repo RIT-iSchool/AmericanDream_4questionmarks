@@ -7,7 +7,7 @@ import BuisnessLayer.BallotObjects.Ballot;
 public class Member extends User {
 
     /**
-     * Instantiates a Member type user by inheriting the user class attributes
+     * Instantiates a Member type user by inheriting the user class attributes and functions
      * @param firstname first name of user
      * @param lastname last name of user
      * @param password chosen password

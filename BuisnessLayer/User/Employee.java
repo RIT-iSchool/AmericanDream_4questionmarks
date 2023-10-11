@@ -2,7 +2,7 @@ package BuisnessLayer.User;
 
 public class Employee extends User {
     /**
-     * Instantiates a Employee type user by inheriting the user class attributes
+     * Instantiates a Employee type user by inheriting the user class attributes and functions
      * @param firstname first name of user
      * @param lastname last name of user
      * @param password chosen password
