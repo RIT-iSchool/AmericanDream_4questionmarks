@@ -1,0 +1,15 @@
+* {
+    /* background-color: #16130E; */
+}
+.loginContainer {
+    margin-top: 8%;
+}
+.headingContainer {
+    text-align: center;
+}
+p.heading {
+    text-transform: capitalize;
+    font-weight: bold;
+    font-size: 3em;
+    color: #FABC49;
+}
