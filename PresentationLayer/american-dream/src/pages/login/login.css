@@ -1,0 +1,15 @@
+.loginContainer {
+    padding-top: 8%;
+}
+.logoContainer > img {
+    height: 120px;
+}
+.headingContainer {
+    text-align: center;
+}
+p.heading {
+    text-transform: capitalize;
+    font-weight: bold;
+    font-size: 3em;
+    color: #FABC49;
+}

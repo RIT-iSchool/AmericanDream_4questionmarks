@@ -7,6 +7,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 // pages
 import App from "./pages/App";
 import Idk from "./pages/idk";
+import Login from "./pages/login/login";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
         path: "/idk",
         element: <Idk />,
     },
+    {
+        path: "/login",
+        element: <Login />
+    }
 ]);
 
 // Creates the theme for MUI

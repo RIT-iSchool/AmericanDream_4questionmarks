@@ -20,7 +20,7 @@ function App() {
         App
       </Typography>
       
-      <Link to={'idk'}><Button variant="contained">Go to idk</Button></Link>
+      <Link to={'login'}><Button variant="contained">Go to login</Button></Link>
 
     </div>
   );
