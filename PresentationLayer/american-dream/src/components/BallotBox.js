@@ -6,12 +6,12 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
-import Button from "@mui/material/Button";
+import { ROLE } from "../utils/role.js";
 import Typography from "@mui/material/Typography";
 import { colors } from "../utils/colors.js";
 import { Link } from "react-router-dom";
 
-export default function BallotBox({ ballot }) {
+export default function BallotBox({ ballot, role }) {
     return (
         <Link to={"/"} style={{ textDecoration: "none" }}>
             <div className={ballot.isFinished ? "ballot-box box-finished" : "ballot-box"}>
@@ -23,8 +23,23 @@ export default function BallotBox({ ballot }) {
                 </Typography>
                 <br />
                 <br />
+                {/* Edit */}
+                {role === ROLE.administrator && !ballot.hasStarted ? (
+                    <Link to={"/login"} style={{ textDecoration: "none" }}>
+                        <Typography
+                            variant="p"
+                            color={colors["primary"]}
+                            fontWeight={"bold"}
+                        >
+                            Edit
+                        </Typography>
+                    </Link>
+                ) : (
+                    <></>
+                )}
 
-                {!ballot.isFinished  && ballot.hasStarted ? (
+                {/* See Progress */}
+                {role === ROLE.officer && !ballot.isFinished  && ballot.hasStarted ? (
                     <Link to={"/login"} style={{ textDecoration: "none" }}>
                         <Typography
                             variant="p"
@@ -38,7 +53,8 @@ export default function BallotBox({ ballot }) {
                     <></>
                 )}
 
-                {ballot.isFinished ? (
+                {/* See Results */}
+                {(role === ROLE.officer || role === ROLE.administrator) && ballot.isFinished ? (
                     <Link to={"/login"} style={{ textDecoration: "none" }}>
                         <Typography
                             variant="p"
@@ -51,6 +67,7 @@ export default function BallotBox({ ballot }) {
                 ) : (
                     <></>
                 )}
+
             </div>
         </Link>
     );
