@@ -6,8 +6,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 // pages
 import App from "./pages/App";
-import Idk from "./pages/idk";
 import Login from "./pages/login/login";
+import BallotList from "./pages/BallotList";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -18,12 +18,12 @@ const router = createBrowserRouter([
         element: <App />,
     },
     {
-        path: "/idk",
-        element: <Idk />,
-    },
-    {
         path: "/login",
         element: <Login />
+    },
+    {
+      path: "/ballotList",
+      element: <BallotList />
     }
 ]);
 

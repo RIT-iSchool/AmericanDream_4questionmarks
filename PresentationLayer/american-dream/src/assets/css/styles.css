@@ -1,0 +1,28 @@
+.ballot-box-wrapper {
+    width: 90%;
+    margin: 2em auto auto auto;
+    text-align: center;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.ballot-box {
+    text-align: left;
+    background-color: var(--md-ref-palette-neutral20);
+    width: 20em;
+    min-height: 8em;
+    padding: 1.5em;
+    margin: 1em;
+    border-radius: 1em;
+}
+.ballot-box:hover {
+    background-color: var(--md-ref-palette-neutral30);
+}
+.box-finished {
+    background-color: var(--primary-container-dark);
+}
