@@ -108,3 +108,64 @@ CREATE INDEX idx_vote_userID ON Vote (UserID);
 -- Vote Table Composite Index 
 CREATE INDEX idx_vote_ballot_user ON Vote (BallotID, UserID);
 
+-- Insert into Society Table
+INSERT INTO Society (SocietyName, SocietyDesc)
+VALUES ('American Society', 'A society for hamburger people');
+
+-- Insert into Ballot Table with JSON data
+INSERT INTO Ballot (ElectionStart, ElectionEnd, Offices, SocietyID)
+VALUES (
+    NOW(),
+    NOW(),
+    '{
+        "offices": [
+            {
+                "id": "o1",
+                "name": "President",
+                "candidates": [
+                    {
+                        "id": "c1",
+                        "name": "Yannis Ioannidis",
+                        "position": "future president",
+                        "bio": "Very important person",
+                        "image": "https://example.com/images/yannis_ioannidis.jpg"
+                    },
+                    {
+                        "id": "c2",
+                        "name": "Jens Palsberg",
+                        "position": "future president 2",
+                        "bio": "Very important person 2",
+                        "image": "https://example.com/images/jens_palsberg.jpg"
+                    }
+                ],
+                "choices": 1
+            }
+        ]
+    }',
+    1
+);
+
+-- Insert into Ballot_Initiative Table
+INSERT INTO Ballot_Initiative (Description, Abstain, BallotID)
+VALUES ('Initiative for Net Neutrality', FALSE, 1);
+
+-- Insert into Ballot_Option Table
+INSERT INTO Ballot_Option (Description, InitiativeID)
+VALUES ('Option 1 for Initiative', 1);
+
+-- Insert into User Table
+INSERT INTO User (fName, lName, Email, Password, SocietyID)
+VALUES ('John', 'Smith', 'johnsmith@example.com', 'password123', 1);
+
+-- Insert into Response Table
+INSERT INTO Response (OptionID, UserID)
+VALUES (1, 1);
+
+-- Insert into Roles Table
+INSERT INTO Roles (RoleName, UserID)
+VALUES ('Admin', 1);
+
+-- Insert into Vote Table
+INSERT INTO Vote (CandidateID, CandidateName, Abstain, VoteType, OfficeJSONID, BallotID, UserID)
+VALUES (1, 'John Smith', FALSE, 'NotWriteIn', 1, 1, 1);
+
