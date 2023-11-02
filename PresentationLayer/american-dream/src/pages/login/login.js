@@ -7,10 +7,50 @@ import Container from '@mui/material/Container';
 import { Typography } from '@mui/material';
 import { useState } from 'react';
 import { Link } from "react-router-dom";
+import axios from 'axios';
+import { useHistory } from "react-router-dom";
 
 export default function Login() {
+    // TODO: session 
     const [isNewUser, setIsNewUser] = useState(true);
+    const [user,setUser] = useState({
+        userEmail: "",
+        userPassword: "",
+    });
 
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [emailErr, setEmailErr] = useState(false);
+    const [passwordErr, setPasswordErr] = useState(false);
+    const [errorMsg, setErrorMsg] = useState("");
+    const history = useHistory();
+
+    const handleLogin = (event) => {
+        event.preventDefault();
+        setEmailErr(false);
+        setPasswordErr(false);
+    
+        if (email === '') { setEmailErr(true) }
+        if (password.length < 8) {
+            setPasswordErr(true);
+            setErrorMsg('Password must be at least 8 characters long');
+        }
+        
+        if (email && password && !emailErr && !passwordErr) {
+            // Perform the login operation
+            axios.post('/DataAccessLayer/LoginAuth.java', { username: email, password: password })
+                // On successful login, redirect to the Ballot List page.
+                .then(response => {
+                    console.log(response.data);
+                    history.push('/BallotList.js');
+                })
+                .catch(error => {
+                    console.error('There was an error!', error);
+                    setErrorMsg('Login failed');
+                });
+        }
+    };
+    
     return (
         <Container maxWidth="sm" className='loginContainer'>
             <Stack spacing={10} direction="column" sx={{textAlign: 'center'}}>
@@ -18,34 +58,33 @@ export default function Login() {
                     <img src={logo} className="logo" alt="4 question marks logo" />
                 </div>
                 
-                <Stack direction={'column'} spacing={4}>
-                    <Typography variant='h2' sx={{color: '#FABC49'}}>
-                        {isNewUser ? "Welcome!" : "Welcome Back!"}
-                    </Typography>
-                    
-                    <Stack direction={'column'} spacing={2}>
-                        <TextField id="outlined-required" label="Email" type="email" InputLabelProps={{style: {color: '#DBC3A1'}}} />
-                        <TextField id="outlined-required" label="Password" type="password" InputLabelProps={{style: {color: '#DBC3A1'}}} />
-                    </Stack>
+                <form onSubmit={handleLogin}>
+                    <Stack direction={'column'} spacing={4}>
+                        <Stack direction='column' spacing={0}>
+                            <Typography variant='h2' color="primary">{isNewUser ? "Welcome!" : "Welcome Back!"}</Typography>
+                            <Typography variant="subtitle1" color="error" sx={{height: '24px'}}>{errorMsg}</Typography>
+                        </Stack>
+                        
+                        <Stack direction={'column'} spacing={2}>
+                            <TextField id="outlined-required" label="Email" type="email" InputLabelProps={{style: {color: '#DBC3A1'}}} onChange={e => setEmail(e.target.value)} required value={email} error={emailErr} />
 
-                    <Stack direction={'column'} spacing={2}>
-                        <Button variant="contained">
-                            <Typography variant='h7'>
-                                log in
-                            </Typography>
-                        </Button>
-                        <Link to={'/'}>
-                            <Typography variant='h7' sx={{color: '#FABC49'}}>
-                                Create An Account
-                            </Typography>
-                        </Link>
-                        {/* <Button variant="outlined">
-                            <Typography variant='h7'>
-                                create an account
-                            </Typography>
-                        </Button> */}
+                            <TextField id="outlined-required" label="Password" type="password" InputLabelProps={{style: {color: '#DBC3A1'}}} onChange={e => setPassword(e.target.value)} required value={password} error={passwordErr} />
+                        </Stack>
+
+                        <Stack direction={'column'} spacing={2}>
+                            <Button variant="contained" type="submit">
+                                <Typography variant='h7'>
+                                    log in
+                                </Typography>
+                            </Button>
+                            <Link to={'/'}>
+                                <Typography variant='h7' sx={{color: '#FABC49'}}>
+                                    Create An Account
+                                </Typography>
+                            </Link>
+                        </Stack>
                     </Stack>
-                </Stack>
+                </form>
             </Stack>
         </Container>
     )
