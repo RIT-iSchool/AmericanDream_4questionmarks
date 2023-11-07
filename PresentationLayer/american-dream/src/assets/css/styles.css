@@ -1,3 +1,11 @@
+.no-underline {text-decoration: none;}
+section, .section { 
+    margin: auto;
+    padding: 2em;
+}
+.margin-bottom { margin-bottom: 2em !important; }
+.less-margin-bottom { margin-bottom: -0.75em !important; }
+
 .ballot-box-wrapper {
     width: 90%;
     margin: 2em auto auto auto;
@@ -26,3 +34,22 @@
 .box-finished {
     background-color: var(--primary-container-dark);
 }
+
+.candidate-box {
+    width: 20em;
+    background-color: var(--md-ref-palette-neutral20);
+    padding: 1em 0 1em 0;
+}
+.selected {
+    background-color: var(--surface-variant-dark);
+}
+.button-box-candidate {
+    width: 100%;
+    text-align: right;
+    padding: 0 1em 0.5em 0;
+    margin-top: -0.5em;
+}
+.button-box-candidate Button {
+    margin: auto 0.5em auto 0.5em;
+}
+.padding { padding: 1em; }

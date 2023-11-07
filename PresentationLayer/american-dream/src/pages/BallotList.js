@@ -9,10 +9,14 @@ import "@fontsource/roboto/700.css";
 import { ROLE } from "../utils/role.js";
 import CustomAppBar from "../components/CustomAppBar.js";
 import BallotBox from "../components/BallotBox";
+import { Link } from "react-router-dom";
+
+import Typography from "@mui/material/Typography";
+import { colors } from "../utils/colors.js";
 
 function BallotList() {
 
-    var role = ROLE.officer;
+    var role = ROLE.administrator;
 
     var ballots = [
         {
@@ -44,12 +48,19 @@ function BallotList() {
                 /* Ballot Boxes */
                 ballots.map(
                     ( ballot, index ) => ( 
-                        <BallotBox key={index} role={role} ballot={ballot} />
+                        <Link key={index} to={'login'} className="no-underline">
+                            <BallotBox role={role} ballot={ballot} />
+                        </Link>
                  ) )
             }
+            
             </div>
 
-            
+            <Link to={'/openBallot'} className="no-underline">
+                <Typography variant='h7' sx={{color: '#FABC49'}}>
+                    Open Ballot
+                </Typography>
+            </Link>
         </div>
     );
 }
