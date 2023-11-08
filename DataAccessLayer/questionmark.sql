@@ -83,30 +83,25 @@ CREATE TABLE Vote (
 
 -- User Table
 CREATE INDEX idx_user_email ON User (Email);
-CREATE INDEX idx_user_societyID ON User (SocietyID);
+CREATE INDEX idx_user_fname ON User (fName);
+CREATE INDEX idx_user_lname ON User (lName);
+
+-- Role Table
+CREATE INDEX idx_roles_rolename ON Roles (RoleName);
+
+-- Society Table
+CREATE INDEX idx_society_name ON Society (SocietyName);
 
 -- Ballot Table
-CREATE INDEX idx_ballot_societyID ON Ballot (SocietyID);
+CREATE INDEX idx_ballot_electionstart ON Ballot (ElectionStart);
+CREATE INDEX idx_ballot_electionend ON Ballot (ElectionEnd);
+CREATE INDEX idx_ballot_election_dates ON Ballot (ElectionStart, ElectionEnd);
 
 -- Ballot_Initiative Table
-CREATE INDEX idx_ballot_initiative_ballotID ON Ballot_Initiative (BallotID);
+CREATE INDEX idx_ballot_initiative_description ON Ballot_Initiative (Description);
 
 -- Ballot_Option Table
-CREATE INDEX idx_ballot_option_initiativeID ON Ballot_Option (InitiativeID);
-
--- Response Table
-CREATE INDEX idx_response_optionID ON Response (OptionID);
-CREATE INDEX idx_response_userID ON Response (UserID);
-
--- Roles Table
-CREATE INDEX idx_roles_userID ON Roles (UserID);
-
--- Vote Table
-CREATE INDEX idx_vote_ballotID ON Vote (BallotID);
-CREATE INDEX idx_vote_userID ON Vote (UserID);
-
--- Vote Table Composite Index 
-CREATE INDEX idx_vote_ballot_user ON Vote (BallotID, UserID);
+CREATE INDEX idx_ballot_option_description ON Ballot_Option (Description);
 
 -- Insert into Society Table
 INSERT INTO Society (SocietyName, SocietyDesc)
@@ -115,8 +110,8 @@ VALUES ('American Society', 'A society for hamburger people');
 -- Insert into Ballot Table with JSON data
 INSERT INTO Ballot (ElectionStart, ElectionEnd, Offices, SocietyID)
 VALUES (
-    NOW(),
-    NOW(),
+    '2023-11-01',
+    '2023-12-01',
     '{
         "offices": [
             {
@@ -168,4 +163,3 @@ VALUES ('Admin', 1);
 -- Insert into Vote Table
 INSERT INTO Vote (CandidateID, CandidateName, Abstain, VoteType, OfficeJSONID, BallotID, UserID)
 VALUES (1, 'John Smith', FALSE, 'NotWriteIn', 1, 1, 1);
-
