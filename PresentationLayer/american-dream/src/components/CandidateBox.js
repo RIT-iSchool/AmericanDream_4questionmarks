@@ -5,6 +5,7 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import test from '../assets/test.jpeg';
 
 import Typography from "@mui/material/Typography";
 import { colors } from "../utils/colors.js";
@@ -13,7 +14,8 @@ import Stack from "@mui/material/Stack";
 import ColoredAvatar from "./ColoredAvatar";
 import Button from "@mui/material/Button";
 
-function CandidateBox({ candidate, selected }) {
+function CandidateBox({ candidate, selected }) { 
+
     return (
         <div
             className={
@@ -36,6 +38,8 @@ function CandidateBox({ candidate, selected }) {
                     {/* Image */}
                 </Stack>
             </Stack>
+            <img src={test} alt={`${candidate.name} dressed professionaly`} />
+
             <br />
             <div className="padding">
                 <Typography variant="body" color={colors["on-surface"]}>
@@ -46,7 +50,7 @@ function CandidateBox({ candidate, selected }) {
             <br />
             <div className="button-box-candidate">
                 <Button variant="outlined">Read more</Button>
-                <Button variant="contained">Vote</Button>
+                <Button variant="contained">{selected ? "Voted!" : "Vote"}</Button>
             </div>
         </div>
     );

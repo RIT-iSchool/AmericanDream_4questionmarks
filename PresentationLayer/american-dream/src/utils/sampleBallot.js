@@ -11,13 +11,13 @@ export const sampleBallot = {
                     name: "Tammy Hayes",
                     titles: "CDM Smith",
                     description: "Tammy Desc",
-                    imagePath: ""
+                    imagePath: "../assets/test.jpeg"
                 },
                 {
                     name: "Tim Flanagan, S.C.",
                     titles: "SCS Engineers",
                     description: "Tim Desc",
-                    imagePath: ""
+                    imagePath: "./assets/test.jpeg"
                 },
                 {
                     name: "Vita Quinn",
