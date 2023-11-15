@@ -103,6 +103,14 @@ CREATE INDEX idx_ballot_initiative_description ON Ballot_Initiative (Description
 -- Ballot_Option Table
 CREATE INDEX idx_ballot_option_description ON Ballot_Option (Description);
 
+DELIMITER //
+CREATE PROCEDURE AddNewSociety(IN societyName VARCHAR(100), IN societyDesc VARCHAR(150))
+BEGIN
+    INSERT INTO Society (SocietyName, SocietyDesc) VALUES (societyName, societyDesc);
+END //
+DELIMITER ;
+
+
 -- Insert into Society Table
 INSERT INTO Society (SocietyName, SocietyDesc)
 VALUES ('American Society', 'A society for hamburger people');
@@ -163,3 +171,4 @@ VALUES ('Admin', 1);
 -- Insert into Vote Table
 INSERT INTO Vote (CandidateID, CandidateName, Abstain, VoteType, OfficeJSONID, BallotID, UserID)
 VALUES (1, 'John Smith', FALSE, 'NotWriteIn', 1, 1, 1);
+
