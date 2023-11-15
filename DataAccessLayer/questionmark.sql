@@ -83,30 +83,89 @@ CREATE TABLE Vote (
 
 -- User Table
 CREATE INDEX idx_user_email ON User (Email);
-CREATE INDEX idx_user_societyID ON User (SocietyID);
+CREATE INDEX idx_user_fname ON User (fName);
+CREATE INDEX idx_user_lname ON User (lName);
+
+-- Role Table
+CREATE INDEX idx_roles_rolename ON Roles (RoleName);
+
+-- Society Table
+CREATE INDEX idx_society_name ON Society (SocietyName);
 
 -- Ballot Table
-CREATE INDEX idx_ballot_societyID ON Ballot (SocietyID);
+CREATE INDEX idx_ballot_electionstart ON Ballot (ElectionStart);
+CREATE INDEX idx_ballot_electionend ON Ballot (ElectionEnd);
+CREATE INDEX idx_ballot_election_dates ON Ballot (ElectionStart, ElectionEnd);
 
 -- Ballot_Initiative Table
-CREATE INDEX idx_ballot_initiative_ballotID ON Ballot_Initiative (BallotID);
+CREATE INDEX idx_ballot_initiative_description ON Ballot_Initiative (Description);
 
 -- Ballot_Option Table
-CREATE INDEX idx_ballot_option_initiativeID ON Ballot_Option (InitiativeID);
+CREATE INDEX idx_ballot_option_description ON Ballot_Option (Description);
 
--- Response Table
-CREATE INDEX idx_response_optionID ON Response (OptionID);
-CREATE INDEX idx_response_userID ON Response (UserID);
+-- Add Society
+DELIMITER //
 
--- Roles Table
-CREATE INDEX idx_roles_userID ON Roles (UserID);
+CREATE PROCEDURE AddSociety(IN societyName VARCHAR(100), IN societyDesc VARCHAR(150))
+BEGIN
+    INSERT INTO Society (SocietyName, SocietyDesc) VALUES (societyName, societyDesc);
+END //
 
--- Vote Table
-CREATE INDEX idx_vote_ballotID ON Vote (BallotID);
-CREATE INDEX idx_vote_userID ON Vote (UserID);
+-- Add Ballot
+CREATE PROCEDURE AddBallot(IN electionStart DATETIME, IN electionEnd DATETIME, IN offices JSON, IN societyID INT)
+BEGIN
+    INSERT INTO Ballot (ElectionStart, ElectionEnd, Offices, SocietyID) VALUES (electionStart, electionEnd, offices, societyID);
+END //
 
--- Vote Table Composite Index 
-CREATE INDEX idx_vote_ballot_user ON Vote (BallotID, UserID);
+-- Add BallotInitiative
+CREATE PROCEDURE AddBallotInitiative(IN description VARCHAR(150), IN abstain BOOLEAN, IN ballotID INT)
+BEGIN
+    INSERT INTO Ballot_Initiative (Description, Abstain, BallotID) VALUES (description, abstain, ballotID);
+END //
+
+-- Add BallotOption
+CREATE PROCEDURE AddNewBallotOption(IN description VARCHAR(150), IN initiativeID INT)
+BEGIN
+    INSERT INTO Ballot_Option (Description, InitiativeID) VALUES (description, initiativeID);
+END //
+
+-- Add User
+CREATE PROCEDURE AddUser(IN fName VARCHAR(50), IN lName VARCHAR(50), IN email VARCHAR(100), IN password VARCHAR(50), IN societyID INT)
+BEGIN
+    INSERT INTO User (fName, lName, Email, Password, SocietyID) VALUES (fName, lName, email, password, societyID);
+END //
+
+-- Submit Ballot Response
+CREATE PROCEDURE SubmitBallotResponse(IN optionID INT, IN userID INT)
+BEGIN
+    INSERT INTO Response (OptionID, UserID) VALUES (optionID, userID);
+END //
+
+-- Submit Vote
+CREATE PROCEDURE SubmitVote(IN candidateID INT, IN candidateName VARCHAR(100), IN abstain BOOLEAN, IN voteType ENUM('WriteIn', 'NotWriteIn'), IN officeJSONID INT, IN ballotID INT, IN userID INT)
+BEGIN
+    INSERT INTO Vote (CandidateID, CandidateName, Abstain, VoteType, OfficeJSONID, BallotID, UserID) VALUES (candidateID, candidateName, abstain, voteType, officeJSONID, ballotID, userID);
+END //
+
+-- Update User
+CREATE PROCEDURE UpdateUserInfo(IN userID INT, IN fName VARCHAR(50), IN lName VARCHAR(50), IN email VARCHAR(100), IN password VARCHAR(50))
+BEGIN
+    UPDATE User SET fName = fName, lName = lName, Email = email, Password = password WHERE UserID = userID;
+END //
+
+-- Delete Ballot
+CREATE PROCEDURE DeleteBallot(IN ballotID INT)
+BEGIN
+    DELETE FROM Ballot WHERE BallotID = ballotID;
+END //
+
+-- List All Societies
+CREATE PROCEDURE ListSocieties()
+BEGIN
+    SELECT * FROM Society;
+END //
+
+DELIMITER ;
 
 -- Insert into Society Table
 INSERT INTO Society (SocietyName, SocietyDesc)
@@ -115,8 +174,8 @@ VALUES ('American Society', 'A society for hamburger people');
 -- Insert into Ballot Table with JSON data
 INSERT INTO Ballot (ElectionStart, ElectionEnd, Offices, SocietyID)
 VALUES (
-    NOW(),
-    NOW(),
+    '2023-11-01',
+    '2023-12-01',
     '{
         "offices": [
             {
