@@ -18,19 +18,43 @@ import Box from "@mui/material/Box";
 import CandidateBox from "../components/CandidateBox";
 import WriteIn from "../components/WriteIn";
 import InitiativeBox from "../components/InitiativeBox";
+import Button from "@mui/material/Button";
 
-// TODO: will take in a ballot
+// TODO: will take in a ballot in JSON
+// for voting, write in needs to be id zero or something specific
 function OpenBallot() {
     let ballot = sampleBallot;
-    let selections = {
-        candidatePositions: [],
+    let responses = {
+        offices: [],
         initiatives: [],
     };
 
     const [value, setValue] = React.useState(0);
+    const [selected, setSelected] = React.useState(
+        new Array(ballot.offices.length)
+    );
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
+    };
+
+    const enterOfficeVote = (officeId, candidateId) => {
+        responses.offices.push({
+            office: officeId,
+            candidate: candidateId,
+        });
+    };
+    const enterOfficeWriteIn = (officeId, str) => {
+        responses.offices.push({
+            office: officeId,
+            candidate: str,
+        });
+    };
+    const enterInitiativeVote = (initiativeId, responseId) => {
+        responses.offices.push({
+            initiative: initiativeId,
+            response: responseId,
+        });
     };
 
     return (
@@ -54,7 +78,7 @@ function OpenBallot() {
                     >
                         {
                             /* Candidate Positions */
-                            ballot.candidatePositions.map((position, index) => (
+                            ballot.offices.map((position, index) => (
                                 <Tab
                                     key={index}
                                     label={position.title}
@@ -77,22 +101,34 @@ function OpenBallot() {
 
                 {
                     /* Candidate Positions Tab Content */
-                    ballot.candidatePositions.map((position, index) => (
-                        <CustomTabPanel key={index} value={value} index={index}>
+                    ballot.offices.map((position, index) => (
+                        <CustomTabPanel
+                            key={selected[position.id]}
+                            value={value}
+                            index={index}
+                        >
                             <div className="candidate-box-wrapper">
                                 {
                                     /* Candidate Positions */
-                                    ballot.candidatePositions[
-                                        index
-                                    ].candidates.map((candidate, index) => (
-                                        <CandidateBox
-                                            key={index}
-                                            candidate={candidate}
-                                            selected={index === 0}
-                                        />
-                                    ))
+                                    ballot.offices[index].candidates.map(
+                                        (candidate, index) => (
+                                            <CandidateBox
+                                                key={index}
+                                                candidate={candidate}
+                                                selected={selected}
+                                                setSelected={setSelected}
+                                                vote={enterOfficeVote}
+                                                officeId={position.id}
+                                            />
+                                        )
+                                    )
                                 }
-                                <WriteIn selected={false} />
+                                <WriteIn
+                                    selected={selected}
+                                    setSelected={setSelected}
+                                    vote={enterOfficeWriteIn}
+                                    officeId={position.id}
+                                />
                             </div>
                         </CustomTabPanel>
                     ))
@@ -103,12 +139,27 @@ function OpenBallot() {
                         <CustomTabPanel
                             key={index}
                             value={value}
-                            index={index + ballot.candidatePositions.length}
+                            index={index + ballot.offices.length}
                         >
-                            <InitiativeBox initiative={initiative} index={index} />
+                            <InitiativeBox
+                                initiative={initiative}
+                                index={index}
+                                vote={enterInitiativeVote}
+                            />
                         </CustomTabPanel>
                     ))
                 }
+
+                <br />
+                <br />
+                <Button
+                    variant={"contained"}
+                    onClick={() => {
+                        // send vote off
+                    }}
+                >
+                    Finish Voting
+                </Button>
             </section>
         </div>
     );

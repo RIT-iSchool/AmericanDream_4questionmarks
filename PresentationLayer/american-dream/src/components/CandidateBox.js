@@ -5,7 +5,7 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import test from '../assets/test.jpeg';
+import test from "../assets/test.jpeg";
 
 import Typography from "@mui/material/Typography";
 import { colors } from "../utils/colors.js";
@@ -14,12 +14,14 @@ import Stack from "@mui/material/Stack";
 import ColoredAvatar from "./ColoredAvatar";
 import Button from "@mui/material/Button";
 
-function CandidateBox({ candidate, selected }) { 
+function CandidateBox({ candidate, selected, setSelected, vote, officeId }) {
 
     return (
         <div
             className={
-                selected ? "candidate-box selected-box" : "candidate-box"
+                selected[officeId] === candidate.id
+                    ? "candidate-box selected-box"
+                    : "candidate-box"
             }
         >
             <Stack direction="row" spacing={2} className="padding">
@@ -50,7 +52,18 @@ function CandidateBox({ candidate, selected }) {
             <br />
             <div className="button-box-candidate">
                 <Button variant="outlined">Read more</Button>
-                <Button variant="contained">{selected ? "Voted!" : "Vote"}</Button>
+                <Button
+                    variant="contained"
+                    onClick={() => {
+                        let newSelected = selected;
+                        newSelected[officeId] = candidate.id;
+                        setSelected(newSelected);
+                        console.log(selected);
+                        vote(officeId, candidate.id);
+                    }}
+                >
+                    {selected[officeId] === candidate.id ? "Voted!" : "Vote"}
+                </Button>
             </div>
         </div>
     );

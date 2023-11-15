@@ -14,7 +14,7 @@ import Stack from "@mui/material/Stack";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 
-function InitiativeBox({ initiative, index }) {
+function InitiativeBox({ initiative, index, vote }) {
     const [selected, setSelected] = useState("");
 
     return (
@@ -22,7 +22,7 @@ function InitiativeBox({ initiative, index }) {
             <Stack direction="row" spacing={2}>
                 <Avatar sx={{ bgcolor: colors.primary }}>{index + 1}</Avatar>
                 <Typography variant="h6" color={colors["on-surface"]}>
-                    Initiative {index}
+                    Initiative {index + 1}
                 </Typography>
             </Stack>
             <br />
@@ -34,14 +34,16 @@ function InitiativeBox({ initiative, index }) {
                     /* Initiatives Options */
                     initiative.responses.map((response, index) => (
                         <Button
+                            key={index}
                             variant={
                                 selected === response ? "contained" : "outlined"
                             }
                             onClick={() => {
                                 setSelected(response);
+                                vote(initiative.id, response.id)
                             }}
                         >
-                            {response}
+                            {response.title}
                         </Button>
                     ))
                 }

@@ -9,11 +9,17 @@ import "@fontsource/roboto/700.css";
 import * as React from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import { validate } from "../utils/utils.js";
 
-function WriteIn({ selected }) {
+function WriteIn({ selected, setSelected, vote, officeId }) {
+
+    const [text, setText] = React.useState("");
+
     return (
         <div
-            className={selected ? "write-in-box selected-box" : "write-in-box"}
+            className={
+                selected === 0 ? "write-in-box selected-box" : "write-in-box"
+            }
         >
             <div className="textfield">
                 <TextField
@@ -21,12 +27,25 @@ function WriteIn({ selected }) {
                     label="Write In"
                     type="text"
                     InputLabelProps={{ style: { color: "#DBC3A1" } }}
+                    onChange={(event) => {
+                        setText(event.target.value)
+                    }}
                 />
                 <div className="button-box-candidate">
                     <br />
                     <br />
-                    <Button variant="contained">
-                        {selected ? "Voted!" : "Vote"}
+                    <Button variant="contained" onClick={() => {
+
+                        if (validate(text, 1, 100)) {
+                            let newSelected = selected;
+                            newSelected[officeId] = 0;
+                            setSelected(newSelected);
+                            console.log(selected);
+                            vote(officeId, text);
+                        }
+                        
+                    }}>
+                        {selected === 0 ? "Voted!" : "Vote"}
                     </Button>
                 </div>
             </div>
