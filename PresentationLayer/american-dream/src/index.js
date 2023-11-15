@@ -8,6 +8,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./pages/App";
 import Login from "./pages/login/login";
 import BallotList from "./pages/BallotList";
+import CreateAccount from "./pages/CreateAccount";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
     {
       path: "/ballotList",
       element: <BallotList />
+    },
+    {
+        path: "/createAccount",
+        element: <CreateAccount />
     }
 ]);
 

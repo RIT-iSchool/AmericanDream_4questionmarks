@@ -26,3 +26,8 @@
 .box-finished {
     background-color: var(--primary-container-dark);
 }
+
+.logo {
+    width: 5em;
+    margin: auto;
+}

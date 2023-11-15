@@ -21,10 +21,17 @@ function App() {
             <Link to={"login"}>
                 <Button variant="contained">Go to login</Button>
             </Link>
+
             <br />
             <br />
             <Link to={"ballotList"}>
                 <Button variant="contained">Go to BallotList</Button>
+            </Link>
+
+            <br />
+            <br />
+            <Link to={"createAccount"}>
+                <Button variant="contained">Create Account</Button>
             </Link>
         </div>
     );
