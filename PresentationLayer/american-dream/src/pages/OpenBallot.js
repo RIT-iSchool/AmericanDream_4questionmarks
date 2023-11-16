@@ -19,37 +19,25 @@ import CandidateBox from "../components/CandidateBox";
 import WriteIn from "../components/WriteIn";
 import InitiativeBox from "../components/InitiativeBox";
 import Button from "@mui/material/Button";
+import CustomTabPanel from "../components/CustomTabPanel.jsx";
+import OfficeBallotSection from "../components/OfficeBallotSection.jsx";
 
 // TODO: will take in a ballot in JSON
 // for voting, write in needs to be id zero or something specific
 function OpenBallot() {
     let ballot = sampleBallot;
+    // make this a state
     let responses = {
         offices: [],
         initiatives: [],
     };
 
     const [value, setValue] = React.useState(0);
-    const [selected, setSelected] = React.useState(
-        new Array(ballot.offices.length)
-    );
-
+    
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
 
-    const enterOfficeVote = (officeId, candidateId) => {
-        responses.offices.push({
-            office: officeId,
-            candidate: candidateId,
-        });
-    };
-    const enterOfficeWriteIn = (officeId, str) => {
-        responses.offices.push({
-            office: officeId,
-            candidate: str,
-        });
-    };
     const enterInitiativeVote = (initiativeId, responseId) => {
         responses.offices.push({
             initiative: initiativeId,
@@ -101,36 +89,13 @@ function OpenBallot() {
 
                 {
                     /* Candidate Positions Tab Content */
-                    ballot.offices.map((position, index) => (
-                        <CustomTabPanel
-                            key={selected[position.id]}
-                            value={value}
+                    ballot.offices.map((office, index) => (
+                        <OfficeBallotSection 
+                            key={index}
                             index={index}
-                        >
-                            <div className="candidate-box-wrapper">
-                                {
-                                    /* Candidate Positions */
-                                    ballot.offices[index].candidates.map(
-                                        (candidate, index) => (
-                                            <CandidateBox
-                                                key={index}
-                                                candidate={candidate}
-                                                selected={selected}
-                                                setSelected={setSelected}
-                                                vote={enterOfficeVote}
-                                                officeId={position.id}
-                                            />
-                                        )
-                                    )
-                                }
-                                <WriteIn
-                                    selected={selected}
-                                    setSelected={setSelected}
-                                    vote={enterOfficeWriteIn}
-                                    officeId={position.id}
-                                />
-                            </div>
-                        </CustomTabPanel>
+                            value={value}
+                            office={office}
+                        />
                     ))
                 }
                 {
@@ -172,26 +137,6 @@ function a11yProps(index) {
     };
 }
 
-function CustomTabPanel(props) {
-    const { children, value, index, ...other } = props;
 
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-            {...other}
-        >
-            {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
-        </div>
-    );
-}
-
-CustomTabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.number.isRequired,
-    value: PropTypes.number.isRequired,
-};
 
 export default OpenBallot;

@@ -7,6 +7,7 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import test from "../assets/test.jpeg";
 
+import { useState } from "react";
 import Typography from "@mui/material/Typography";
 import { colors } from "../utils/colors.js";
 import * as React from "react";
@@ -14,14 +15,13 @@ import Stack from "@mui/material/Stack";
 import ColoredAvatar from "./ColoredAvatar";
 import Button from "@mui/material/Button";
 
-function CandidateBox({ candidate, selected, setSelected, vote, officeId }) {
+function CandidateBox({ candidate, vote, retractVote }) {
+    const [selected, setSelected] = useState(false);
 
     return (
         <div
             className={
-                selected[officeId] === candidate.id
-                    ? "candidate-box selected-box"
-                    : "candidate-box"
+                selected ? "candidate-box selected-box" : "candidate-box"
             }
         >
             <Stack direction="row" spacing={2} className="padding">
@@ -55,14 +55,20 @@ function CandidateBox({ candidate, selected, setSelected, vote, officeId }) {
                 <Button
                     variant="contained"
                     onClick={() => {
-                        let newSelected = selected;
-                        newSelected[officeId] = candidate.id;
-                        setSelected(newSelected);
-                        console.log(selected);
-                        vote(officeId, candidate.id);
+                        if (!selected) {
+                            let attempt = vote(candidate.id);
+                            if (attempt) {
+                                setSelected(true);
+                            }
+                        } else {
+                            let attempt = retractVote(candidate.id);
+                            if (attempt) {
+                                setSelected(false);
+                            }
+                        }
                     }}
                 >
-                    {selected[officeId] === candidate.id ? "Voted!" : "Vote"}
+                    {selected ? "Voted!" : "Vote"}
                 </Button>
             </div>
         </div>

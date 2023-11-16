@@ -11,15 +11,13 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { validate } from "../utils/utils.js";
 
-function WriteIn({ selected, setSelected, vote, officeId }) {
-
+function WriteIn({ vote, retractVote }) {
     const [text, setText] = React.useState("");
+    const [selected, setSelected] = React.useState(false);
 
     return (
         <div
-            className={
-                selected === 0 ? "write-in-box selected-box" : "write-in-box"
-            }
+            className={selected ? "write-in-box selected-box" : "write-in-box"}
         >
             <div className="textfield">
                 <TextField
@@ -28,24 +26,32 @@ function WriteIn({ selected, setSelected, vote, officeId }) {
                     type="text"
                     InputLabelProps={{ style: { color: "#DBC3A1" } }}
                     onChange={(event) => {
-                        setText(event.target.value)
+                        setText(event.target.value);
                     }}
                 />
                 <div className="button-box-candidate">
                     <br />
                     <br />
-                    <Button variant="contained" onClick={() => {
-
-                        if (validate(text, 1, 100)) {
-                            let newSelected = selected;
-                            newSelected[officeId] = 0;
-                            setSelected(newSelected);
-                            console.log(selected);
-                            vote(officeId, text);
-                        }
-                        
-                    }}>
-                        {selected === 0 ? "Voted!" : "Vote"}
+                    <Button
+                        variant="contained"
+                        onClick={() => {
+                            if (validate(text, 1, 100)) {
+                                console.log("valid");
+                                if (!selected) {
+                                    let attempt = vote(text);
+                                    if (attempt) {
+                                        setSelected(true);
+                                    }
+                                } else {
+                                    let attempt = retractVote(text);
+                                    if (attempt) {
+                                        setSelected(false);
+                                    }
+                                }
+                            }
+                        }}
+                    >
+                        {selected ? "Voted!" : "Vote"}
                     </Button>
                 </div>
             </div>

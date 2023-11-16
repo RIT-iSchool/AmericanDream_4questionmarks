@@ -5,6 +5,7 @@ export const sampleBallot = {
     offices: [
         {
             id: 1,
+            maxVotes: 1,
             title: "President",
             writeIn: true,
             candidates: [
@@ -33,6 +34,7 @@ export const sampleBallot = {
         },
         {
             id: 2,
+            maxVotes: 2,
             title: "Vice President",
             writeIn: true,
             candidates: [

@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 
 export default function BallotBox({ ballot, role }) {
     return (
-        <Link to={"/"} style={{ textDecoration: "none" }}>
+        <Link to={"/openBallot"} style={{ textDecoration: "none" }}>
             <div className={ballot.isFinished ? "ballot-box box-finished" : "ballot-box"}>
                 <Typography variant="h6" color={colors["on-surface"]}>
                     {ballot.title}

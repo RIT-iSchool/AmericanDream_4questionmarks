@@ -48,9 +48,7 @@ function BallotList() {
                 /* Ballot Boxes */
                 ballots.map(
                     ( ballot, index ) => ( 
-                        <Link key={index} to={'login'} className="no-underline">
-                            <BallotBox role={role} ballot={ballot} />
-                        </Link>
+                        <BallotBox key={index} role={role} ballot={ballot} />
                  ) )
             }
             
