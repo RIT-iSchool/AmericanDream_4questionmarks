@@ -90,7 +90,7 @@ export const sampleBallot = {
                     title: "Disagree"
                 }, 
                 {
-                    id: 2,
+                    id: 3,
                     title: "Pancakes"
                 }, 
             ]

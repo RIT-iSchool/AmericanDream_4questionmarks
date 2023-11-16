@@ -13,9 +13,16 @@ import * as React from "react";
 import Stack from "@mui/material/Stack";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
+import BallotResponsesContext from "../utils/BallotResponsesContext.jsx";
 
-function InitiativeBox({ initiative, index, vote }) {
-    const [selected, setSelected] = useState("");
+function InitiativeBox({ initiative, index }) {
+    const { voteInitiative } = React.useContext(BallotResponsesContext);
+    const [selected, setSelected] = useState(-1);
+
+    const vote = (response) => {
+        setSelected(response);
+        voteInitiative(initiative.id, response);
+    };
 
     return (
         <div className="initiative-box">
@@ -36,11 +43,10 @@ function InitiativeBox({ initiative, index, vote }) {
                         <Button
                             key={index}
                             variant={
-                                selected === response ? "contained" : "outlined"
+                                selected === response.id ? "contained" : "outlined"
                             }
                             onClick={() => {
-                                setSelected(response);
-                                vote(initiative.id, response.id)
+                                vote(response.id);
                             }}
                         >
                             {response.title}

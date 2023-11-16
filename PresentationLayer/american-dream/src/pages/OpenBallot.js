@@ -21,28 +21,18 @@ import InitiativeBox from "../components/InitiativeBox";
 import Button from "@mui/material/Button";
 import CustomTabPanel from "../components/CustomTabPanel.jsx";
 import OfficeBallotSection from "../components/OfficeBallotSection.jsx";
+import BallotResponsesContext from "../utils/BallotResponsesContext.jsx";
 
 // TODO: will take in a ballot in JSON
-// for voting, write in needs to be id zero or something specific
+// for voting, write in needs to be id -2
 function OpenBallot() {
     let ballot = sampleBallot;
-    // make this a state
-    let responses = {
-        offices: [],
-        initiatives: [],
-    };
+    
+    const {offices, initiatives, clearAll } = React.useContext(BallotResponsesContext);
 
     const [value, setValue] = React.useState(0);
-    
     const handleChange = (event, newValue) => {
         setValue(newValue);
-    };
-
-    const enterInitiativeVote = (initiativeId, responseId) => {
-        responses.offices.push({
-            initiative: initiativeId,
-            response: responseId,
-        });
     };
 
     return (
@@ -109,7 +99,6 @@ function OpenBallot() {
                             <InitiativeBox
                                 initiative={initiative}
                                 index={index}
-                                vote={enterInitiativeVote}
                             />
                         </CustomTabPanel>
                     ))
@@ -121,6 +110,9 @@ function OpenBallot() {
                     variant={"contained"}
                     onClick={() => {
                         // send vote off
+                        console.log("offices: ", offices);
+                        console.log("initiatives: ", initiatives);
+                        // clearAll();
                     }}
                 >
                     Finish Voting

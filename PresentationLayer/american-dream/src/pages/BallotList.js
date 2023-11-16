@@ -54,11 +54,6 @@ function BallotList() {
             
             </div>
 
-            <Link to={'/openBallot'} className="no-underline">
-                <Typography variant='h7' sx={{color: '#FABC49'}}>
-                    Open Ballot
-                </Typography>
-            </Link>
         </div>
     );
 }

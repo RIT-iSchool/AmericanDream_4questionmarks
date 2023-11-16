@@ -13,9 +13,11 @@ import * as React from "react";
 import CandidateBox from "./CandidateBox.js";
 import WriteIn from "./WriteIn.js";
 import CustomTabPanel from "./CustomTabPanel.jsx";
+import BallotResponsesContext from "../utils/BallotResponsesContext.jsx";
 
 export default function OfficeBallotSection({ value, index, office }) {
     
+    const { voteOffice } = React.useContext(BallotResponsesContext);
     const [selected, setSelected] = useState([]);
     const [writeIn, setWriteIn] = useState(""); // "" unless voting for write in
 
@@ -28,6 +30,8 @@ export default function OfficeBallotSection({ value, index, office }) {
         let temp = selected.slice();
         temp.push(candidateId);
         setSelected(temp);
+
+        voteOffice(office.id, selected, "");
         return true;
     }
 
@@ -36,6 +40,7 @@ export default function OfficeBallotSection({ value, index, office }) {
         let isValid = voteForCandidate(-2);
         if (isValid) {
             setWriteIn(writeInValue);
+            voteOffice(office.id, selected, writeIn);
             return true;
         }
         return false;
@@ -50,6 +55,8 @@ export default function OfficeBallotSection({ value, index, office }) {
         }
         let temp = selected.splice(0, position).concat(selected.splice(position + 1));
         setSelected(temp);
+        voteOffice(office.id, selected, "");
+
         return true;
     }
 
@@ -57,6 +64,7 @@ export default function OfficeBallotSection({ value, index, office }) {
         let attempt = retractVoteCandidate(-2);
         if (attempt) {
             setWriteIn("");
+            // don't need to put voteOffice() here bc we aren't setting a writeIn
             return true;
         }
         return false;
