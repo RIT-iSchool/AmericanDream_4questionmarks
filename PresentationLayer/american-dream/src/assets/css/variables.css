@@ -1,4 +1,7 @@
 :root {
+  /* extras */
+  --black: "#16130E";
+
   --md-source: #FABC49;
   /* primary */
   --md-ref-palette-primary0: #000000;
