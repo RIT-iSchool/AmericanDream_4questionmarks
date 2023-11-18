@@ -9,6 +9,8 @@ import App from "./pages/App";
 import Login from "./pages/login/login";
 import BallotList from "./pages/BallotList";
 import Societies from "./pages/Societies";
+import OpenBallot from "./pages/OpenBallot";
+import { BallotResponsesProvider } from "./utils/BallotResponsesContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -20,7 +22,7 @@ const router = createBrowserRouter([
     },
     {
         path: "/login",
-        element: <Login />
+        element: <Login />,
     },
     {
       path: "/ballotList",
@@ -29,7 +31,11 @@ const router = createBrowserRouter([
     {
       path: "/societies",
       element: <Societies />
-    }
+    },
+    {
+        path: "/openBallot",
+        element: <OpenBallot />,
+    },
 ]);
 
 // Creates the theme for MUI
@@ -49,9 +55,11 @@ const theme = createTheme({
 root.render(
     <React.StrictMode>
         <ThemeProvider theme={theme}>
-            <RouterProvider router={router}>
-                <App />
-            </RouterProvider>
+            <BallotResponsesProvider>
+                <RouterProvider router={router}>
+                    <App />
+                </RouterProvider>
+            </BallotResponsesProvider>
         </ThemeProvider>
     </React.StrictMode>
 );

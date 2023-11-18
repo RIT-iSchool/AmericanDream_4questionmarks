@@ -9,10 +9,13 @@ import "@fontsource/roboto/700.css";
 import { ROLE } from "../utils/role.js";
 import BallotBox from "../components/BallotBox";
 import Page from "../components/Page.js";
+import { Link } from "react-router-dom";
+import Typography from "@mui/material/Typography";
+import { colors } from "../utils/colors.js";
 
 function BallotList() {
 
-    var role = ROLE.officer;
+    var role = ROLE.administrator;
 
     var ballots = [
         {

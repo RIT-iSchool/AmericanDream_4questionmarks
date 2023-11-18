@@ -1,3 +1,13 @@
+.no-underline {text-decoration: none;}
+section, .section { 
+    margin: auto;
+    padding: 2em;
+}
+.margin-bottom { margin-bottom: 2em !important; }
+.less-margin-bottom { margin-bottom: -0.75em !important; }
+
+
+/* Ballot Box */
 .ballot-box-wrapper {
     width: 90%;
     margin: 2em auto auto auto;
@@ -10,7 +20,6 @@
     justify-content: center;
     align-items: flex-start;
 }
-
 .ballot-box {
     text-align: left;
     background-color: var(--md-ref-palette-neutral20);
@@ -25,4 +34,49 @@
 }
 .box-finished {
     background-color: var(--primary-container-dark);
+}
+
+/* Candidate Box */
+.candidate-box, .write-in-box {
+    width: 20em !important;
+    min-width: 20em !important;
+    background-color: var(--md-ref-palette-neutral20);
+    padding: 0em 0 1em 0;
+    margin: 1em;
+    border-radius: 1em;
+}
+.write-in-box {
+    height: 25em;
+    background-color: var(--surface-dark);
+    display: flex;
+}
+.write-in-box .textfield {
+    width: 100%;
+    margin: auto;
+}
+.selected-box {
+    background-color: var(--surface-variant-dark);
+}
+.button-box-candidate {
+    width: 100%;
+    text-align: right;
+    padding: 0 1em 0.5em 0;
+    margin-top: -0.5em;
+}
+.button-box-candidate Button {
+    margin: auto 0.5em auto 0.5em;
+}
+.padding { padding: 1em; }
+.candidate-box img {
+    width: 100%;
+}
+.candidate-box-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+
+    justify-content: flex-start;
+    align-items: flex-start;
+    overflow: auto;
+    white-space: nowrap;
 }
