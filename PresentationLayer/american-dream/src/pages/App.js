@@ -42,6 +42,9 @@ function App() {
                 <Link to={"societies"}>
                     <Button variant="contained">Go to Societies</Button>
                 </Link>
+                <Link to={"statistics"}>
+                    <Button variant="contained">Statistics</Button>
+                </Link>
             </Stack>
         </Stack>
     );

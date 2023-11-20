@@ -11,6 +11,7 @@ import BallotList from "./pages/BallotList";
 import Societies from "./pages/Societies";
 import OpenBallot from "./pages/OpenBallot";
 import { BallotResponsesProvider } from "./utils/BallotResponsesContext";
+import Statistics from "./pages/Statistics";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
     {
         path: "/openBallot",
         element: <OpenBallot />,
+    },
+    {
+        path: "/statistics",
+        element: <Statistics />,
     },
 ]);
 
