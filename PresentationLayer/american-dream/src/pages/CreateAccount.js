@@ -5,16 +5,47 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import { Typography } from "@mui/material";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as React from "react";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import { ROLE } from "../utils/role";
 
-export default function CreateAccount() {
-    // TODO: session
+export default function CreateAccount({ props }) {
+    let userRole = ROLE.administrator; // get from database
+    const navigate = useNavigate();
+
+    // role must be admin
+    React.useEffect(() => {
+        console.log("whats my role? ", userRole);
+        console.log("am i admin? ", userRole !== ROLE.administrator);
+        if (userRole !== ROLE.administrator) {
+            console.log("i'm not an admin");
+            navigate("ballotList", { replace: true });
+        }
+    }, [userRole, navigate]);
+
+    var societies = [
+        {
+            id: 0,
+            title: "Clown Society",
+            link: "/",
+        },
+        {
+            id: 1,
+            title: "Labor Union",
+            link: "/",
+        },
+        {
+            id: 2,
+            title: "Association for Computing Machinery",
+            link: "/",
+        },
+    ];
+
     const [user, setUser] = useState({
         email: "",
         password: "",
@@ -52,7 +83,13 @@ export default function CreateAccount() {
             setSocietyErr(true);
             setErrorMsg("Please pick a society");
         }
-        if (email && password && errorMsg === "" && !passwordErr && !roleErr & !societyErr) {
+        if (
+            email &&
+            password &&
+            errorMsg === "" &&
+            !passwordErr &&
+            !roleErr & !societyErr
+        ) {
             setUser({
                 ...user,
                 email: email,
@@ -93,7 +130,6 @@ export default function CreateAccount() {
 
                         <Stack direction={"column"} spacing={2}>
                             <TextField
-                                id="outlined-required"
                                 label="Email"
                                 type="email"
                                 InputLabelProps={{
@@ -105,7 +141,6 @@ export default function CreateAccount() {
                             />
 
                             <TextField
-                                id="outlined-required"
                                 label="Password"
                                 type="password"
                                 InputLabelProps={{
@@ -137,9 +172,16 @@ export default function CreateAccount() {
                                 }}
                                 error={roleErr}
                             >
-                                <MenuItem value={10}>Ten</MenuItem>
-                                <MenuItem value={20}>Twenty</MenuItem>
-                                <MenuItem value={30}>Thirty</MenuItem>
+                                <MenuItem value={ROLE.member}>Member</MenuItem>
+                                <MenuItem value={ROLE.officer}>
+                                    Officer
+                                </MenuItem>
+                                <MenuItem value={ROLE.employee}>
+                                    Employee
+                                </MenuItem>
+                                <MenuItem value={ROLE.administrator}>
+                                    Administrator
+                                </MenuItem>
                             </Select>
                         </FormControl>
 
@@ -155,16 +197,23 @@ export default function CreateAccount() {
                             <Select
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
-                                value={role}
+                                value={society}
                                 label="Society"
                                 onChange={(e) => {
                                     setSociety(e.target.value);
                                 }}
-                                error={roleErr}
+                                error={societyErr}
                             >
-                                <MenuItem value={10}>Ten</MenuItem>
-                                <MenuItem value={20}>Twenty</MenuItem>
-                                <MenuItem value={30}>Thirty</MenuItem>
+                                {societies.map((society, index) => {
+                                    return (
+                                        <MenuItem
+                                            key={society.id}
+                                            value={society.id}
+                                        >
+                                            {society.title}
+                                        </MenuItem>
+                                    );
+                                })}
                             </Select>
                         </FormControl>
 
