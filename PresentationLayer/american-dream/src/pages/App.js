@@ -10,23 +10,40 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { colors } from "../utils/colors.js";
 import { Link } from "react-router-dom";
+import { Stack } from "@mui/material";
+
+const style = {
+    display:'flex',
+    flexDirection:'column',
+    alignItems:'center',
+    justifyContent:'center',
+}
 
 function App() {
     return (
-        <div>
-            <Typography variant="h1" color={colors["on-surface"]}>
-                App
-            </Typography>
+        <Stack direction="column" spacing={6} sx={{...style,paddingTop:'10%'}}>
+            
+            <Stack direction="column" sx={{...style}}>
+                <Typography variant="h1" color={colors["on-surface"]}>
+                    American Dream
+                </Typography>
 
-            <Link to={"login"}>
-                <Button variant="contained">Go to login</Button>
-            </Link>
-            <br />
-            <br />
-            <Link to={"ballotList"}>
-                <Button variant="contained">Go to BallotList</Button>
-            </Link>
-        </div>
+                <Typography variant="h4" color={colors["on-surface-variant"]} >debugging screen</Typography>
+            </Stack>
+
+            <Stack direction="column" spacing={2} sx={{...style}}>
+
+                <Link to={"login"}>
+                    <Button variant="contained">Go to login</Button>
+                </Link>
+                <Link to={"ballotList"}>
+                    <Button variant="contained">Go to BallotList</Button>
+                </Link>
+                <Link to={"societies"}>
+                    <Button variant="contained">Go to Societies</Button>
+                </Link>
+            </Stack>
+        </Stack>
     );
 }
 

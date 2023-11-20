@@ -7,12 +7,15 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
 import { ROLE } from "../utils/role.js";
-import CustomAppBar from "../components/CustomAppBar.js";
 import BallotBox from "../components/BallotBox";
+import Page from "../components/Page.js";
+import { Link } from "react-router-dom";
+import Typography from "@mui/material/Typography";
+import { colors } from "../utils/colors.js";
 
 function BallotList() {
 
-    var role = ROLE.officer;
+    var role = ROLE.administrator;
 
     var ballots = [
         {
@@ -36,9 +39,7 @@ function BallotList() {
     ];
 
     return (
-        <div>
-            <CustomAppBar pageName={"Ballot List"} />
-
+        <Page title="Ballot List">
             <div className="ballot-box-wrapper">
             {
                 /* Ballot Boxes */
@@ -48,9 +49,7 @@ function BallotList() {
                  ) )
             }
             </div>
-
-            
-        </div>
+        </Page>
     );
 }
 
