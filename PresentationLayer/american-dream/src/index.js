@@ -8,6 +8,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./pages/App";
 import Login from "./pages/login/login";
 import BallotList from "./pages/BallotList";
+import Societies from "./pages/Societies";
 import OpenBallot from "./pages/OpenBallot";
 import { BallotResponsesProvider } from "./utils/BallotResponsesContext";
 
@@ -24,8 +25,12 @@ const router = createBrowserRouter([
         element: <Login />,
     },
     {
-        path: "/ballotList",
-        element: <BallotList />,
+      path: "/ballotList",
+      element: <BallotList />
+    },
+    {
+      path: "/societies",
+      element: <Societies />
     },
     {
         path: "/openBallot",
