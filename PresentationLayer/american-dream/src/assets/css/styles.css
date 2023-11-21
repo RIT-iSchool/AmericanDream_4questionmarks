@@ -80,3 +80,8 @@ section, .section {
     overflow: auto;
     white-space: nowrap;
 }
+
+.logo {
+    width: 5em;
+    margin: auto;
+}
