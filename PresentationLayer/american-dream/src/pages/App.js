@@ -36,6 +36,9 @@ function App() {
                 <Link to={"login"}>
                     <Button variant="contained">Go to login</Button>
                 </Link>
+                <Link to={"createAccount"}>
+                    <Button variant="contained">Go to create account</Button>
+                </Link>
                 <Link to={"ballotList"}>
                     <Button variant="contained">Go to BallotList</Button>
                 </Link>
