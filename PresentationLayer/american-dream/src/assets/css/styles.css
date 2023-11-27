@@ -8,7 +8,7 @@ section, .section {
 
 
 /* Ballot Box */
-.ballot-box-wrapper {
+.ballot-box-wrapper, .stat-box-wrapper {
     width: 90%;
     margin: 2em auto auto auto;
     text-align: center;
@@ -35,6 +35,18 @@ section, .section {
 .box-finished {
     background-color: var(--primary-container-dark);
 }
+
+/* Stat Box */
+.stat-box {
+    text-align: left;
+    background-color: var(--md-ref-palette-neutral20);
+    width: 10em;
+    height: 10em;
+    padding: 1.5em;
+    margin: 1em;
+    border-radius: 1em;
+}
+
 
 /* Candidate Box */
 .candidate-box, .write-in-box {
@@ -85,3 +97,4 @@ section, .section {
     width: 5em;
     margin: auto;
 }
+
