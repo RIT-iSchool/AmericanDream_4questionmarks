@@ -50,4 +50,11 @@ export const sampleUsers = [
         email: "kmm@gmail.com",
         userType: ROLE.member
     },
+    {
+        id: 7,
+        fname: "Valerie",
+        lname: "McKenzie",
+        email: "vmck@gmail.com",
+        userType: ROLE.officer
+    },
 ];

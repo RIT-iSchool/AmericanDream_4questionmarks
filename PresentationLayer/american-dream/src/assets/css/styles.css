@@ -92,10 +92,15 @@ section, .section {
     display: flex;
     flex-direction: row;
     background-color: var(--md-ref-palette-neutral20);
-    padding: 1em;
+    padding: 1em 1em 1em 2em;
     border-radius: 2em;
     text-align: left;
+    align-items: center;
+    margin: 1em 0;
 }
 .user-row-name {
     width: 100%;
+}
+.officer {
+    background-color: var(--surface-variant-dark);
 }

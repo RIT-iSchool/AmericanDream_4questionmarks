@@ -7,6 +7,7 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
 import * as React from "react";
+import { Button } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { ROLE } from "../utils/role.js";
@@ -20,17 +21,27 @@ import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 
-export default function UserRow({ user, isOfficer }) {
+export default function UserRow({ user, isOfficer, remove }) {
     return (
-        <div className="user-row">
-            <Typography variant="body" color={colors["on-surface"]} className="user-row-name">
+        <div className={isOfficer ? "user-row officer" : "user-row"}>
+            <Typography
+                variant="body"
+                color={colors["on-surface"]}
+                className="user-row-name"
+            >
                 {user.fname} {user.lname}
             </Typography>
-            
-            <Typography variant="body" color={colors["primary"]}>
-                { isOfficer ? "" : "x" }
-            </Typography>
-            
+
+            <Button
+                variant="text"
+                onClick={() => {
+                    if (!isOfficer) {
+                        remove(user);
+                    }
+                }}
+            >
+                {isOfficer ? "OFFICER" : "x"}
+            </Button>
         </div>
     );
 }

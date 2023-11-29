@@ -20,15 +20,15 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <App />,
+        element: <BallotList />,
     },
     {
         path: "/login",
         element: <Login />,
     },
     {
-      path: "/ballotList",
-      element: <BallotList />
+      path: "/test",
+      element: <App />
     },
     {
         path: "/createAccount",
@@ -67,7 +67,7 @@ root.render(
         <ThemeProvider theme={theme}>
             <BallotResponsesProvider>
                 <RouterProvider router={router}>
-                    <App />
+                    <BallotList />
                 </RouterProvider>
             </BallotResponsesProvider>
         </ThemeProvider>
