@@ -85,3 +85,17 @@ section, .section {
     width: 5em;
     margin: auto;
 }
+
+
+/* user row from create new society */
+.user-row {
+    display: flex;
+    flex-direction: row;
+    background-color: var(--md-ref-palette-neutral20);
+    padding: 1em;
+    border-radius: 2em;
+    text-align: left;
+}
+.user-row-name {
+    width: 100%;
+}
