@@ -13,6 +13,7 @@ import Societies from "./pages/Societies";
 import OpenBallot from "./pages/OpenBallot";
 import { BallotResponsesProvider } from "./utils/BallotResponsesContext";
 import Statistics from "./pages/Statistics";
+import CreateBallot from "./pages/CreateBallot";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
     {
       path: "/ballotList",
       element: <BallotList />
+    },
+    {
+        path: "/createBallot",
+        element: <CreateBallot />
     },
     {
         path: "/createAccount",
