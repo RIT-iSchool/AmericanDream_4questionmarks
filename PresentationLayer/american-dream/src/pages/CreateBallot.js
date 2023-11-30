@@ -6,12 +6,15 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import Page from '../components/Page';
-import { Stack, TextField } from '@mui/material';
+import { Button, Paper, Stack, TextField } from '@mui/material';
 import { colors } from '../utils/colors';
 import styled from "@emotion/styled";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from 'dayjs'
+import "../assets/css/styles.css";
+
 
 
 const FormTextField = styled(TextField)({
@@ -21,6 +24,12 @@ const FormTextField = styled(TextField)({
     '& label.Mui-focused': {
         color: colors["primary"],
     },
+});
+
+const DatePickerField = styled(DatePicker)({
+    '& .MuiFormLabel-root': {
+        color: colors["on-surface-variant"],
+    }
 });
 
 const formHeadingStyle = {
@@ -40,6 +49,12 @@ export default function CreateBallot() {
 
   const ballotHeadings = ['Description','Officers','Candidates','Initiatives'];
 
+  const formContainerStyle = {
+    padding: '40px 50px',
+    borderRadius: '10px',
+    backgroundColor: colors["purple"]
+  }
+
   return (
     <Page title="Create Ballot">
         <Stack direction="column" spacing={4}>
@@ -53,31 +68,52 @@ export default function CreateBallot() {
                 </TabList>
                 </Box>
                 <TabPanel value="1">
-                    <form>
-                        <Stack direction="column" spacing={3}>
-                            <Typography variant="h6" style={{...formHeadingStyle}}>Description</Typography>
-                            <FormTextField label="Ballot Name" />
-                        </Stack>
-                        
-                        <Stack direction="column" spacing={3}>
-                            <Typography variant="h6" style={{...formHeadingStyle}}>Election Dates</Typography>
-                            <Stack direction="row" justifyContent="space-between">
-                                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <DatePicker
-                                        label="Controlled picker"
-                                        value={startDate}
-                                        onChange={(newStartDate) => setStartDate(newStartDate)}
-                                    />
+                    <Paper sx={{...formContainerStyle}}>
+                        <form> 
+                        <Stack direction="column" spacing={5}>
 
-                                    <DatePicker
-                                    label="Controlled picker"
-                                    value={endDate}
-                                    onChange={(newEndDate) => setValue(newEndDate)}
-                                    />
-                                </LocalizationProvider>
-                            </Stack>
+                                <Stack direction="column" spacing={3}>
+                                    <Typography variant="h6" style={{...formHeadingStyle}}>Description</Typography>
+                                    <FormTextField label="Ballot Name" />
+                                </Stack>
+                                
+                                <Stack direction="column" spacing={3}>
+                                    <Typography variant="h6" style={{...formHeadingStyle}}>Election Dates</Typography>
+                                    <Stack direction="row" spacing={2} justifyContent="space-between">
+                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                            <DatePickerField
+                                                sx={{width:'48%'}}
+                                                label="Start Date"
+                                                value={startDate}
+                                                onChange={(newStartDate) => setStartDate(newStartDate)}
+                                            />
+
+                                            <DatePickerField
+                                                sx={{width:'48%'}}
+                                                label="End Date"
+                                                value={endDate}
+                                                onChange={(newEndDate) => setValue(newEndDate)}
+                                            />
+                                        </LocalizationProvider>
+                                    </Stack>
+                                </Stack>
+
+                                <Stack direction="column" spacing={3}>
+                                    <Typography variant="h6" style={{...formHeadingStyle}}>Offier Elections and Initiatives</Typography>
+                                    <FormTextField label="Number of Officers" />
+                                    <Stack direction="row" spacing={2} justifyContent="space-between">
+                                        <FormTextField label="Number of Initiatives" sx={{width:'48%'}} />
+                                        <FormTextField label="Number of Responses" sx={{width:'48%'}} />
+                                    </Stack>
+                                </Stack>
+
+                                <Stack direction="row-reverse">
+                                    <Button>next</Button>
+                                    <Button disabled>back</Button>
+                                </Stack>
                         </Stack>
-                    </form>
+                        </form>
+                    </Paper>
                 </TabPanel>
 
                 <TabPanel value="2">Item Two</TabPanel>

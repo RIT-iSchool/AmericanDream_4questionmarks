@@ -29,4 +29,5 @@ export const colors = {
   "surface-tint": "#fabc49",
   "outline-variant": "#4e4539",
   "scrim": "#000000",
+  "purple": "#302d38",
 }
