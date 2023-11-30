@@ -40,8 +40,14 @@ const formHeadingStyle = {
 
 export default function CreateBallot() {
   const [value, setValue] = React.useState('1');
-  const [startDate, setStartDate] = React.useState(dayjs('2022-04-17'));
-  const [endDate, setEndDate] = React.useState(dayjs('2022-04-17'));
+  const [startDate, setStartDate] = React.useState(dayjs()); //dayjs.format() to make it a string
+  const [endDate, setEndDate] = React.useState(dayjs()); //https://day.js.org/docs/en/display/format
+  const [ballot, setBallot] = React.useState({
+    ballotName: '',
+    numOfficers: 0,
+    numInitiatives: 0,
+    numResponses: 0,
+  });
 
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
@@ -56,7 +62,8 @@ export default function CreateBallot() {
   }
 
   return (
-    <Page title="Create Ballot">
+    // <Page title="Create Ballot">
+    <Page title={ballot.numResponses}>
         <Stack direction="column" spacing={4}>
             <TabContext value={value} variant="fullWidth">
                 <Box>
@@ -74,7 +81,9 @@ export default function CreateBallot() {
 
                                 <Stack direction="column" spacing={3}>
                                     <Typography variant="h6" style={{...formHeadingStyle}}>Description</Typography>
-                                    <FormTextField label="Ballot Name" />
+                                    <FormTextField label="Ballot Name" onChange={(event) => {
+                                        setBallot({...ballot, ballotName: event.target.value});
+                                    }} />
                                 </Stack>
                                 
                                 <Stack direction="column" spacing={3}>
@@ -92,7 +101,7 @@ export default function CreateBallot() {
                                                 sx={{width:'48%'}}
                                                 label="End Date"
                                                 value={endDate}
-                                                onChange={(newEndDate) => setValue(newEndDate)}
+                                                onChange={(newEndDate) => setEndDate(newEndDate)}
                                             />
                                         </LocalizationProvider>
                                     </Stack>
@@ -100,10 +109,16 @@ export default function CreateBallot() {
 
                                 <Stack direction="column" spacing={3}>
                                     <Typography variant="h6" style={{...formHeadingStyle}}>Offier Elections and Initiatives</Typography>
-                                    <FormTextField label="Number of Officers" />
+                                    <FormTextField label="Number of Officers"  onChange={(event) => {
+                                        setBallot({...ballot, numOfficers: event.target.value});
+                                    }} />
                                     <Stack direction="row" spacing={2} justifyContent="space-between">
-                                        <FormTextField label="Number of Initiatives" sx={{width:'48%'}} />
-                                        <FormTextField label="Number of Responses" sx={{width:'48%'}} />
+                                        <FormTextField label="Number of Initiatives" sx={{width:'48%'}}  onChange={(event) => {
+                                        setBallot({...ballot, numInitiatives: event.target.value});
+                                    }} />
+                                        <FormTextField label="Number of Responses" sx={{width:'48%'}}  onChange={(event) => {
+                                        setBallot({...ballot, numResponses: event.target.value});
+                                    }} />
                                     </Stack>
                                 </Stack>
 

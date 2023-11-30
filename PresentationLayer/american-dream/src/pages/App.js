@@ -42,7 +42,7 @@ function App() {
                 <Link to={"ballotList"}>
                     <Button variant="contained">Go to BallotList</Button>
                 </Link>
-                <Link to={"createBAllot"}>
+                <Link to={"createBallot"}>
                     <Button variant="contained">Create Ballot</Button>
                 </Link>
                 <Link to={"societies"}>
