@@ -14,7 +14,10 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs'
 import "../assets/css/styles.css";
-
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+import Checkbox from '@mui/material/Checkbox';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 
 
 const FormTextField = styled(TextField)({
@@ -32,6 +35,12 @@ const DatePickerField = styled(DatePicker)({
     }
 });
 
+const formContainerStyle = {
+    padding: '40px 50px',
+    borderRadius: '10px',
+    backgroundColor: colors["purple"],
+  }
+
 const formHeadingStyle = {
     borderBottom:`1px solid ${colors["surface-variant"]}`, 
     color: colors["on-background"], 
@@ -42,100 +51,216 @@ export default function CreateBallot() {
   const [value, setValue] = React.useState('1');
   const [startDate, setStartDate] = React.useState(dayjs()); //dayjs.format() to make it a string
   const [endDate, setEndDate] = React.useState(dayjs()); //https://day.js.org/docs/en/display/format
-  const [ballot, setBallot] = React.useState({
-    ballotName: '',
-    numOfficers: 0,
-    numInitiatives: 0,
-    numResponses: 0,
-  });
 
+  const [formPage, setFormPage] = React.useState({
+    officersForm: 1,
+    candidatesForm: 1,
+    initiativesForm: 1,
+  });
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
   };
+  
+  const societies = ['Clown Society', 'Labor Union', 'Association for Computing Machinery'];
+  const [society, setSociety] = React.useState('');
+  const handleSocietyChange = (event) => {
+    setSociety(event.target.value);
+  };
 
-  const ballotHeadings = ['Description','Officers','Candidates','Initiatives'];
-
-  const formContainerStyle = {
-    padding: '40px 50px',
-    borderRadius: '10px',
-    backgroundColor: colors["purple"]
+  var offices = ['President', 'Vice President', 'Secretary'];
+  const [office, setOffice] = React.useState('');
+  const handleOfficeChange = (event) => {
+    setOffice(event.target.value);
   }
+  const [addOffice, setAddOffice] = React.useState(false);
+
+  var candidates = ['Candidate1', 'Candidate2', 'Candidate3'];
+  const [addCandidate, setAddCandidate] = React.useState(false);
+
+  var initiatives = ['Initiative1', 'Initiative2'];
+  const [addInitiative, setAddInitiative] = React.useState(false);
+  const [initiative, setInitiative] = React.useState('');
 
   return (
-    // <Page title="Create Ballot">
-    <Page title={ballot.numResponses}>
+    <Page title="Create Ballot">
         <Stack direction="column" spacing={4}>
             <TabContext value={value} variant="fullWidth">
                 <Box>
                 <TabList onChange={handleTabChange} centered>
-                    <Tab label={ballotHeadings[0]} value="1" />
-                    <Tab label={ballotHeadings[1]} value="2" />
-                    <Tab label={ballotHeadings[2]} value="3" />
-                    <Tab label={ballotHeadings[3]} value="4" />
+                    <Tab label='Description' value="1" />
+                    <Tab label='Offices' value="2" />
+                    <Tab label='Candidates' value="3" />
+                    <Tab label='Initiatives' value="4" />
                 </TabList>
                 </Box>
+
                 <TabPanel value="1">
                     <Paper sx={{...formContainerStyle}}>
-                        <form> 
                         <Stack direction="column" spacing={5}>
-
-                                <Stack direction="column" spacing={3}>
-                                    <Typography variant="h6" style={{...formHeadingStyle}}>Description</Typography>
-                                    <FormTextField label="Ballot Name" onChange={(event) => {
-                                        setBallot({...ballot, ballotName: event.target.value});
-                                    }} />
-                                </Stack>
+                            <Stack direction="column" spacing={3}>
+                                <Typography variant="h6" style={{...formHeadingStyle}}>Ballot Details</Typography>
                                 
-                                <Stack direction="column" spacing={3}>
-                                    <Typography variant="h6" style={{...formHeadingStyle}}>Election Dates</Typography>
-                                    <Stack direction="row" spacing={2} justifyContent="space-between">
-                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                            <DatePickerField
-                                                sx={{width:'48%'}}
-                                                label="Start Date"
-                                                value={startDate}
-                                                onChange={(newStartDate) => setStartDate(newStartDate)}
-                                            />
+                                <Select
+                                    value={society}
+                                    label="Society"
+                                    onChange={handleSocietyChange}>
+                                    
+                                    {societies.map((society) => {
+                                        return (
+                                            <MenuItem value={society}>{society}</MenuItem>
+                                        )
+                                    })}
+                                </Select>
 
-                                            <DatePickerField
-                                                sx={{width:'48%'}}
-                                                label="End Date"
-                                                value={endDate}
-                                                onChange={(newEndDate) => setEndDate(newEndDate)}
-                                            />
-                                        </LocalizationProvider>
-                                    </Stack>
-                                </Stack>
+                                <FormTextField label="Ballot Name" />
+                            </Stack>
+                            
+                            <Stack direction="column" spacing={3}>
+                                <Typography variant="h6" style={{...formHeadingStyle}}>Election Dates</Typography>
+                                <Stack direction="row" spacing={2} justifyContent="space-between">
+                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                        <DatePickerField
+                                            sx={{width:'48%'}}
+                                            label="Start Date"
+                                            value={startDate}
+                                            onChange={(newStartDate) => setStartDate(newStartDate)}
+                                        />
 
-                                <Stack direction="column" spacing={3}>
-                                    <Typography variant="h6" style={{...formHeadingStyle}}>Offier Elections and Initiatives</Typography>
-                                    <FormTextField label="Number of Officers"  onChange={(event) => {
-                                        setBallot({...ballot, numOfficers: event.target.value});
-                                    }} />
-                                    <Stack direction="row" spacing={2} justifyContent="space-between">
-                                        <FormTextField label="Number of Initiatives" sx={{width:'48%'}}  onChange={(event) => {
-                                        setBallot({...ballot, numInitiatives: event.target.value});
-                                    }} />
-                                        <FormTextField label="Number of Responses" sx={{width:'48%'}}  onChange={(event) => {
-                                        setBallot({...ballot, numResponses: event.target.value});
-                                    }} />
-                                    </Stack>
+                                        <DatePickerField
+                                            sx={{width:'48%'}}
+                                            label="End Date"
+                                            value={endDate}
+                                            onChange={(newEndDate) => setEndDate(newEndDate)}
+                                        />
+                                    </LocalizationProvider>
                                 </Stack>
+                            </Stack>
 
-                                <Stack direction="row-reverse">
-                                    <Button>next</Button>
-                                    <Button disabled>back</Button>
-                                </Stack>
+                            <Stack direction="row-reverse">
+                                <Button>next</Button>
+                                <Button disabled>back</Button>
+                            </Stack>
                         </Stack>
-                        </form>
                     </Paper>
                 </TabPanel>
 
-                <TabPanel value="2">Item Two</TabPanel>
+                <TabPanel value="2">
+                    <Paper sx={{...formContainerStyle}}>
+                        <Stack direction="column" spacing={5}>
+                            <Stack direction="column" spacing={3}>
+                                <Stack direction="row" spacing={1} alignItems="flex-end" style={{...formHeadingStyle}}>
+                                    <Typography variant="h6">Offices</Typography>
+                                    <Typography variant="body2" style={{paddingBottom:'4px'}}>{'(' + offices.length +' total)'}</Typography>
+                                </Stack>
 
-                <TabPanel value="3">Item Three</TabPanel>
+                                {addOffice &&
+                                    <>
+                                    <FormTextField label="Office/Position" />
 
-                <TabPanel value="4">Item Four</TabPanel>
+                                    <Stack direction='column' spacing={4} style={{borderBottom:`1px solid ${colors["surface-variant"]}`, borderTop:`1px solid ${colors["surface-variant"]}`, padding:'24px 0'}}>
+                                        <FormTextField label="Number of Candidates" />
+
+                                        <FormTextField label="Number of Possible Votes" />
+                                    </Stack>
+
+                                    <Stack direction='row' justifyContent='space-between' alignItems='center'>
+                                        <Stack direction='row' spacing={1}>
+                                            <PersonOutlineOutlinedIcon />
+                                            <Typography variant='body2'>Allow for one write-in?</Typography>
+                                        </Stack>
+
+                                        <Checkbox />
+                                    </Stack>
+                                    </>
+                                }
+
+                                <Button variant="contained" onClick={() => {setAddOffice(true)}}>Add an Office</Button>
+                            </Stack>
+
+                            <Stack direction="row-reverse">
+                                <Button>next</Button>
+                                <Button>back</Button>
+                            </Stack>
+                        </Stack>
+                    </Paper>
+                </TabPanel>
+
+                <TabPanel value="3">
+                    <Paper sx={{...formContainerStyle}}>
+                        <Stack direction="column" spacing={5}>
+                            <Stack direction="column" spacing={3}>
+                                <Stack direction="row" spacing={1} alignItems="flex-end" style={{...formHeadingStyle}}>
+                                    <Typography variant="h6">Candidate for X</Typography>
+                                </Stack>
+
+                                <Select
+                                    value={office}
+                                    label="Office"
+                                    onChange={handleOfficeChange}>
+                                    
+                                    {offices.map((office) => {
+                                        return (
+                                            <MenuItem value={office}>{office}</MenuItem>
+                                        )
+                                    })}
+                                </Select>
+
+
+                                {/* TODO: check if a candidate is selected */}
+                               {addCandidate &&
+                                    <>
+                                    <Stack direction='column' spacing={4} style={{borderTop:`1px solid ${colors["surface-variant"]}`, padding:'24px 0'}}>
+                                        <FormTextField label="Name" />
+                                        <FormTextField label="Title" />
+                                        <FormTextField label="Bio" />
+                                        {/* TODO: image upload */}
+                                    </Stack>
+                                    </>
+                               }
+
+                            </Stack>
+
+                            <Button variant="contained" onClick={() => {setAddCandidate(true)}}>
+                                {candidates.length > 1 ? "Add Another Candidate" : "Add Candidate"}
+                            </Button>
+
+                            <Stack direction="row-reverse">
+                                <Button>next</Button>
+                                <Button>back</Button>
+                            </Stack>
+                        </Stack>
+                    </Paper>
+                </TabPanel>
+
+                <TabPanel value="4">
+                    <Paper sx={{...formContainerStyle}}>
+                        <Stack direction="column" spacing={5}>
+                            <Stack direction="column" spacing={3}>
+                                <Stack direction="row" spacing={1} alignItems="flex-end" style={{...formHeadingStyle}}>
+                                    <Typography variant="h6">Initiative</Typography>
+                                    <Typography variant="body2" style={{paddingBottom:'4px'}}>{'(' + initiatives.length +' total)'}</Typography>
+                                </Stack>
+
+                                {addInitiative &&
+                                    <>
+                                    <FormTextField label="Initiative" />
+                                    <FormTextField label="Response #1" />
+                                    <FormTextField label="Response #2" />
+                                    </>
+                                }
+
+                                <Button variant="contained" onClick={() => {setAddInitiative(true)}}>
+                                    {initiatives.length > 1 ? "Add Another Initiative" : "Add Initiative"}
+                                </Button>
+                            </Stack>
+
+                            <Stack direction="row-reverse">
+                                <Button>done</Button>
+                                <Button>back</Button>
+                            </Stack>
+                        </Stack>
+                    </Paper>
+                </TabPanel>
             </TabContext>
         </Stack>
     </Page>

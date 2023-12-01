@@ -98,6 +98,7 @@ section, .section {
     margin: auto;
 }
 
+/* createBallot.js styles */
 /* date picker calendar view */
 .MuiPickersToolbar-root > .MuiTypography-overline, .MuiDayCalendar-weekDayLabel {
     color: #ffdeab !important;
