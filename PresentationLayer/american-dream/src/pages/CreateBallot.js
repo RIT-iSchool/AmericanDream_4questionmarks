@@ -18,6 +18,7 @@ import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined
 import Checkbox from '@mui/material/Checkbox';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import { useEffect } from 'react';
 
 
 const FormTextField = styled(TextField)({
@@ -48,7 +49,7 @@ const formHeadingStyle = {
 }
 
 export default function CreateBallot() {
-  const [value, setValue] = React.useState('1');
+  const today = dayjs();
   const [startDate, setStartDate] = React.useState(dayjs()); //dayjs.format() to make it a string
   const [endDate, setEndDate] = React.useState(dayjs()); //https://day.js.org/docs/en/display/format
 
@@ -57,9 +58,14 @@ export default function CreateBallot() {
     candidatesForm: 1,
     initiativesForm: 1,
   });
+
+  //TODO: disable "future" tabs if current tab inputs arent filled out
+  const [tabValue, setTabValue] = React.useState('1');
   const handleTabChange = (event, newValue) => {
-    setValue(newValue);
+    setTabValue(newValue);
   };
+
+  const [ballotName, setBallotName] = React.useState('');
   
   const societies = ['Clown Society', 'Labor Union', 'Association for Computing Machinery'];
   const [society, setSociety] = React.useState('');
@@ -81,10 +87,18 @@ export default function CreateBallot() {
   const [addInitiative, setAddInitiative] = React.useState(false);
   const [initiative, setInitiative] = React.useState('');
 
+  const [errors, setErrors] = React.useState({
+    society: false,
+    ballotName: false,
+  });
+
+  useEffect(() => {
+  }, [errors]);
+
   return (
     <Page title="Create Ballot">
         <Stack direction="column" spacing={4}>
-            <TabContext value={value} variant="fullWidth">
+            <TabContext value={tabValue} variant="fullWidth">
                 <Box>
                 <TabList onChange={handleTabChange} centered>
                     <Tab label='Description' value="1" />
@@ -101,6 +115,8 @@ export default function CreateBallot() {
                                 <Typography variant="h6" style={{...formHeadingStyle}}>Ballot Details</Typography>
                                 
                                 <Select
+                                    error={errors.society}
+                                    helperText={errors.society && "Pick a Society"}
                                     value={society}
                                     label="Society"
                                     onChange={handleSocietyChange}>
@@ -112,7 +128,9 @@ export default function CreateBallot() {
                                     })}
                                 </Select>
 
-                                <FormTextField label="Ballot Name" />
+                                <FormTextField label="Ballot Name" onChange={(event) => {
+                                    setBallotName(event.target.value)
+                                }} error={errors.ballotName} helperText={errors.ballotName && "Enter a name for the Ballot"} />
                             </Stack>
                             
                             <Stack direction="column" spacing={3}>
@@ -122,6 +140,8 @@ export default function CreateBallot() {
                                         <DatePickerField
                                             sx={{width:'48%'}}
                                             label="Start Date"
+                                            defaultValue={today}
+                                            disablePast
                                             value={startDate}
                                             onChange={(newStartDate) => setStartDate(newStartDate)}
                                         />
@@ -129,6 +149,8 @@ export default function CreateBallot() {
                                         <DatePickerField
                                             sx={{width:'48%'}}
                                             label="End Date"
+                                            defaultValue={today}
+                                            disablePast
                                             value={endDate}
                                             onChange={(newEndDate) => setEndDate(newEndDate)}
                                         />
@@ -137,7 +159,25 @@ export default function CreateBallot() {
                             </Stack>
 
                             <Stack direction="row-reverse">
-                                <Button>next</Button>
+                                <Button onClick={() => {
+                                    var format = "MMM D YYYY";
+
+                                    //are society, name and dates saved? YES
+                                    console.log(`society: ${society}`);
+                                    console.log(`ballot name: ${ballotName}`);
+                                    console.log(`start date: ${startDate.format(format)}`);
+                                    console.log(`end date: ${endDate.format(format)}`);
+                                    console.log(`start date <= end date? ${startDate <= endDate}`);
+
+                                    //data validation
+                                    if (society!="" && ballotName!="" && startDate.format(format)!="" && endDate.format(format)!="" && startDate <= endDate) {
+                                        //go to description tab
+                                        setTabValue('2');
+                                    }
+                                    else {
+                                        //TODO: error handling
+                                    }
+                                }}>next</Button>
                                 <Button disabled>back</Button>
                             </Stack>
                         </Stack>
