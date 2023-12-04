@@ -34,11 +34,24 @@ export default function CreateSociety() {
     const removeUser = (user) => {
         let index = addedUsers.indexOf(user);
         if (index > -1) {
-            setAddedUsers(addedUsers.splice(index, 1));
+            addedUsers.splice(index, 1);
+            setAddedUsers(addedUsers);
+            setRandomStateCounter(randomStateCounter + 1);
         } else {
             console.log("element could not be removed: ", user);
         }
         console.log("removedUser, ", addedUsers);
+    };
+
+    const addUserToSociety = (userId) => {
+        const wantToAdd = users.filter((usr) => {
+            return usr.id === userId;
+        });
+        console.log("want to add", wantToAdd[0]);
+
+        const tempUsers = JSON.parse(JSON.stringify(addedUsers));
+        tempUsers.push(wantToAdd[0]);
+        return tempUsers;
     };
 
     const [name, setName] = React.useState("");
@@ -46,6 +59,8 @@ export default function CreateSociety() {
     const [officer, setOfficer] = React.useState(-1);
     const [officerErr, setOfficerErr] = React.useState("");
     const [user, setUser] = React.useState(-1);
+    const [randomStateCounter, setRandomStateCounter] = React.useState(); // needed to make delete show up
+    const [errMsg, setErrorMsg] = React.useState("");
 
     // role must be admin
     React.useEffect(() => {
@@ -54,83 +69,70 @@ export default function CreateSociety() {
         }
     }, [role, navigate]);
 
+    const handleCreate = (event) => {
+        console.log("here");
+        event.preventDefault();
+        setErrorMsg("");
+
+        if (name === "") {
+            setNameErr(true);
+            setErrorMsg("Enter a name");
+        }
+        if (officer === -1) {
+            setOfficerErr(true);
+            setErrorMsg("Please select an officer");
+        }
+        if (name && officer && errMsg === "" && !nameErr && !officerErr) {
+
+            const usersWithOfficer = addUserToSociety(officer);
+
+            console.log(
+                JSON.stringify({
+                    society: {
+                        name: name,
+                        officerId: officer,
+                        users: usersWithOfficer,
+                    },
+                }, null, 2)
+            );
+            return {
+                society: {
+                    name: name,
+                    officerId: officer,
+                    users: usersWithOfficer,
+                },
+            };
+        }
+    };
+
     return (
         <Page title="Create Society">
-            <Stack spacing={4} direction="column" sx={{ textAlign: "center" }}>
-                <Typography variant="h2" color="primary">
-                    Create a New Society
-                </Typography>
+            <form onSubmit={handleCreate}>
+                <Stack
+                    spacing={4}
+                    direction="column"
+                    sx={{ textAlign: "center" }}
+                >
+                    <Typography variant="h2" color="primary">
+                        Create a New Society
+                    </Typography>
 
-                <TextField
-                    label="Society Name"
-                    type="text"
-                    InputLabelProps={{
-                        style: { color: "#DBC3A1" },
-                    }}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                    value={name}
-                    error={nameErr}
-                />
+                    <Typography variant="body" color="error">
+                        {errMsg}
+                    </Typography>
 
-                <FormControl fullWidth>
-                    <InputLabel
-                        id="demo-simple-select-label"
+                    <TextField
+                        label="Society Name"
+                        type="text"
                         InputLabelProps={{
                             style: { color: "#DBC3A1" },
                         }}
-                    >
-                        Officer
-                    </InputLabel>
-                    <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={officer}
-                        label="Age"
-                        onChange={(e) => {
-                            setOfficer(e.target.value);
-                        }}
-                        error={officerErr}
-                    >
-                        {users.map((user, index) => {
-                            if (user.userType !== ROLE.officer) {
-                                //console.log(user.name, ", " + user.role);
-                                return <></>;
-                            }
-                            return (
-                                <MenuItem key={user.id} value={index}>
-                                    {user.fname} {user.lname}
-                                </MenuItem>
-                            );
-                        })}
-                    </Select>
-                </FormControl>
+                        onChange={(e) => setName(e.target.value)}
+                        required
+                        value={name}
+                        error={nameErr}
+                    />
 
-                <Typography variant="h5" color="primary">
-                    Added Users
-                </Typography>
-                <div className="userList">
-                    {officer === -1 ? (
-                        <></>
-                    ) : (
-                        <UserRow user={users[officer]} isOfficer={true} />
-                    )}
-
-                    {/* Map out the list of users added to the society */}
-                    {console.log("here", JSON.stringify(addedUsers, null, 2))}
-                    {addedUsers.map((user, index) => {
-                        return (
-                            <UserRow
-                                key={index}
-                                user={user}
-                                isOfficer={false}
-                                remove={removeUser}
-                            />
-                        );
-                    })}
-                </div>
-
-                <Stack spacing={4} direction="row" sx={{ textAlign: "center" }}>
                     <FormControl fullWidth>
                         <InputLabel
                             id="demo-simple-select-label"
@@ -138,53 +140,114 @@ export default function CreateSociety() {
                                 style: { color: "#DBC3A1" },
                             }}
                         >
-                            User
+                            Officer
                         </InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
-                            value={user}
+                            value={officer}
                             label="Age"
                             onChange={(e) => {
-                                setUser(e.target.value);
+                                setOfficer(e.target.value);
+                                setOfficerErr(false)
                             }}
+                            error={officerErr}
                         >
-                            {users
-                                .filter((n) => !addedUsers.includes(n))
-                                .map((user, index) => {
-                                    if (user === users[officer]) {
-                                        return <></>;
-                                    }
-                                    return (
-                                        <MenuItem key={user.id} value={index}>
-                                            {user.fname} {user.lname}
-                                        </MenuItem>
-                                    );
-                                })}
-                            {console.log(
-                                "filter users",
-                                JSON.stringify(addedUsers, null, 2)
-                            )}
+                            {users.map((user, index) => {
+                                if (user.userType !== ROLE.officer) {
+                                    //console.log(user.name, ", " + user.role);
+                                    return <></>;
+                                }
+                                return (
+                                    <MenuItem key={user.id} value={user.id}>
+                                        {user.fname} {user.lname}
+                                    </MenuItem>
+                                );
+                            })}
                         </Select>
                     </FormControl>
-                    <Button
-                        variant="text"
-                        onClick={() => {
-                            if (user > -1) {
-                                const wantToAdd = users[user];
 
-                                const temp = addedUsers.push(wantToAdd);
-                                setAddedUsers(addedUsers);
-                                setUser(-1);
-                            }
-                        }}
+                    <Typography variant="h5" color="primary">
+                        Added Users
+                    </Typography>
+                    <div className="userList">
+                        {officer === -1 ? (
+                            <></>
+                        ) : (
+                            <UserRow user={users[officer]} isOfficer={true} />
+                        )}
+
+                        {/* Map out the list of users added to the society */}
+                        {addedUsers.map((user, index) => {
+                            return (
+                                <UserRow
+                                    key={index}
+                                    user={user}
+                                    isOfficer={false}
+                                    remove={removeUser}
+                                />
+                            );
+                        })}
+                    </div>
+
+                    <Stack
+                        spacing={4}
+                        direction="row"
+                        sx={{ textAlign: "center" }}
                     >
-                        <Add />
+                        <FormControl fullWidth>
+                            <InputLabel
+                                id="demo-simple-select-label"
+                                InputLabelProps={{
+                                    style: { color: "#DBC3A1" },
+                                }}
+                            >
+                                User
+                            </InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={user}
+                                label="Age"
+                                onChange={(e) => {
+                                    setUser(e.target.value);
+                                }}
+                            >
+                                {users
+                                    .filter((n) => !addedUsers.includes(n))
+                                    .map((user, index) => {
+                                        if (user === users[officer]) {
+                                            return <></>;
+                                        }
+                                        return (
+                                            <MenuItem
+                                                key={user.id}
+                                                value={user.id}
+                                            >
+                                                {user.fname} {user.lname}
+                                            </MenuItem>
+                                        );
+                                    })}
+                            </Select>
+                        </FormControl>
+                        <Button
+                            variant="text"
+                            onClick={() => {
+                                if (user > -1) {
+                                    setAddedUsers(addUserToSociety(user));
+                                    setUser(-1);
+                                }
+                            }}
+                        >
+                            <Add />
+                        </Button>
+                    </Stack>
+
+                    <Button variant="contained" type="submit">
+                        Create
                     </Button>
                 </Stack>
-
-                <Button variant="contained">Create</Button>
-            </Stack>
+            </form>
         </Page>
     );
 }
