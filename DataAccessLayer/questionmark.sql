@@ -15,6 +15,7 @@ CREATE TABLE Society (
 -- Ballot Table
 CREATE TABLE Ballot (
     BallotID INT AUTO_INCREMENT PRIMARY KEY,
+    BallotName VARCHAR(100) NOT NULL,
     ElectionStart DATETIME NOT NULL,
     ElectionEnd DATETIME NOT NULL,
     Offices JSON NOT NULL,
