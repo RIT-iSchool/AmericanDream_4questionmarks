@@ -45,7 +45,7 @@ CREATE TABLE User (
     fName VARCHAR(50) NOT NULL,
     lName VARCHAR(50) NOT NULL,
     Email VARCHAR(100) NOT NULL UNIQUE,
-    Password VARCHAR(50) NOT NULL,
+    Password VARCHAR(60) NOT NULL,
     SocietyID INT NOT NULL,
     FOREIGN KEY (SocietyID) REFERENCES Society(SocietyID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -216,14 +216,18 @@ VALUES ('Option 1 for Initiative', 1);
 INSERT INTO User (fName, lName, Email, Password, SocietyID)
 VALUES ('John', 'Smith', 'johnsmith@example.com', 'password123', 1);
 
+INSERT INTO User (fName, lName, Email, Password, SocietyID)
+VALUES ('Mary', 'Smith', 'marysmith@example.com', 'password123', 1);
+
 -- Insert into Response Table
 INSERT INTO Response (OptionID, UserID)
 VALUES (1, 1);
 
 -- Insert into Roles Table
-INSERT INTO Roles (RoleName, UserID)
-VALUES ('Admin', 1);
+INSERT INTO Roles (RoleName, UserID) VALUES ('ROLE_ADMIN', 1);
+INSERT INTO Roles (RoleName, UserID) VALUES ('ROLE_USER', 2);
 
 -- Insert into Vote Table
 INSERT INTO Vote (CandidateID, CandidateName, Abstain, VoteType, OfficeJSONID, BallotID, UserID)
 VALUES (1, 'John Smith', FALSE, 'NotWriteIn', 1, 1, 1);
+
