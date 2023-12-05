@@ -19,36 +19,41 @@ public class UserRepository {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public User getUserById(int id) {
-        String sql = "SELECT * FROM User WHERE userID = ?";
-
-        PreparedStatementCreator preparedStatementCreator = connection -> {
+    private PreparedStatementCreator createPreparedStatement(String sql, Object... params) {
+        return connection -> {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setLong(1, id);
+            for (int i = 0; i < params.length; i++) {
+                preparedStatement.setObject(i + 1, params[i]);
+            }
             return preparedStatement;
         };
-        System.out.println('\n' +sql);
-        ResultSetExtractor<User> resultSetExtractor = rs -> {
+    }
+
+    private ResultSetExtractor<User> userResultSetExtractor() {
+        return rs -> {
             if (rs.next()) {
                 User user = new User();
-                user.setUserID(rs.getLong("userID"));
-                user.setfName(rs.getString("fName"));
-                user.setlName(rs.getString("lName"));
+                user.setUserID(rs.getInt("userID"));
+                user.setFirstName(rs.getString("fName"));
+                user.setLastName(rs.getString("lName"));
                 user.setEmail(rs.getString("email"));
                 user.setPassword(rs.getString("password"));
-                
-                // You may need to fetch and set the associated Society object as well
-
+                // Additional fields if necessary
                 return user;
             }
             return null;
         };
+    }
 
-        return jdbcTemplate.query(preparedStatementCreator, resultSetExtractor);
+    public User getUserById(int id) {
+        String sql = "SELECT * FROM User WHERE userID = ?";
+        return jdbcTemplate.query(createPreparedStatement(sql, id), userResultSetExtractor());
+    }
+
+    public User findByEmail(String email) {
+        String sql = "SELECT * FROM User WHERE Email = ?";
+        return jdbcTemplate.query(createPreparedStatement(sql, email), userResultSetExtractor());
     }
 
     // Other methods for CRUD operations
 }
-
-
-

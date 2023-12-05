@@ -21,5 +21,3 @@ public class UserController {
 
     // You can add other REST endpoints for creating, updating, and deleting users
 }
-
-
