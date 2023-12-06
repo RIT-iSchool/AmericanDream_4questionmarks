@@ -98,14 +98,12 @@ section, .section {
     margin: auto;
 }
 
-<<<<<<< HEAD
 .full-width {
     width: 100%;
 }
 .adv-ballot-content-wrapper {
     width: 90vw;
 }
-=======
 
 
 
@@ -126,7 +124,6 @@ section, .section {
 .officer {
     background-color: var(--surface-variant-dark);
 }
->>>>>>> main
 
 
 
