@@ -7,6 +7,7 @@ import Container from '@mui/material/Container';
 import { Typography } from '@mui/material';
 import { useState } from 'react';
 import { Link } from "react-router-dom";
+import Axios from 'axios';
 
 export default function Login() {
     // TODO: session 
@@ -22,22 +23,41 @@ export default function Login() {
     const [passwordErr, setPasswordErr] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
 
-    const handleLogin = (event) => {
+    const handleLogin = async (event) => {
         event.preventDefault();
         setEmailErr(false);
         setPasswordErr(false);
-
-        if (email == '') {setEmailErr(true)}
+    
+        if (email === '') {
+            setEmailErr(true);
+        }
         if (password.length < 8) {
             setPasswordErr(true);
             setErrorMsg('Invalid password');
         }
         if (email && password && !emailErr && !passwordErr) {
-            setUser({...user,userEmail:email, userPassword:password});
+            setUser({ ...user, userEmail: email, userPassword: password });
             setErrorMsg("");
-            console.log('setting user email: '+user.userEmail+' and pw: '+user.userPassword);
+    
+            // Encode email and password to Base64 for HTTP Basic Authentication using btoa
+            const token = btoa(`${email}:${password}`);
+    
+            try {
+                const response = await Axios.get('http://localhost:8080/users/1', {
+                    headers: {
+                        'Authorization': `Basic ${token}`
+                    }
+                });
+                const userData = response.data;
+                console.log('User data:', userData);
+                // Do something with the user data here, such as storing it in state.
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+                setErrorMsg('Login failed. Please check your credentials.');
+            }
         }
     };
+
 
     return (
         <Container maxWidth="sm" className='loginContainer'>

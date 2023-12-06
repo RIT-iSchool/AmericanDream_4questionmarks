@@ -55,5 +55,5 @@ public class UserRepository {
         return jdbcTemplate.query(createPreparedStatement(sql, email), userResultSetExtractor());
     }
 
-    // Other methods for CRUD operations
+    // Other possible methods for CRUD operations
 }
