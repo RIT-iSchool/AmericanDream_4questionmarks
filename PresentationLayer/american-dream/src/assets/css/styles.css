@@ -98,3 +98,9 @@ section, .section {
     margin: auto;
 }
 
+.full-width {
+    width: 100%;
+}
+.adv-ballot-content-wrapper {
+    width: 90vw;
+}

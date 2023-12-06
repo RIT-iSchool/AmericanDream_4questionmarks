@@ -2,7 +2,6 @@ import * as React from "react";
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 
-
 export default function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
 
@@ -14,7 +13,9 @@ export default function CustomTabPanel(props) {
             aria-labelledby={`simple-tab-${index}`}
             {...other}
         >
+            <div className="adv-ballot-content-wrapper">
             {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+            </div>
         </div>
     );
 }

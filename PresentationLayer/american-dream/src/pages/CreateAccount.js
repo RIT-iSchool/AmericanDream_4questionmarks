@@ -15,7 +15,7 @@ import Select from "@mui/material/Select";
 import { ROLE } from "../utils/role";
 
 export default function CreateAccount({ props }) {
-    let userRole = ROLE.administrator; // get from database
+    let userRole = ROLE.administrator; // TODO: get from database
     const navigate = useNavigate();
 
     // role must be admin
