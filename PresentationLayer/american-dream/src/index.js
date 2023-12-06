@@ -13,6 +13,7 @@ import Societies from "./pages/Societies";
 import OpenBallot from "./pages/OpenBallot";
 import { BallotResponsesProvider } from "./utils/BallotResponsesContext";
 import Statistics from "./pages/Statistics";
+import CreateSociety from "./pages/CreateNewSociety";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -20,15 +21,15 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <App />,
+        element: <BallotList />,
     },
     {
         path: "/login",
         element: <Login />,
     },
     {
-      path: "/ballotList",
-      element: <BallotList />
+      path: "/test",
+      element: <App />
     },
     {
         path: "/createAccount",
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
     {
         path: "/statistics",
         element: <Statistics />,
+    },
+    {
+        path: "/createSociety",
+        element: <CreateSociety />,
     },
 ]);
 
@@ -67,7 +72,7 @@ root.render(
         <ThemeProvider theme={theme}>
             <BallotResponsesProvider>
                 <RouterProvider router={router}>
-                    <App />
+                    <BallotList />
                 </RouterProvider>
             </BallotResponsesProvider>
         </ThemeProvider>
