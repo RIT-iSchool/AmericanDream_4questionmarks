@@ -115,7 +115,7 @@ END //
 -- Add Ballot
 CREATE PROCEDURE AddBallot(IN electionStart DATETIME, IN electionEnd DATETIME, IN offices JSON, IN societyID INT)
 BEGIN
-    INSERT INTO Ballot (ElectionStart, ElectionEnd, Offices, SocietyID) VALUES (electionStart, electionEnd, offices, societyID);
+    INSERT INTO Ballot (BallotName, ElectionStart, ElectionEnd, Offices, SocietyID) VALUES (electionStart, electionEnd, offices, societyID);
 END //
 
 -- Add BallotInitiative
@@ -173,8 +173,9 @@ INSERT INTO Society (SocietyName, SocietyDesc)
 VALUES ('American Society', 'A society for hamburger people');
 
 -- Insert into Ballot Table with JSON data
-INSERT INTO Ballot (ElectionStart, ElectionEnd, Offices, SocietyID)
+INSERT INTO Ballot (BallotName, ElectionStart, ElectionEnd, Offices, SocietyID)
 VALUES (
+    'NamedBallot',
     '2023-11-01',
     '2023-12-01',
     '{
