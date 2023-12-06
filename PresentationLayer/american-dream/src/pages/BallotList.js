@@ -15,7 +15,7 @@ import { colors } from "../utils/colors.js";
 import AdvancedBallotList from "./AdvancedBallotList.jsx";
 
 function BallotList() {
-    var role = ROLE.employee; // TODO: get from database
+    var role = ROLE.officer; // TODO: get from database
 
     var ballots = [
         {

@@ -41,7 +41,7 @@ export default function BallotBox({ ballot, role, editOnClick }) {
 
                 {/* See Progress */}
                 {role === ROLE.officer && !ballot.isFinished  && ballot.hasStarted ? (
-                    <Link to={"/login"} style={{ textDecoration: "none" }}>
+                    <Link to={"/progress"} style={{ textDecoration: "none" }}>
                         <Typography
                             variant="p"
                             color={colors["primary"]}

@@ -1,6 +1,9 @@
 import { ROLE } from "./role";
 
 export const ballotProgress = {
+    title: "2023 Union Government Election",
+    startdate: "September 10",
+    enddate: "October 2",
     voted: [
         {
             id: 0,

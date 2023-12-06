@@ -20,10 +20,14 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
+import ColoredAvatar from "./ColoredAvatar.js";
 
-export default function UserRow({ user, isOfficer, remove }) {
+export default function UserRow({ user, isOfficer, remove, showRight }) {
     return (
         <div className={isOfficer ? "user-row officer" : "user-row"}>
+            <div className="avatar-wrapper">
+                <ColoredAvatar name={`${user.fname} ${user.lname}`} />
+            </div>
             <Typography
                 variant="body"
                 color={colors["on-surface"]}
@@ -32,16 +36,20 @@ export default function UserRow({ user, isOfficer, remove }) {
                 {user.fname} {user.lname}
             </Typography>
 
-            <Button
-                variant="text"
-                onClick={() => {
-                    if (!isOfficer) {
-                        remove(user);
-                    }
-                }}
-            >
-                {isOfficer ? "OFFICER" : "x"}
-            </Button>
+            {showRight ? (
+                <Button
+                    variant="text"
+                    onClick={() => {
+                        if (!isOfficer) {
+                            remove(user);
+                        }
+                    }}
+                >
+                    {isOfficer ? "OFFICER" : "x"}
+                </Button>
+            ) : (
+                <></>
+            )}
         </div>
     );
 }

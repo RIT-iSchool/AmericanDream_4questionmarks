@@ -174,7 +174,7 @@ export default function CreateSociety() {
                         {officer === -1 ? (
                             <></>
                         ) : (
-                            <UserRow user={users[officer]} isOfficer={true} />
+                            <UserRow user={users[officer]} isOfficer={true} showRight={true} />
                         )}
 
                         {/* Map out the list of users added to the society */}
@@ -185,6 +185,7 @@ export default function CreateSociety() {
                                     user={user}
                                     isOfficer={false}
                                     remove={removeUser}
+                                    showRight={true} 
                                 />
                             );
                         })}
