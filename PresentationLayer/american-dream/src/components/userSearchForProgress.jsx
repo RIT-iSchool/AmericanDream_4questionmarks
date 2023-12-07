@@ -6,20 +6,15 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
-import CustomAppBar from "../components/CustomAppBar.js";
 import { colors } from "../utils/colors.js";
-import { sampleBallot } from "../utils/sampleBallot.js";
 import * as React from "react";
-import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import CustomTabPanel from "../components/CustomTabPanel.jsx";
 import UserRow from "./userRow.jsx";
 import { Box, InputAdornment, Stack, TextField, Typography } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
-import Page from "../components/Page.js";
 import styled from "@emotion/styled";
-import { useEffect, useState } from "react";
 
 export default function UserSearchForProgressBar({ voted, notVoted }) {
 

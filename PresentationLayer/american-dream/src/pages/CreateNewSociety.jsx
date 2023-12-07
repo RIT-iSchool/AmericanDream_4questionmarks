@@ -13,7 +13,6 @@ import { ROLE } from "../utils/role.js";
 import Page from "../components/Page.js";
 import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
-import { colors } from "../utils/colors.js";
 import { sampleUsers } from "../utils/sampleUsers.js";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
