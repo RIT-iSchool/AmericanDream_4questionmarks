@@ -75,10 +75,9 @@ export const ballotResults = {
             id: 1,
             maxVotes: 1,
             title: "President",
-            writeIn: true,
             candidates: [
                 {
-                    percent: 66,
+                    percent: 61,
                     candidate: {
                         id: 1,
                         name: "Tammy Hayes",
@@ -107,13 +106,18 @@ export const ballotResults = {
                         imagePath: "",
                     },
                 },
+                {
+                    percent: 5,
+                    writeIn: {
+                        name: "Georgie Myers"
+                    }
+                },
             ],
         },
         {
             id: 2,
             maxVotes: 2,
             title: "Vice President",
-            writeIn: true,
             candidates: [
                 {
                     percent: 54,
@@ -126,7 +130,7 @@ export const ballotResults = {
                     },
                 },
                 {
-                    percent: 41,
+                    percent: 37,
                     candidate: {
                         id: 2,
                         name: "Tim Flanagan, S.C.",
@@ -144,6 +148,12 @@ export const ballotResults = {
                         description: "Vita Desc",
                         imagePath: "",
                     },
+                },
+                {
+                    percent: 5,
+                    writeIn: {
+                        name: "Georgie Myers"
+                    }
                 },
             ],
         },

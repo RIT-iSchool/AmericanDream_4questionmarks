@@ -8,7 +8,7 @@ section, .section {
 
 
 /* Ballot Box */
-.ballot-box-wrapper, .stat-box-wrapper {
+.ballot-box-wrapper, .stat-box-wrapper, .candidate-results-wrapper {
     width: 90%;
     margin: 2em auto auto auto;
     text-align: center;
@@ -79,7 +79,7 @@ section, .section {
     margin: auto 0.5em auto 0.5em;
 }
 .padding { padding: 1em; }
-.candidate-box img {
+img {
     width: 100%;
 }
 .candidate-box-wrapper {
@@ -146,3 +146,16 @@ section, .section {
 .officer {
     background-color: var(--surface-variant-dark);
 }
+
+/* Results */
+.candidate-results-wrapper {
+    text-align: left;
+    justify-content: flex-start;
+    margin: 0em auto 2em 0em;
+}
+.result-candidate-box {
+    text-align: left;
+    padding: 1em;
+}
+.img-wrapper-result {width: 20em;}
+.smol { width: 10em; }

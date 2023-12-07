@@ -56,7 +56,7 @@ export default function BallotBox({ ballot, role, editOnClick }) {
 
                 {/* See Results */}
                 {(role === ROLE.officer || role === ROLE.administrator) && ballot.isFinished ? (
-                    <Link to={"/login"} style={{ textDecoration: "none" }}>
+                    <Link to={"/results"} style={{ textDecoration: "none" }}>
                         <Typography
                             variant="p"
                             color={colors["primary"]}
