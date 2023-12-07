@@ -12,7 +12,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import CustomTabPanel from "../components/CustomTabPanel.jsx";
 import UserRow from "./userRow.jsx";
-import { Box, InputAdornment, Stack, TextField, Typography } from "@mui/material";
+import { Box, InputAdornment, TextField } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import styled from "@emotion/styled";
 
