@@ -230,4 +230,3 @@ INSERT INTO Roles (RoleName, UserID) VALUES ('ROLE_USER', 2);
 -- Insert into Vote Table
 INSERT INTO Vote (CandidateID, CandidateName, Abstain, VoteType, OfficeJSONID, BallotID, UserID)
 VALUES (1, 'John Smith', FALSE, 'NotWriteIn', 1, 1, 1);
-

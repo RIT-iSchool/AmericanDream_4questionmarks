@@ -1,32 +1,40 @@
-package com.example.demo;
+package com.example.test;
 
-import javax.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
+import org.springframework.data.relational.core.mapping.Table;
+import org.springframework.data.relational.core.mapping.Column;
 
-@Entity
+@Table("User") // Matches the table name in the database
 public class User {
-	
-	   // Constructors, maybe? Spring is weird
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int userID;
+    @Column("UserID")
+    private Integer userID; 
 
+    @Column("fName") 
     private String firstname;
+
+    @Column("lName") 
     private String lastname;
 
-    @Column(unique = true)
+    @Column("Email") 
     private String email;
 
+    @Column("Password") 
     private String password;
-
-    @ManyToOne
-    @JoinColumn(name = "SocietyID", nullable = false)
-    private Society society;
     
-    /**
-     * Instantiates a user
-     */
-    public User() {    }
+    // Maps the 'SocietyID' foreign key column
+    @Column("SocietyID")
+    private Integer societyId;
+
+	private Society society;
+
+    // Constructors, getters, setters...
+
+    public User() {
+        // Default constructor
+    }
     
     /**
      * Validates an attempt to login, seeing if the user exists in the database

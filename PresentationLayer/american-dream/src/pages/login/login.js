@@ -24,39 +24,36 @@ export default function Login() {
     const [errorMsg, setErrorMsg] = useState("");
 
     const handleLogin = async (event) => {
-        event.preventDefault();
-        setEmailErr(false);
-        setPasswordErr(false);
-    
-        if (email === '') {
-            setEmailErr(true);
+    event.preventDefault();
+    setEmailErr(false);
+    setPasswordErr(false);
+
+    if (email === '') {
+        setEmailErr(true);
+    }
+    if (password.length < 8) {
+        setPasswordErr(true);
+        setErrorMsg('Invalid password');
+        return; // Stop the function if validation fails
+    }
+
+    if (!emailErr && !passwordErr) {
+        const loginData = {
+            email: email,
+            password: password
+        };
+
+        try {
+            const response = await Axios.post('http://localhost:8080/login', loginData);
+            const userData = response.data;
+            console.log('User data:', userData);
+            // Do something with the user data here, such as storing it in state.
+        } catch (error) {
+            console.error('Error logging in:', error);
+            setErrorMsg('Login failed. Please check your credentials.');
         }
-        if (password.length < 8) {
-            setPasswordErr(true);
-            setErrorMsg('Invalid password');
-        }
-        if (email && password && !emailErr && !passwordErr) {
-            setUser({ ...user, userEmail: email, userPassword: password });
-            setErrorMsg("");
-    
-            // Encode email and password to Base64 for HTTP Basic Authentication using btoa
-            const token = btoa(`${email}:${password}`);
-    
-            try {
-                const response = await Axios.get('http://localhost:8080/users/1', {
-                    headers: {
-                        'Authorization': `Basic ${token}`
-                    }
-                });
-                const userData = response.data;
-                console.log('User data:', userData);
-                // Do something with the user data here, such as storing it in state.
-            } catch (error) {
-                console.error('Error fetching user data:', error);
-                setErrorMsg('Login failed. Please check your credentials.');
-            }
-        }
-    };
+    }
+};
 
 
     return (
