@@ -113,10 +113,11 @@ BEGIN
 END //
 
 -- Add Ballot
-CREATE PROCEDURE AddBallot(IN electionStart DATETIME, IN electionEnd DATETIME, IN offices JSON, IN societyID INT)
+CREATE PROCEDURE AddBallot(IN ballotName VARCHAR(100), IN electionStart DATETIME, IN electionEnd DATETIME, IN offices JSON, IN societyID INT)
 BEGIN
-    INSERT INTO Ballot (BallotName, ElectionStart, ElectionEnd, Offices, SocietyID) VALUES (electionStart, electionEnd, offices, societyID);
+    INSERT INTO Ballot (BallotName, ElectionStart, ElectionEnd, Offices, SocietyID) VALUES (ballotName, electionStart, electionEnd, offices, societyID);
 END //
+
 
 -- Add BallotInitiative
 CREATE PROCEDURE AddBallotInitiative(IN description VARCHAR(150), IN abstain BOOLEAN, IN ballotID INT)
@@ -167,6 +168,18 @@ BEGIN
 END //
 
 DELIMITER ;
+
+-- List All Ballots
+CREATE PROCEDURE ListAllBallots()
+BEGIN
+    SELECT * FROM Ballot;
+END //
+
+-- List All Users
+CREATE PROCEDURE ListAllUsers()
+BEGIN
+    SELECT * FROM User;
+END //
 
 -- Insert into Society Table
 INSERT INTO Society (SocietyName, SocietyDesc)
