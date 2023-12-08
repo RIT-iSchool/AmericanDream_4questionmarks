@@ -167,16 +167,16 @@ BEGIN
     SELECT * FROM Society;
 END //
 
--- List All Ballots
-CREATE PROCEDURE ListAllBallots()
-BEGIN
-    SELECT * FROM Ballot;
-END //
-
 -- List All Users
 CREATE PROCEDURE ListAllUsers()
 BEGIN
     SELECT * FROM User;
+END //
+
+-- List All Ballots
+CREATE PROCEDURE ListAllBallots()
+BEGIN
+    SELECT * FROM Ballot;
 END //
 
 DELIMITER ;
