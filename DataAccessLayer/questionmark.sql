@@ -167,8 +167,6 @@ BEGIN
     SELECT * FROM Society;
 END //
 
-DELIMITER ;
-
 -- List All Ballots
 CREATE PROCEDURE ListAllBallots()
 BEGIN
@@ -180,6 +178,8 @@ CREATE PROCEDURE ListAllUsers()
 BEGIN
     SELECT * FROM User;
 END //
+
+DELIMITER ;
 
 -- Insert into Society Table
 INSERT INTO Society (SocietyName, SocietyDesc)
