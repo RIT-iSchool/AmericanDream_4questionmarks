@@ -20,7 +20,7 @@ public class SecurityConfig {
 	        http.cors(cors -> cors
 	                .configurationSource(request -> {
 	                    CorsConfiguration config = new CorsConfiguration();
-	                    config.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+	                    config.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:8080"));
 	                    config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 	                    config.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));
 	                    config.setAllowCredentials(true);
@@ -28,6 +28,7 @@ public class SecurityConfig {
 	                }))
 	            .authorizeHttpRequests(authz -> authz
 	                .requestMatchers("/login").permitAll()
+	                .requestMatchers("/users/**").permitAll()
 	                .anyRequest().authenticated()
 	            )
 	            .formLogin(form -> form.disable())
