@@ -1,4 +1,4 @@
-package com.example.test;
+package com.example.test.ballots;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;

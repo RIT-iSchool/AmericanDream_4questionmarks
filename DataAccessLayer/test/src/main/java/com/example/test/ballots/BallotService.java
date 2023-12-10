@@ -1,4 +1,4 @@
-package com.example.test;
+package com.example.test.ballots;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,8 +13,6 @@ public class BallotService {
     private BallotRepository ballotRepository;
 
     public List<Ballot> getAllBallots() {
-        List<Ballot> ballots = new ArrayList<>();
-        ballotRepository.findAll().forEach(ballots::add);
-        return ballots;
+        return (List<Ballot>) ballotRepository.findAll();
     }
 }
