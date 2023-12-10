@@ -25,4 +25,25 @@ public class BallotController {
     public List<Ballot> getAllBallots() {
         return ballotRepository.getAllBallots();
     }
+
+    @PutMapping("/{ballotId}")
+    public ResponseEntity<Ballot> updateBallot(@PathVariable int ballotId, @RequestBody Ballot ballotDetails) {
+        Optional<Ballot> ballotOptional = ballotRepository.findById(ballotId);
+        if (ballotOptional.isPresent()) {
+            Ballot ballot = ballotOptional.get();
+            updateBallotDetails(ballot, ballotDetails);
+            ballotRepository.save(ballot);
+            return ResponseEntity.ok(ballot);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    private void updateBallotDetails(Ballot ballot, Ballot ballotDetails) {
+        ballot.setBallotName(ballotDetails.getBallotName());
+        ballot.setElectionStart(ballotDetails.getElectionStart());
+        ballot.setElectionEnd(ballotDetails.getElectionEnd());
+        ballot.setOffices(ballotDetails.getOffices());
+        ballot.setSocietyId(ballotDetails.getSocietyId());
+    }
 }
