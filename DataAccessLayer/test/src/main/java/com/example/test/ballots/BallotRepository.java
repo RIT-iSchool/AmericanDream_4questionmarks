@@ -8,4 +8,7 @@ import org.springframework.stereotype.Repository;
 public interface BallotRepository extends CrudRepository<Ballot, Integer> {
 	@Query("SELECT * FROM Ballot")
     List<Ballot> getAllBallots();
+
+    @Query("SELECT * FROM Ballot b WHERE b.BallotID = :ballotId")
+	Ballot getBallotById(int ballotId);
 }

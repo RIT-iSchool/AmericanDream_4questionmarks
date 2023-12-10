@@ -16,6 +16,11 @@ public class BallotController {
         this.ballotRepository = ballotRepository;
     }
 
+    @GetMapping("/{ballotId}")
+    public Ballot getBallotById(@PathVariable int ballotId) {
+        return ballotRepository.getBallotById(ballotId);
+    }
+
     @GetMapping
     public List<Ballot> getAllBallots() {
         return ballotRepository.getAllBallots();
