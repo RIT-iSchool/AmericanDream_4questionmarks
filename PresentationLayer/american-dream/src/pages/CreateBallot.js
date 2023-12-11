@@ -65,21 +65,70 @@ export default function CreateBallot() {
     setTabValue(newValue);
   };
 
+  // - -- - - - - - -- DESCRIPTION TAB - -- - - - - - -- - - ---
   const [ballotName, setBallotName] = React.useState('');
   
+  //TODO: load societies list
   const societies = ['Clown Society', 'Labor Union', 'Association for Computing Machinery'];
   const [society, setSociety] = React.useState('');
   const handleSocietyChange = (event) => {
     setSociety(event.target.value);
   };
 
-  var offices = ['President', 'Vice President', 'Secretary'];
+  // - -- - - - - - -- - OFFICES TAB - -- - - - - - -- - - --- - -
+  //TODO: refactor into one object state
+  //var offices = ['President', 'Vice President', 'Secretary'];
+  var offices = [];
+  const [addOffice, setAddOffice] = React.useState(false);
+  const [officeAdded, setOfficeAdded] = React.useState(false);
+  const [role, setRole] = React.useState('');
+  const handleRoleChange = (event) => {
+    setRole(event.target.value);
+  }
+  const [numVotes, setNumVotes] = React.useState(0);
+  const handleNumVotesChange = (event) => {
+    setNumVotes(event.target.value);
+  }
+  const [writeInPossible, setWriteInPossible] = React.useState(false);
+  const handleWriteInPossibleChange = (event) => {
+    setWriteInPossible(event.target.checked);
+  }
+  const handleAddAnotherOffice = (event) => {
+    //input validation 
+    //error handling + styles
+    if (role!=="" && numVotes!="") {
+        //valid, add to offices array
+        offices.push({
+            name: role,
+            choices: numVotes, //TODO: validate input is a number
+            writeIn: writeInPossible
+        });
+        console.log('valid, pushed to offics array');
+        console.log(offices);
+        
+        //clear input, make sure offices.length updates #n on header
+        setOffice("");
+        setNumVotes("");
+    } else {
+        //invalid, show errors
+       if(role=="") {
+        setErrors({...errors, role:true});
+        console.log('invalid, missing role');
+       }
+       if(numVotes=="") {
+        setErrors({...errors, numVotes:true});
+        console.log('invalid, missing num votes');
+       }
+    }
+
+    //TODO: user notification: added to offices
+  };
+
+  // - -- - -  - -- - CANDIDATES TAB - -- - - - - - -- - - --- - - 
   const [office, setOffice] = React.useState('');
   const handleOfficeChange = (event) => {
     setOffice(event.target.value);
   }
-  const [addOffice, setAddOffice] = React.useState(false);
-
   var candidates = ['Candidate1', 'Candidate2', 'Candidate3'];
   const [addCandidate, setAddCandidate] = React.useState(false);
 
@@ -90,10 +139,13 @@ export default function CreateBallot() {
   const [errors, setErrors] = React.useState({
     society: false,
     ballotName: false,
+    role: false,
+    numVotes: false,
   });
 
-  useEffect(() => {
-  }, [errors]);
+  useEffect(()=>{
+  },[errors]);
+
 
   return (
     <Page title="Create Ballot">
@@ -116,7 +168,6 @@ export default function CreateBallot() {
                                 
                                 <Select
                                     error={errors.society}
-                                    helperText={errors.society && "Pick a Society"}
                                     value={society}
                                     label="Society"
                                     onChange={handleSocietyChange}>
@@ -170,12 +221,13 @@ export default function CreateBallot() {
                                     console.log(`start date <= end date? ${startDate <= endDate}`);
 
                                     //data validation
-                                    if (society!="" && ballotName!="" && startDate.format(format)!="" && endDate.format(format)!="" && startDate <= endDate) {
+                                    if (society!=="" && ballotName!=="" && startDate.format(format)!=="" && endDate.format(format)!=="" && startDate <= endDate) {
                                         //go to description tab
                                         setTabValue('2');
                                     }
                                     else {
                                         //TODO: error handling
+                                        //https://mui.com/x/react-date-pickers/validation/
                                     }
                                 }}>next</Button>
                                 <Button disabled>back</Button>
@@ -190,18 +242,24 @@ export default function CreateBallot() {
                             <Stack direction="column" spacing={3}>
                                 <Stack direction="row" spacing={1} alignItems="flex-end" style={{...formHeadingStyle}}>
                                     <Typography variant="h6">Offices</Typography>
-                                    <Typography variant="body2" style={{paddingBottom:'4px'}}>{'(' + offices.length +' total)'}</Typography>
+                                    <Typography variant="body2" style={{paddingBottom:'4px'}}>{'#' + (offices.length+1)}</Typography>
                                 </Stack>
+
+                                {offices.length === 0 && !addOffice &&
+                                    <Button variant="outlined" onClick={() => {
+                                        setAddOffice(true);
+                                        console.log('offices:');
+                                        console.log(offices);
+                                    }}>Add an Office</Button>
+                                }
 
                                 {addOffice &&
                                     <>
-                                    <FormTextField label="Office/Position" />
-
-                                    <Stack direction='column' spacing={4} style={{borderBottom:`1px solid ${colors["surface-variant"]}`, borderTop:`1px solid ${colors["surface-variant"]}`, padding:'24px 0'}}>
-                                        <FormTextField label="Number of Candidates" />
-
-                                        <FormTextField label="Number of Possible Votes" />
-                                    </Stack>
+                                    <p>role: {role}, numVotes: {numVotes}</p>
+                                    <FormTextField label="Role/Office Position" onChange={handleRoleChange} error={errors.role} />
+                                    
+                                    {/* TODO: restrict input to numbers only */}
+                                    <FormTextField label="Number of Possible Votes" onChange={handleNumVotesChange} error={errors.numVotes} />
 
                                     <Stack direction='row' justifyContent='space-between' alignItems='center'>
                                         <Stack direction='row' spacing={1}>
@@ -209,16 +267,17 @@ export default function CreateBallot() {
                                             <Typography variant='body2'>Allow for one write-in?</Typography>
                                         </Stack>
 
-                                        <Checkbox />
+                                        <Checkbox onChange={(e) => handleWriteInPossibleChange(e)
+                                        } />
                                     </Stack>
+
+                                    <Button variant="contained" onClick={() => {handleAddAnotherOffice()}}>Add Another Office</Button>
                                     </>
                                 }
-
-                                <Button variant="contained" onClick={() => {setAddOffice(true)}}>Add an Office</Button>
                             </Stack>
 
                             <Stack direction="row-reverse">
-                                <Button>next</Button>
+                                <Button>done</Button>
                                 <Button>back</Button>
                             </Stack>
                         </Stack>
