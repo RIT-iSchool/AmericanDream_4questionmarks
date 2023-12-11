@@ -1,3 +1,6 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
 import "../assets/css/setup.css";
 import "../assets/css/variables.css";
 import "../assets/css/styles.css";
@@ -15,28 +18,26 @@ import { colors } from "../utils/colors.js";
 
 function BallotList() {
 
+    const [ballots, setBallots] = useState([]);
     var role = ROLE.administrator;
 
-    var ballots = [
-        {
-            title: "2023 Union Government Election",
-            date: "September 10 - October 12",
-            isFinished: false,
-            hasStarted: true,
-        }, 
-        {
-            title: "Government Election",
-            date: "Ocober 10 - November 2",
-            isFinished: false,
-            hasStarted: false,
-        }, 
-        {
-            title: "Event Catering",
-            date: "August 1 - September 1",
-            isFinished: true,
-            hasStarted: true,
-        }, 
-    ];
+    useEffect(() => {
+        axios.get('http://localhost:8080/ballots')
+            .then(response => {
+                const fetchedBallots = response.data.map(ballot => {
+                    return {
+                        title: ballot.ballotName,
+                        date: `${ballot.electionStart} - ${ballot.electionEnd}`,
+                        isFinished: false, // Placeholder
+                        hasStarted: true, // Placeholder
+                    };
+                });
+                setBallots(fetchedBallots);
+            })
+            .catch(error => {
+                console.error('Error fetching data: ', error);
+            });
+    }, []);
 
     return (
         <Page title="Ballot List">
