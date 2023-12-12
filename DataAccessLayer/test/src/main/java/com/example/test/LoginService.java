@@ -1,7 +1,7 @@
 package com.example.test;
 
-import com.example.test.users.UserRepository;
-import com.example.test.users.User;
+import com.example.test.UserRepository;
+import com.example.test.User;
 
 
 import org.springframework.beans.factory.annotation.Autowired;

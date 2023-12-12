@@ -1,15 +1,11 @@
-package com.example.test.users;
-
+package com.example.test;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.data.relational.core.mapping.Table;
-
-import com.example.test.societies.Society;
-
 import org.springframework.data.relational.core.mapping.Column;
 
-@Table("User") 
+@Table("User") // Matches the table name in the database
 public class User {
 
     @Id
@@ -28,7 +24,7 @@ public class User {
     @Column("Password") 
     private String password;
     
-
+    // Maps the 'SocietyID' foreign key column
     @Column("SocietyID")
     private Integer societyId;
 
@@ -40,6 +36,24 @@ public class User {
         // Default constructor
     }
     
+    /**
+     * Validates an attempt to login, seeing if the user exists in the database
+     * @param username attempted username
+     * @param password attempted password
+     * @return Boolean Whether the login credentials matched an existing user or not
+     */
+    public Boolean login(String username, String password) {
+        return false;
+    }
+
+    /**
+     * Logout a user
+     * @return Boolean Was the logout successful?
+     */
+    public Boolean logout() {
+        return false;
+    }
+
     // Getters and Setters
 
     /**
