@@ -13,7 +13,7 @@ import Societies from "./pages/Societies";
 import OpenBallot from "./pages/OpenBallot";
 import { BallotResponsesProvider } from "./utils/BallotResponsesContext";
 import Statistics from "./pages/Statistics";
-import CreateBallot from "./pages/CreateBallot";
+import CreateBallot from "./pages/CreateBallot/CreateBallot";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
