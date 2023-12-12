@@ -12,6 +12,11 @@ import { colors } from "../utils/colors.js";
 import { Link } from "react-router-dom";
 import { Stack } from "@mui/material";
 
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import BallotList from './BallotList';
+import OpenBallot from './OpenBallot';
+
+
 const style = {
     display:'flex',
     flexDirection:'column',
@@ -52,7 +57,14 @@ function App() {
                     <Button variant="contained">Go to Create Society</Button>
                 </Link>
             </Stack>
+            <Router>
+                <Routes>
+                    <Route path="/ballots/:ballotId" element={<OpenBallot />} />
+                </Routes>
+            </Router>
         </Stack>
+
+        
     );
 }
 

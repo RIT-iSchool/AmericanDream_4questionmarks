@@ -22,33 +22,36 @@ function BallotList() {
     useEffect(() => {
         axios.get('http://localhost:8080/ballots')
             .then(response => {
+                console.log("Response data:", response.data);
                 const fetchedBallots = response.data.map(ballot => {
+                    console.log("Ballots:", ballot.ballotId);
                     return {
-                        ballotId: ballot.ballotId,
+                        ...ballot,
                         title: ballot.ballotName,
                         date: `${ballot.electionStart} - ${ballot.electionEnd}`,
                         isFinished: false, // Placeholder
                         hasStarted: true, // Placeholder
                     };
                 });
-                console.log("Fetched Ballots with IDs:", fetchedBallots);
                 setBallots(fetchedBallots);
+                console.log("Fetched ballots:", fetchedBallots);
+                
             })
-            
             .catch(error => {
                 console.error('Error fetching data: ', error);
             });
-    }, []);    
+    }, []);
+    
 
     return (
         <Page title="Ballot List">
             <div className="ballot-box-wrapper">
-                {ballots.map((ballot, index) => (
-                    <Link key={ballot.ballotId} to={`/ballots/${ballot.ballotId}`}>
-                        <BallotBox ballot={ballot} />
-                    </Link>
+            {ballots.map((ballot, index) => (
+                <Link key={index} to={`/ballots/${ballot.ballotId}`}>
+                    <BallotBox ballot={ballot} />
+                </Link>
+            ))}
 
-                ))}
             </div>
         </Page>
     );

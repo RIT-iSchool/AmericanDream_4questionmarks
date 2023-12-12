@@ -25,17 +25,31 @@ import OfficeBallotSection from "../components/OfficeBallotSection.jsx";
 import BallotResponsesContext from "../utils/BallotResponsesContext.jsx";
 
 function OpenBallot() {
-    const { ballotId } = useParams();
+    const ballotId  = 1;
     console.log("ballotId:", ballotId);
     const [ballot, setBallot] = useState(null);
     const { offices, initiatives, clearAll } = React.useContext(BallotResponsesContext);
     const [value, setValue] = React.useState(0);
-    const handleChange = (event, newValue) => {setValue(newValue);};
+    const handleChange = (event, newValue) => setValue(newValue);
 
     useEffect(() => {
         axios.get(`http://localhost:8080/ballots/${ballotId}`)
             .then(response => {
-                setBallot(response.data);
+                const fetchedBallot = response.data;
+
+                // Check and parse offices and initiatives if they are strings
+                if (typeof fetchedBallot.offices === 'string') {
+                    fetchedBallot.offices = JSON.parse(fetchedBallot.offices).offices || [];
+                }
+                if (typeof fetchedBallot.initiatives === 'string') {
+                    fetchedBallot.initiatives = JSON.parse(fetchedBallot.initiatives) || [];
+                }
+
+                // Initialize offices and initiatives as empty arrays if undefined
+                fetchedBallot.offices = fetchedBallot.offices || [];
+                fetchedBallot.initiatives = fetchedBallot.initiatives || [];
+
+                setBallot(fetchedBallot);
             })
             .catch(error => {
                 console.error(`Error fetching ballot with id ${ballotId}:`, error);
