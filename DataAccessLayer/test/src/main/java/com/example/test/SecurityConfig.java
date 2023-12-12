@@ -28,11 +28,8 @@ public class SecurityConfig {
 	                }))
 	            .authorizeHttpRequests(authz -> authz
 	                .requestMatchers("/login").permitAll()
-	                .requestMatchers("/users").permitAll()
-	                .requestMatchers("/societies").permitAll()
-	                .requestMatchers("/users/**").permitAll()
-	                .requestMatchers("/societies/**").permitAll()
-	                .requestMatchers("/ballots/**").permitAll()
+					.requestMatchers("/users/**").permitAll()
+					.requestMatchers("/ballots/**", "/ballots/*").permitAll()
 	                .anyRequest().authenticated()
 	            )
 	            .formLogin(form -> form.disable())
