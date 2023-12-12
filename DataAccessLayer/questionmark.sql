@@ -185,6 +185,9 @@ DELIMITER ;
 INSERT INTO Society (SocietyName, SocietyDesc)
 VALUES ('American Society', 'A society for hamburger people');
 
+INSERT INTO Society (SocietyName, SocietyDesc)
+VALUES 'Clown Society', 'A second joke');
+
 -- Insert into Ballot Table with JSON data
 INSERT INTO Ballot (BallotName, ElectionStart, ElectionEnd, Offices, SocietyID)
 VALUES (
