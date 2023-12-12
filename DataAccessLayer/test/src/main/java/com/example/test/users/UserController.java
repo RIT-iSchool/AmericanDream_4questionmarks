@@ -35,7 +35,7 @@ public class UserController {
     }
     
     @PostMapping
-    public User createSociety(@RequestBody User user) {
+    public User createUser(@RequestBody User user) {
         return userRepository.save(user);
     }
     

@@ -16,6 +16,6 @@ public interface SocietyRepository extends CrudRepository<Society, Integer> {
 	@Query("SELECT * FROM Society")
 	List<Society> getAllSocieties();
 
-	@Query("SELECT s FROM Society s WHERE lower(s.name) LIKE lower(concat('%', :searchTerm, '%'))")
+	@Query("SELECT * FROM Society s WHERE lower(s.SocietyName) LIKE lower(concat('%', :searchTerm, '%'))")
 	List<Society> searchByName(@Param("searchTerm") String searchTerm);
 }

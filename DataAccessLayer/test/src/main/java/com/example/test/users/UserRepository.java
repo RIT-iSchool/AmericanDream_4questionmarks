@@ -17,13 +17,13 @@ public interface UserRepository extends CrudRepository<User, Integer> {
 	@Query("SELECT * FROM User u WHERE u.UserID = :userId")
 	User getUserById(int userId);
 	
-    @Query("SELECT * FROM User WHERE society_id = :societyId")
+    @Query("SELECT * FROM User u WHERE u.SocietyID = :societyId")
     List<User> findBySocietyId(int societyId);
 	
 	@Query("SELECT * FROM User")
 	List<User> getAllUsers();
 	
-	@Query("SELECT u FROM User u WHERE u.society.id = :societyId AND (lower(u.firstName) LIKE lower(concat('%', :searchTerm, '%')) OR lower(u.lastName) LIKE lower(concat('%', :searchTerm, '%')))")
+	@Query("SELECT * FROM User u WHERE u.SocietyID = :societyId AND (lower(u.fName) LIKE lower(concat('%', :searchTerm, '%')) OR lower(u.lName) LIKE lower(concat('%', :searchTerm, '%')))")
 	List<User> findBySocietyIdAndSearchTerm(@Param("societyId") int societyId, @Param("searchTerm") String searchTerm);
 
 }
