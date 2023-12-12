@@ -1,3 +1,7 @@
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+
 import "../assets/css/setup.css";
 import "../assets/css/variables.css";
 import "../assets/css/styles.css";
@@ -9,9 +13,6 @@ import "@fontsource/roboto/700.css";
 import CustomAppBar from "../components/CustomAppBar.js";
 import Typography from "@mui/material/Typography";
 import { colors } from "../utils/colors.js";
-import { sampleBallot } from "../utils/sampleBallot.js";
-import * as React from "react";
-import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
@@ -23,17 +24,28 @@ import CustomTabPanel from "../components/CustomTabPanel.jsx";
 import OfficeBallotSection from "../components/OfficeBallotSection.jsx";
 import BallotResponsesContext from "../utils/BallotResponsesContext.jsx";
 
-// TODO: will take in a ballot in JSON
-// for voting, write in needs to be id -2
 function OpenBallot() {
-    let ballot = sampleBallot;
-    
-    const {offices, initiatives, clearAll } = React.useContext(BallotResponsesContext);
-
+    const { ballotId } = useParams();
+    console.log("ballotId:", ballotId);
+    const [ballot, setBallot] = useState(null);
+    const { offices, initiatives, clearAll } = React.useContext(BallotResponsesContext);
     const [value, setValue] = React.useState(0);
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
+    const handleChange = (event, newValue) => {setValue(newValue);};
+
+    useEffect(() => {
+        axios.get(`http://localhost:8080/ballots/${ballotId}`)
+            .then(response => {
+                setBallot(response.data);
+            })
+            .catch(error => {
+                console.error(`Error fetching ballot with id ${ballotId}:`, error);
+            });
+    }, [ballotId]);
+
+    if (!ballot) {
+        return <div>Loading...</div>;
+    }
+
 
     return (
         <div>
@@ -54,62 +66,53 @@ function OpenBallot() {
                         variant="scrollable"
                         scrollButtons="auto"
                     >
-                        {
-                            /* Candidate Positions */
-                            ballot.offices.map((position, index) => (
-                                <Tab
-                                    key={index}
-                                    label={position.title}
-                                    {...a11yProps(index)}
-                                />
-                            ))
-                        }
-                        {
-                            /* Initiatives */
-                            ballot.initiatives.map((initiative, index) => (
-                                <Tab
-                                    key={index}
-                                    label={`Initiative ${index + 1}`}
-                                    {...a11yProps(index)}
-                                />
-                            ))
-                        }
+                        {/* Candidate Positions */}
+                        {ballot.offices.map((position, index) => (
+                            <Tab
+                                key={index}
+                                label={position.title}
+                                {...a11yProps(index)}
+                            />
+                        ))}
+                        {/* Initiatives */}
+                        {ballot.initiatives.map((initiative, index) => (
+                            <Tab
+                                key={index}
+                                label={`Initiative ${index + 1}`}
+                                {...a11yProps(index)}
+                            />
+                        ))}
                     </Tabs>
                 </Box>
 
-                {
-                    /* Candidate Positions Tab Content */
-                    ballot.offices.map((office, index) => (
-                        <OfficeBallotSection 
-                            key={index}
+                {/* Candidate Positions Tab Content */}
+                {ballot.offices.map((office, index) => (
+                    <OfficeBallotSection 
+                        key={index}
+                        index={index}
+                        value={value}
+                        office={office}
+                    />
+                ))}
+                {/* Initiatives Tab Content */}
+                {ballot.initiatives.map((initiative, index) => (
+                    <CustomTabPanel
+                        key={index}
+                        value={value}
+                        index={index + ballot.offices.length}
+                    >
+                        <InitiativeBox
+                            initiative={initiative}
                             index={index}
-                            value={value}
-                            office={office}
                         />
-                    ))
-                }
-                {
-                    /* Initiatives Tab Content */
-                    ballot.initiatives.map((initiative, index) => (
-                        <CustomTabPanel
-                            key={index}
-                            value={value}
-                            index={index + ballot.offices.length}
-                        >
-                            <InitiativeBox
-                                initiative={initiative}
-                                index={index}
-                            />
-                        </CustomTabPanel>
-                    ))
-                }
+                    </CustomTabPanel>
+                ))}
 
                 <br />
                 <br />
                 <Button
                     variant={"contained"}
                     onClick={() => {
-                        // send vote off
                         console.log("offices: ", offices);
                         console.log("initiatives: ", initiatives);
                         // clearAll();
@@ -128,7 +131,5 @@ function a11yProps(index) {
         "aria-controls": `simple-tabpanel-${index}`,
     };
 }
-
-
 
 export default OpenBallot;

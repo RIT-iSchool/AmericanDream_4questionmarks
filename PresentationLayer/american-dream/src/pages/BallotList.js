@@ -13,8 +13,6 @@ import { ROLE } from "../utils/role.js";
 import BallotBox from "../components/BallotBox";
 import Page from "../components/Page.js";
 import { Link } from "react-router-dom";
-import Typography from "@mui/material/Typography";
-import { colors } from "../utils/colors.js";
 
 function BallotList() {
 
@@ -26,32 +24,35 @@ function BallotList() {
             .then(response => {
                 const fetchedBallots = response.data.map(ballot => {
                     return {
+                        ballotId: ballot.ballotId,
                         title: ballot.ballotName,
                         date: `${ballot.electionStart} - ${ballot.electionEnd}`,
                         isFinished: false, // Placeholder
                         hasStarted: true, // Placeholder
                     };
                 });
+                console.log("Fetched Ballots with IDs:", fetchedBallots);
                 setBallots(fetchedBallots);
             })
+            
             .catch(error => {
                 console.error('Error fetching data: ', error);
             });
-    }, []);
+    }, []);    
 
     return (
         <Page title="Ballot List">
             <div className="ballot-box-wrapper">
-            {
-                /* Ballot Boxes */
-                ballots.map(
-                    ( ballot, index ) => ( 
-                        <BallotBox key={index} role={role} ballot={ballot} />
-                 ) )
-            }
+                {ballots.map((ballot, index) => (
+                    <Link key={ballot.ballotId} to={`/ballots/${ballot.ballotId}`}>
+                        <BallotBox ballot={ballot} />
+                    </Link>
+
+                ))}
             </div>
         </Page>
     );
+    
 }
 
 export default BallotList;
