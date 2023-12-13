@@ -198,7 +198,7 @@ export default function Initiatives({societies, description, ballotOffices, ball
                                 Description: response2,
                                 InitiativeID: initiativeIdCreated
                             };
-                            axios.post('', newBallotOption)
+                            axios.post('http://localhost:8080/ballotOptions', newBallotOption)
                                 .then(response => {
                                     console.log('Success:', response.data);
                                 })
