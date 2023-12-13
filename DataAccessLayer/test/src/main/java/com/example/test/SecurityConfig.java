@@ -33,8 +33,15 @@ public class SecurityConfig {
 	                .requestMatchers("/users/**").permitAll()
 	                .requestMatchers("/societies/**").permitAll()
 	                .requestMatchers("/ballots/**").permitAll()
+					.requestMatchers("/logout").permitAll()
 	                .anyRequest().authenticated()
 	            )
+				.logout(logout -> logout
+        		.logoutUrl("/logout")
+        		.invalidateHttpSession(true)
+       			.deleteCookies("JSESSIONID") 
+       			.logoutSuccessUrl("/login")
+    			)
 	            .formLogin(form -> form.disable())
 	            .httpBasic(basic -> basic.disable())
 	        	.csrf(csrf -> csrf.disable());
