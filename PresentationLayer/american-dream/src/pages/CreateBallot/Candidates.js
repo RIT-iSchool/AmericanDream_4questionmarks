@@ -118,7 +118,51 @@ export default function Candidates({ballotOffices,setBallotOffices,setTabValue})
                         {/* TODO: image upload */}
                     </Stack>
 
-                    <Button variant="outlined" onClick={() => {setAddCandidate(true)}}>
+                    <Button variant="outlined" onClick={() => {//data validation
+                        if(name!=="" && title!=="" && bio!=="") {
+                            console.log(`name: ${name}, title: ${title}, bio: ${bio}`);
+
+                            //make temp candidate obj
+                            var temp = {
+                                id: `c${candidates.length+1}`,
+                                name: name,
+                                position: title,
+                                bio: bio
+                            }
+
+                            console.log('temp to add to candidates and ballotOffices array');
+                            console.log(temp);
+
+                            //add to candidates array
+                            setCandidates([
+                                ...candidates,
+                                temp
+                            ]);
+
+                            //get office index from name
+                            var officeIndex = -1;
+                            ballotOffices.forEach((ballotOffice,index) => {
+                                if (office === ballotOffice.name) {
+                                    console.log(`${office} found at index ${index}`);
+                                    officeIndex = index;
+                                } else {
+                                    console.log(`${office} not found`);
+                                }
+                            });
+
+                            //save candidates to ballotOffices
+                            ballotOffices[officeIndex].candidates = candidates;
+                            console.log(`added candidate to ${office} candidates array`);
+
+                            //reset and clear current inputs
+                            setName("");
+                            setTitle("");
+                            setBio("");
+                        } else {
+                            console.log('invalid form');
+                            //TODO: error handling and styling
+                        }
+                    }}>
                         Add Another Candidate for {office}
                     </Button>
                     
