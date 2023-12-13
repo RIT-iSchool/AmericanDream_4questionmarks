@@ -108,7 +108,7 @@ export default function Societies() {
     };
     
     return (
-        <Page title="Societies">
+        
            <Stack direction="column" spacing={4}>
                 <TabContext value={value} variant="fullWidth">
                     <Box>
@@ -175,6 +175,5 @@ export default function Societies() {
                     </TabPanel>
                 </TabContext>
            </Stack>
-        </Page> 
     );
 }

@@ -13,6 +13,9 @@ import { ROLE } from "../utils/role.js";
 import BallotBox from "../components/BallotBox";
 import Page from "../components/Page.js";
 import { Link } from "react-router-dom";
+import Typography from "@mui/material/Typography";
+import { colors } from "../utils/colors.js";
+import AdvancedBallotList from "./AdvancedBallotList.jsx";
 
 function BallotList() {
 
@@ -43,7 +46,19 @@ function BallotList() {
     }, []);
     
 
+
+    const ballotBoxes = ballots.map((ballot, index) => (
+        <BallotBox key={index} role={role} ballot={ballot} editOnClick={false} />
+    ));
+
     return (
+        <Page title="Ballots">
+            {role === ROLE.member || role === ROLE.officer ? (
+                <div className="ballot-box-wrapper">{ballotBoxes}</div>
+            ) : (
+                <AdvancedBallotList role={role} ballots={ballots} ballotBoxes={ballotBoxes}/>
+            )}
+
         <Page title="Ballot List">
             <div className="ballot-box-wrapper">
             {ballots.map((ballot, index) => {

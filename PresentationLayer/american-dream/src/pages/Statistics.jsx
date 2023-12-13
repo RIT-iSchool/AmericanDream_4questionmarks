@@ -71,12 +71,11 @@ export default function Statistics() {
     }, [role, navigate]);
 
     return (
-        <Page title="Statistics">
             <div className="stat-box-wrapper">
                 {stats.map((stat, index) => {
                     return <StatBox key={index} stat={stat} />;
                 })}
             </div>
-        </Page>
+    
     );
 }
