@@ -6,12 +6,9 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
-import CustomAppBar from "../components/CustomAppBar.js";
 import Typography from "@mui/material/Typography";
 import { colors } from "../utils/colors.js";
-import { sampleBallot } from "../utils/sampleBallot.js";
 import * as React from "react";
-import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";

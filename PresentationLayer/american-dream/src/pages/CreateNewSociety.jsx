@@ -13,7 +13,6 @@ import { ROLE } from "../utils/role.js";
 import Page from "../components/Page.js";
 import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
-import { colors } from "../utils/colors.js";
 import { sampleUsers } from "../utils/sampleUsers.js";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
@@ -174,7 +173,7 @@ export default function CreateSociety() {
                         {officer === -1 ? (
                             <></>
                         ) : (
-                            <UserRow user={users[officer]} isOfficer={true} />
+                            <UserRow user={users[officer]} isOfficer={true} showRight={true} />
                         )}
 
                         {/* Map out the list of users added to the society */}
@@ -185,6 +184,7 @@ export default function CreateSociety() {
                                     user={user}
                                     isOfficer={false}
                                     remove={removeUser}
+                                    showRight={true} 
                                 />
                             );
                         })}
