@@ -47,7 +47,17 @@ export default function Login() {
             const response = await Axios.post('http://localhost:8080/login', loginData);
             const userData = response.data;
             console.log('User data:', userData);
-            // Do something with the user data here, such as storing it in state.
+             if (userData.roleID === 1) {
+                    navigate('/vote');
+                } else if (userData.roleID === 2) {
+                    navigate('/ballotList');
+                } else if (userData.roleID === 3) {
+                    navigate('/createBallot');
+                } else if (userData.roleID === 4) {
+                    navigate('/createSociety');
+                } else {
+                    //nothing
+                }
         } catch (error) {
             console.error('Error logging in:', error);
             setErrorMsg('Login failed. Please check your credentials.');
