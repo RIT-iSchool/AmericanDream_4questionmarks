@@ -25,7 +25,7 @@ import OfficeBallotSection from "../components/OfficeBallotSection.jsx";
 import BallotResponsesContext from "../utils/BallotResponsesContext.jsx";
 
 function OpenBallot() {
-    const ballotId  = 1;
+    const { ballotId } = useParams();
     console.log("ballotId:", ballotId);
     const [ballot, setBallot] = useState(null);
     const { offices, initiatives, clearAll } = React.useContext(BallotResponsesContext);
@@ -33,7 +33,10 @@ function OpenBallot() {
     const handleChange = (event, newValue) => setValue(newValue);
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/ballots/${ballotId}`)
+        const id = parseInt(ballotId, 10);
+        if (!isNaN(id)) {
+            axios.get(`http://localhost:8080/ballots/${id}`)
+            
             .then(response => {
                 const fetchedBallot = response.data;
 
@@ -54,6 +57,9 @@ function OpenBallot() {
             .catch(error => {
                 console.error(`Error fetching ballot with id ${ballotId}:`, error);
             });
+        } else {
+            console.error("Invalid ballotId:", ballotId);
+        }
     }, [ballotId]);
 
     if (!ballot) {

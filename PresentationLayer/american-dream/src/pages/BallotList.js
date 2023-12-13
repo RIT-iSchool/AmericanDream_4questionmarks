@@ -46,16 +46,16 @@ function BallotList() {
     return (
         <Page title="Ballot List">
             <div className="ballot-box-wrapper">
-            {ballots.map((ballot, index) => (
+            {ballots.map((ballot, index) => {
+            return (
                 <Link key={index} to={`/ballots/${ballot.ballotId}`}>
                     <BallotBox ballot={ballot} />
                 </Link>
-            ))}
-
+            );
+            })}
             </div>
         </Page>
-    );
-    
+    );   
 }
 
 export default BallotList;
