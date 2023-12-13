@@ -36,10 +36,7 @@ const getOffices = (ballotOffices) => {
 export default function Candidates({ballotOffices,setBallotOffices,setTabValue}) {
     const offices = getOffices(ballotOffices);
     
-    const [office, setOffice] = React.useState({
-        name: '',
-        id: '',
-    });
+    const [office, setOffice] = React.useState("");
     const handleOfficeChange = (event) => {
         setOffice(event.target.value);
     }
@@ -62,36 +59,21 @@ export default function Candidates({ballotOffices,setBallotOffices,setTabValue})
         setBio(event.target.value);
     }
 
-    const handleAnotherCandidate = (event) => {
-        //input validation, error handling + styles
-        if (name!=="" && title!=="" && bio!=="") {
-            console.log(`valid, pushing to candidates array for ${office}`);
-            candidates.push({
-                name: name,
-                title: title,
-                bio: bio,
-            });
-            console.log(candidates);
-            
-            //clear input, make sure offices.length updates #n on header
-            setName("");
-            setTitle("");
-            setBio("");
-        } else {
-            //invalid, show errors
-            if(name=="") {
-                setErrors({...errors, name:true});
-                console.log('invalid, missing name');
-            }
-            if(title=="") {
-                setErrors({...errors, title:true});
-                console.log('invalid, missing title');
-            }
-            if(bio=="") {
-                setErrors({...errors, bio:true});
-                console.log('invalid, missing bio');
-            }
-        }
+    const updateOfficeBallots = (officeId, candidatesArr) => {
+        console.log(`updateOfficeBallots(${officeId},candidatesArr)`);
+
+        //get office id from id string parameter
+        const index = parseInt(officeId.substring(2, officeId.length))-1;
+        
+        const newOffices = [...ballotOffices]; //copy array
+        const newOffice = {...ballotOffices[index]}; //copy array item to change
+
+        newOffice[candidates] = candidatesArr;
+        newOffices[index] = newOffice;
+
+        setBallotOffices(newOffices);
+        console.log('new ballotOffice array');
+        console.log(ballotOffices);
     }
 
     const [errors, setErrors] = React.useState({
@@ -104,8 +86,8 @@ export default function Candidates({ballotOffices,setBallotOffices,setTabValue})
         <Stack direction="column" spacing={5}>
             <Stack direction="column" spacing={3}>
                 <Stack direction="row" spacing={1} alignItems="flex-end" style={{...formHeadingStyle}}>
-                    <Typography variant="h6">Candidate {office.name!=="" ? `for ${office.name}` : ""}</Typography>
-                    {office.name ? 
+                    <Typography variant="h6">Candidate {office.name!=="" ? `for ${office}` : ""}</Typography>
+                    {office ? 
                         <Typography variant="body2" style={{paddingBottom:'4px'}}>{'(' + candidates.length +' total)'}</Typography>
                     : ""}
                 </Stack>
@@ -137,7 +119,7 @@ export default function Candidates({ballotOffices,setBallotOffices,setTabValue})
                     </Stack>
 
                     <Button variant="outlined" onClick={() => {setAddCandidate(true)}}>
-                        Add Another Candidate for {office.name}
+                        Add Another Candidate for {office}
                     </Button>
                     
                     <Button variant="contained" onClick={() => {
@@ -147,21 +129,34 @@ export default function Candidates({ballotOffices,setBallotOffices,setTabValue})
 
                             //make temp candidate obj
                             var temp = {
-                                id: `c${ballotOffices[0].candidates.length+1}`,
+                                id: `c${candidates.length+1}`,
                                 name: name,
                                 position: title,
                                 bio: bio
                             }
 
-                            console.log('candidate array');
+                            console.log('temp to add to candidates and ballotOffices array');
                             console.log(temp);
 
-                            //add to ballot offices
-                            // setBallotOffices([
-                            //     ...ballotOffices,
-                            //     office
-                            // ]);
+                            //add to candidates array
+                            setCandidates([
+                                ...candidates,
+                                temp
+                            ]);
 
+                            //get office index from name
+                            var officeIndex = -1;
+                            ballotOffices.forEach((ballotOffice,index) => {
+                                if (office === ballotOffice.name) {
+                                    console.log(`${office} found at index ${index}`);
+                                    officeIndex = index;
+                                } else {
+                                    console.log(`${office} not found`);
+                                }
+                            });
+
+                            //save candidates to ballotOffices
+                            ballotOffices[officeIndex].candidates = candidates;
                             console.log(`added candidate to ${office} candidates array`);
 
                             //go to next tab
