@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,9 +19,11 @@ import com.example.test.societies.Society;
 @RequestMapping("/users")
 public class UserController {
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
+		this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
     @GetMapping("/{userId}")
@@ -38,7 +41,9 @@ public class UserController {
     
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
-    	User savedUser = userRepository.save(user);
+    	String hashedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(hashedPassword);
+        User savedUser = userRepository.save(user);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
     

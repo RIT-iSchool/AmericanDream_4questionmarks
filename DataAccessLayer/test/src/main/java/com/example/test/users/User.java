@@ -31,6 +31,9 @@ public class User {
 
     @Column("SocietyID")
     private Integer societyId;
+    
+    @Column("RoleID")
+    private Integer roleId;
 
 	private Society society;
 
@@ -62,23 +65,23 @@ public class User {
      * Gets the user's first name.
      * @return A String representing the user's first name.
      */
-    public String getFirstName() { 
+    public String getfName() { 
         return firstname; 
     }
-
+    
     /**
      * Sets the user's first name.
      * @param firstname The new first name of the user.
      */
-    public void setFirstName(String firstname) {
-        this.firstname = firstname;
+    public void setfName(String firstname) { 
+    	this.firstname = firstname;
     }
 
     /**
      * Gets the user's last name.
      * @return A String representing the user's last name.
      */
-    public String getLastName() { 
+    public String getlName() { 
         return lastname; 
     }
 
@@ -86,7 +89,7 @@ public class User {
      * Sets the user's last name.
      * @param lastname The new last name of the user.
      */
-    public void setLastName(String lastname) {
+    public void setlName(String lastname) {
         this.lastname = lastname;
     }
 
@@ -120,6 +123,35 @@ public class User {
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+    /**
+     * Sets the role ID to which the user belongs.
+     * @param roleId The new role ID for the user.
+     */
+    public Integer getRoleID() {
+        return roleId;
+    }
+    /**
+     * Gets the role ID to which the user belongs.
+     * @return An Integer representing the role ID.
+     */
+    public void setRoleID(Integer roleId) {
+        this.roleId = roleId;
+    }
+    /**
+     * Sets the society ID to which the user belongs.
+     * @param societyId The new society ID for the user.
+     */
+    public void setSocietyID(Integer societyId) {
+        this.societyId = societyId;
+    }
+    
+    /**
+     * Gets the society ID to which the user belongs.
+     * @return An Integer representing the society ID.
+     */
+    public Integer getSocietyID() {
+        return societyId;
     }
 
     /**

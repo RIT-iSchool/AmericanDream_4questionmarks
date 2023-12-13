@@ -31,20 +31,15 @@ export default function CreateAccount({ props }) {
 
     var societies = [
         {
-            id: 0,
-            title: "Clown Society",
-            link: "/",
-        },
-        {
             id: 1,
-            title: "Labor Union",
+            title: "Professional Society",
             link: "/",
         },
         {
             id: 2,
-            title: "Association for Computing Machinery",
+            title: "American Dream",
             link: "/",
-        },
+        }
     ];
     
     const roleMap = {
@@ -54,19 +49,19 @@ export default function CreateAccount({ props }) {
         "American Dream administrators": 4  // ID for 'American Dream administrators'
     };
 
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
+    const [fName, setFirstName] = useState("");
+    const [lName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [roleName, setRoleName] = useState("");
-    const [societyId, setSocietyId] = useState("");
+    const [societyID, setSocietyID] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
 
     console.log(errorMsg);
     
     
     const validateForm = () => {
-        if (email === "" || password.length < 8 || roleName === "" || societyId === "") {
+        if (fName === "" || lName === "" || email === "" || password.length < 8 || roleName === "" || societyID === "") {
             setErrorMsg("Please fill in all required fields");
             return false;
         }
@@ -82,15 +77,16 @@ export default function CreateAccount({ props }) {
 
         if (validateForm()) {
             const newUser = {
-                fName: firstName,
-                lName: lastName,
+                fName,
+                lName,
                 email,
                 password,
-                role: RoleID,
-                societyId
+                roleID,
+                societyID
             };
-
-            axios.post('/createUser', newUser)
+            console.log(societyID);
+            console.log(fName);
+            axios.post('http://localhost:8080/users', newUser)
             .then(response => {
                 console.log('Success:', response.data);
                 // do something else?
@@ -108,13 +104,13 @@ export default function CreateAccount({ props }) {
                 <form onSubmit={createUser}>
                     <TextField
                         label="First Name"
-                        value={firstName}
+                        value={fName}
                         onChange={(e) => setFirstName(e.target.value)}
                         margin="normal"
                     />
                     <TextField
                         label="Last Name"
-                        value={lastName}
+                        value={lName}
                         onChange={(e) => setLastName(e.target.value)}
                         margin="normal"
                     />
@@ -142,7 +138,7 @@ export default function CreateAccount({ props }) {
                         setRoleName(e.target.value)} 
                         required
                         >
-                          {Object.keys(ROLE_MAPPINGS).map((name, index) => (
+                          {Object.keys(roleMap).map((name, index) => (
                             <MenuItem key={index} value={name}>{name}</MenuItem>
                           ))}
                         </Select>
@@ -151,9 +147,9 @@ export default function CreateAccount({ props }) {
                         <InputLabel id="society-select-label">Society</InputLabel>
                         <Select
                             labelId="society-select-label"
-                            value={societyId}
+                            value={societyID}
                             label="Society"
-                            onChange={(e) => setSocietyId(e.target.value)}
+                            onChange={(e) => setSocietyID(e.target.value)}
                             required
                         >
                             {societies.map((society) => (
