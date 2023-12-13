@@ -13,8 +13,6 @@ import { ROLE } from "../utils/role.js";
 import BallotBox from "../components/BallotBox";
 import Page from "../components/Page.js";
 import { Link } from "react-router-dom";
-import Typography from "@mui/material/Typography";
-import { colors } from "../utils/colors.js";
 
 function BallotList() {
 
@@ -24,8 +22,11 @@ function BallotList() {
     useEffect(() => {
         axios.get('http://localhost:8080/ballots')
             .then(response => {
+                console.log("Response data:", response.data);
                 const fetchedBallots = response.data.map(ballot => {
+                    console.log("Ballots:", ballot.ballotId);
                     return {
+                        ...ballot,
                         title: ballot.ballotName,
                         date: `${ballot.electionStart} - ${ballot.electionEnd}`,
                         isFinished: false, // Placeholder
@@ -33,25 +34,28 @@ function BallotList() {
                     };
                 });
                 setBallots(fetchedBallots);
+                console.log("Fetched ballots:", fetchedBallots);
+                
             })
             .catch(error => {
                 console.error('Error fetching data: ', error);
             });
     }, []);
+    
 
     return (
         <Page title="Ballot List">
             <div className="ballot-box-wrapper">
-            {
-                /* Ballot Boxes */
-                ballots.map(
-                    ( ballot, index ) => ( 
-                        <BallotBox key={index} role={role} ballot={ballot} />
-                 ) )
-            }
+            {ballots.map((ballot, index) => {
+            return (
+                <Link key={index} to={`/ballots/${ballot.ballotId}`}>
+                    <BallotBox ballot={ballot} />
+                </Link>
+            );
+            })}
             </div>
         </Page>
-    );
+    );   
 }
 
 export default BallotList;

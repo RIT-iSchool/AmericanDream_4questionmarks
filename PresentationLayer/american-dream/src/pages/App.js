@@ -12,6 +12,11 @@ import { colors } from "../utils/colors.js";
 import { Link } from "react-router-dom";
 import { Stack } from "@mui/material";
 
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import OpenBallot from './OpenBallot';
+import BallotList from './BallotList';
+
+
 const style = {
     display:'flex',
     flexDirection:'column',
@@ -21,6 +26,7 @@ const style = {
 
 function App() {
     return (
+        <Router>
         <Stack direction="column" spacing={6} sx={{...style,paddingTop:'10%'}}>
             
             <Stack direction="column" sx={{...style}}>
@@ -52,7 +58,15 @@ function App() {
                     <Button variant="contained">Go to Create Society</Button>
                 </Link>
             </Stack>
+            
         </Stack>
+            <Routes>
+                <Route path="/" element={<BallotList />} />
+                <Route path="/ballots/:ballotId" element={<OpenBallot />} />
+                <Route path="/ballots/test" element={<OpenBallot />} />
+            </Routes>
+        </Router>
+        
     );
 }
 
