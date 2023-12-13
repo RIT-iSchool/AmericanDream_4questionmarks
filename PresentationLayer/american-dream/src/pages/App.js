@@ -12,6 +12,11 @@ import { colors } from "../utils/colors.js";
 import { Link } from "react-router-dom";
 import { Stack } from "@mui/material";
 
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import OpenBallot from './OpenBallot';
+import BallotList from './BallotList';
+
+
 const style = {
     display:'flex',
     flexDirection:'column',
@@ -21,6 +26,7 @@ const style = {
 
 function App() {
     return (
+        <Router>
         <Stack direction="column" spacing={6} sx={{...style,paddingTop:'10%'}}>
             
             <Stack direction="column" sx={{...style}}>
@@ -33,26 +39,37 @@ function App() {
 
             <Stack direction="column" spacing={2} sx={{...style}}>
 
-                <Link to={"login"}>
+                <Link to={"/login"}>
                     <Button variant="contained">Go to login</Button>
                 </Link>
-                <Link to={"createAccount"}>
+                <Link to={"/createAccount"}>
                     <Button variant="contained">Go to create account</Button>
                 </Link>
-                <Link to={"ballotList"}>
+                <Link to={"/ballotList"}>
                     <Button variant="contained">Go to BallotList</Button>
                 </Link>
-                <Link to={"createBallot"}>
+                <Link to={"/createBallot"}>
                     <Button variant="contained">Create Ballot</Button>
                 </Link>
-                <Link to={"societies"}>
+                <Link to={"/societies"}>
                     <Button variant="contained">Go to Societies</Button>
                 </Link>
                 <Link to={"statistics"}>
                     <Button variant="contained">Statistics</Button>
                 </Link>
+                <Link to={"/createSociety"}>
+                    <Button variant="contained">Go to Create Society</Button>
+                </Link>
             </Stack>
+            
         </Stack>
+            <Routes>
+                <Route path="/" element={<BallotList />} />
+                <Route path="/ballots/:ballotId" element={<OpenBallot />} />
+                <Route path="/ballots/test" element={<OpenBallot />} />
+            </Routes>
+        </Router>
+        
     );
 }
 

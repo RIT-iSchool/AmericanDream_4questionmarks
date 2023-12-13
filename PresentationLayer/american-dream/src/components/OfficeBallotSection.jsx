@@ -7,8 +7,6 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
 import { useState } from "react";
-import Typography from "@mui/material/Typography";
-import { colors } from "../utils/colors.js";
 import * as React from "react";
 import CandidateBox from "./CandidateBox.js";
 import WriteIn from "./WriteIn.js";

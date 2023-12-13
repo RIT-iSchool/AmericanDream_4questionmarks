@@ -8,11 +8,7 @@ import "@fontsource/roboto/700.css";
 
 import * as React from "react";
 import { ROLE } from "../utils/role.js";
-import BallotBox from "../components/BallotBox";
-import Page from "../components/Page.js";
 import { useNavigate } from "react-router-dom";
-import Typography from "@mui/material/Typography";
-import { colors } from "../utils/colors.js";
 import StatBox from "../components/StatBox.jsx";
 
 export default function Statistics() {
@@ -71,12 +67,11 @@ export default function Statistics() {
     }, [role, navigate]);
 
     return (
-        <Page title="Statistics">
             <div className="stat-box-wrapper">
                 {stats.map((stat, index) => {
                     return <StatBox key={index} stat={stat} />;
                 })}
             </div>
-        </Page>
+    
     );
 }

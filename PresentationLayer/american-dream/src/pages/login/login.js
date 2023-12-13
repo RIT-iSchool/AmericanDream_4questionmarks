@@ -7,6 +7,7 @@ import Container from '@mui/material/Container';
 import { Typography } from '@mui/material';
 import { useState } from 'react';
 import { Link } from "react-router-dom";
+import Axios from 'axios';
 
 export default function Login() {
     // TODO: session 
@@ -22,22 +23,38 @@ export default function Login() {
     const [passwordErr, setPasswordErr] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
 
-    const handleLogin = (event) => {
-        event.preventDefault();
-        setEmailErr(false);
-        setPasswordErr(false);
+    const handleLogin = async (event) => {
+    event.preventDefault();
+    setEmailErr(false);
+    setPasswordErr(false);
 
-        if (email == '') {setEmailErr(true)}
-        if (password.length < 8) {
-            setPasswordErr(true);
-            setErrorMsg('Invalid password');
+    if (email === '') {
+        setEmailErr(true);
+    }
+    if (password.length < 8) {
+        setPasswordErr(true);
+        setErrorMsg('Invalid password');
+        return; // Stop the function if validation fails
+    }
+
+    if (!emailErr && !passwordErr) {
+        const loginData = {
+            email: email,
+            password: password
+        };
+
+        try {
+            const response = await Axios.post('http://localhost:8080/login', loginData);
+            const userData = response.data;
+            console.log('User data:', userData);
+            // Do something with the user data here, such as storing it in state.
+        } catch (error) {
+            console.error('Error logging in:', error);
+            setErrorMsg('Login failed. Please check your credentials.');
         }
-        if (email && password && !emailErr && !passwordErr) {
-            setUser({...user,userEmail:email, userPassword:password});
-            setErrorMsg("");
-            console.log('setting user email: '+user.userEmail+' and pw: '+user.userPassword);
-        }
-    };
+    }
+};
+
 
     return (
         <Container maxWidth="sm" className='loginContainer'>

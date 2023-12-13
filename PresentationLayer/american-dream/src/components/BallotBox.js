@@ -11,9 +11,9 @@ import Typography from "@mui/material/Typography";
 import { colors } from "../utils/colors.js";
 import { Link } from "react-router-dom";
 
-export default function BallotBox({ ballot, role }) {
+export default function BallotBox({ ballot, role, editOnClick }) {
+
     return (
-        <Link to={"/openBallot"} style={{ textDecoration: "none" }}>
             <div className={ballot.isFinished ? "ballot-box box-finished" : "ballot-box"}>
                 <Typography variant="h6" color={colors["on-surface"]}>
                     {ballot.title}
@@ -40,7 +40,7 @@ export default function BallotBox({ ballot, role }) {
 
                 {/* See Progress */}
                 {role === ROLE.officer && !ballot.isFinished  && ballot.hasStarted ? (
-                    <Link to={"/login"} style={{ textDecoration: "none" }}>
+                    <Link to={"/progress"} style={{ textDecoration: "none" }}>
                         <Typography
                             variant="p"
                             color={colors["primary"]}
@@ -55,7 +55,7 @@ export default function BallotBox({ ballot, role }) {
 
                 {/* See Results */}
                 {(role === ROLE.officer || role === ROLE.administrator) && ballot.isFinished ? (
-                    <Link to={"/login"} style={{ textDecoration: "none" }}>
+                    <Link to={"/results"} style={{ textDecoration: "none" }}>
                         <Typography
                             variant="p"
                             color={colors["primary"]}
@@ -68,7 +68,7 @@ export default function BallotBox({ ballot, role }) {
                     <></>
                 )}
 
+
             </div>
-        </Link>
     );
 }

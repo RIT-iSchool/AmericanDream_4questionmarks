@@ -8,7 +8,7 @@ section, .section {
 
 
 /* Ballot Box */
-.ballot-box-wrapper, .stat-box-wrapper {
+.ballot-box-wrapper, .stat-box-wrapper, .candidate-results-wrapper {
     width: 90%;
     margin: 2em auto auto auto;
     text-align: center;
@@ -72,14 +72,14 @@ section, .section {
 .button-box-candidate {
     width: 100%;
     text-align: right;
-    padding: 0 1em 0.5em 0;
+    padding: 0.5em 1em 0.5em 1em;
     margin-top: -0.5em;
 }
 .button-box-candidate Button {
     margin: auto 0.5em auto 0.5em;
 }
 .padding { padding: 1em; }
-.candidate-box img {
+img {
     width: 100%;
 }
 .candidate-box-wrapper {
@@ -98,8 +98,71 @@ section, .section {
     margin: auto;
 }
 
+
 /* createBallot.js styles */
 /* date picker calendar view */
 .MuiPickersToolbar-root > .MuiTypography-overline, .MuiDayCalendar-weekDayLabel {
     color: #ffdeab !important;
 }
+
+.full-width {
+    width: 100%;
+}
+.adv-ballot-content-wrapper {
+    width: 90vw;
+}
+
+
+
+/* user row from create new society */
+.user-row {
+    display: flex;
+    flex-direction: row;
+    background-color: var(--md-ref-palette-neutral20);
+    padding: 1em 1em 0em 0em;
+    border-radius: 2em;
+    text-align: left;
+    align-items: center;
+    margin: 1em 0;
+}
+.user-row-name {
+    width: 100%;
+}
+.officer {
+    background-color: var(--surface-variant-dark);
+}
+.avatar-wrapper {
+    margin-right: 1em;
+}
+
+
+/* user row from create new society */
+.user-row {
+    display: flex;
+    flex-direction: row;
+    background-color: var(--md-ref-palette-neutral20);
+    padding: 1em 1em 1em 2em;
+    border-radius: 2em;
+    text-align: left;
+    align-items: center;
+    margin: 1em 0;
+}
+.user-row-name {
+    width: 100%;
+}
+.officer {
+    background-color: var(--surface-variant-dark);
+}
+
+/* Results */
+.candidate-results-wrapper {
+    text-align: left;
+    justify-content: flex-start;
+    margin: 0em auto 2em 0em;
+}
+.result-candidate-box {
+    text-align: left;
+    padding: 1em;
+}
+.img-wrapper-result {width: 20em;}
+.smol { width: 10em; }
