@@ -78,7 +78,6 @@ export default function CreateSociety() {
 		// Construct society object for the request
 		const societyData = {
 			societyName: name,
-			// Add other fields if necessary (like officerId, memberIds, etc.)
 		};
 
 		// Send POST request to create society

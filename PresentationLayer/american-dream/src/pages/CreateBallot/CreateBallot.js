@@ -12,6 +12,9 @@ import Description from './Description';
 import Offices from './Offices';
 import Candidates from './Candidates';
 import Initiatives from './Initiatives';
+import { useNavigate } from "react-router-dom";
+import { ROLE } from '../../utils/role';
+import axios from 'axios';
 
 //TOOD: context functionality
 // import CreateBallotContext from '../../utils/CreateBallotContext';
@@ -42,10 +45,34 @@ offices: [
 */
 
 export default function CreateBallot() {
-    //TODO: transfer to context
+    const navigate = useNavigate();
+    let userRole = ROLE.administrator;
+
+    // role must be admin
+    React.useEffect(() => {
+        console.log("whats my role? ", userRole);
+        console.log("am i admin? ", userRole !== ROLE.administrator);
+        if (userRole !== ROLE.administrator) {
+            console.log("i'm not an admin");
+            navigate("ballotList", { replace: true });
+        }
+    }, [userRole, navigate]);
+
+
     const [description, setDescription] = React.useState({});
     const [ballotOffices, setBallotOffices] = React.useState([]);
     const [ballotInitiatives, setBallotInitiatives] = React.useState([]);
+    const [societies, setSocieties] = React.useState([]);
+
+    React.useEffect(() => {
+        axios.get('http://localhost:8080/societies')
+            .then(response => {
+                setSocieties(response.data); 
+            })
+            .catch(error => {
+                console.error('Error fetching societies:', error);
+            });
+    }, []);
 
     //TODO: disable "future" tabs if current tab inputs arent filled out
     const [tabValue, setTabValue] = React.useState('1');
@@ -68,7 +95,7 @@ export default function CreateBallot() {
 
                 <TabPanel value="1">
                     <Paper sx={{...formContainerStyle}}>
-                        <Description description={description} setDescription={setDescription} setTaValue={setTabValue} />
+                        <Description societyObjs={societies} description={description} setDescription={setDescription} setTaValue={setTabValue} />
                     </Paper>
                 </TabPanel>
 
@@ -86,7 +113,7 @@ export default function CreateBallot() {
 
                 <TabPanel value="4">
                     <Paper sx={{...formContainerStyle}}>
-                        <Initiatives ballotInitiatives={ballotInitiatives} setBallotInitiatives={setBallotInitiatives} setTabValue={setTabValue} />
+                        <Initiatives societies={societies} description={description} ballotOffices={ballotOffices} ballotInitiatives={ballotInitiatives} setBallotInitiatives={setBallotInitiatives} setTabValue={setTabValue} />
                     </Paper>
                 </TabPanel>
             </TabContext>

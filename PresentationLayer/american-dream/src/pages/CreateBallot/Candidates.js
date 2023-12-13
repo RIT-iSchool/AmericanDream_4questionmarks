@@ -118,7 +118,7 @@ export default function Candidates({ballotOffices,setBallotOffices,setTabValue})
                         {/* TODO: image upload */}
                     </Stack>
 
-                    <Button variant="outlined" onClick={() => {//data validation
+                    {/* <Button variant="outlined" onClick={() => {//data validation
                         if(name!=="" && title!=="" && bio!=="") {
                             console.log(`name: ${name}, title: ${title}, bio: ${bio}`);
 
@@ -164,7 +164,7 @@ export default function Candidates({ballotOffices,setBallotOffices,setTabValue})
                         }
                     }}>
                         Add Another Candidate for {office}
-                    </Button>
+                    </Button> */}
                     
                     <Button variant="contained" onClick={() => {
                         //data validation

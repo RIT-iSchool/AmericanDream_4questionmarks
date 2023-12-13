@@ -78,7 +78,7 @@ export default function Offices({ballotOffices,setBallotOffices,setTabValue}) {
                     </Stack>
 
                     {/* TODO: refactor addition into one reusable function */}
-                    <Button variant="outlined" onClick={() => {
+                    {/* <Button variant="outlined" onClick={() => {
                        //data validation
                         if(role!=="" && numVotes>0) {
                             console.log(`role: ${role}, numVotes: ${numVotes}, ballotOffices.length: ${ballotOffices.length}`);
@@ -108,7 +108,7 @@ export default function Offices({ballotOffices,setBallotOffices,setTabValue}) {
                             console.log('invalid form');
                             //TODO: error handling and styling
                         }
-                    }}>Add Another Office</Button>
+                    }}>Add Another Office</Button> */}
 
                     <Button variant="contained" onClick={() => {
                         //data validation

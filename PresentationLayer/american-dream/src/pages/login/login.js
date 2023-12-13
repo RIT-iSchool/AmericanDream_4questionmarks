@@ -8,8 +8,10 @@ import { Typography } from '@mui/material';
 import { useState } from 'react';
 import { Link } from "react-router-dom";
 import Axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+    const navigate = useNavigate();
     // TODO: session 
     const [isNewUser, setIsNewUser] = useState(true);
     const [user,setUser] = useState({
