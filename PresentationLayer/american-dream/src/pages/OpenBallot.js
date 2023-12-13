@@ -13,13 +13,11 @@ import "@fontsource/roboto/700.css";
 import CustomAppBar from "../components/CustomAppBar.js";
 import Typography from "@mui/material/Typography";
 import { colors } from "../utils/colors.js";
-
-import { sampleBallot } from "../utils/sampleBallot.js";
-import * as React from "react";
-
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
+import CandidateBox from "../components/CandidateBox";
+import WriteIn from "../components/WriteIn";
 import InitiativeBox from "../components/InitiativeBox";
 import Button from "@mui/material/Button";
 import CustomTabPanel from "../components/CustomTabPanel.jsx";

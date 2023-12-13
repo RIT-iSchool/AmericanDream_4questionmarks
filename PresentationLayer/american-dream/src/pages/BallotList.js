@@ -12,7 +12,7 @@ import "@fontsource/roboto/700.css";
 import { ROLE } from "../utils/role.js";
 import BallotBox from "../components/BallotBox";
 import Page from "../components/Page.js";
-import AdvancedBallotList from "./AdvancedBallotList.jsx";
+import { Link } from "react-router-dom";
 
 function BallotList() {
 
@@ -41,20 +41,9 @@ function BallotList() {
                 console.error('Error fetching data: ', error);
             });
     }, []);
-  
-
-    const ballotBoxes = ballots.map((ballot, index) => (
-        <BallotBox key={index} role={role} ballot={ballot} editOnClick={false} />
-    ));
+    
 
     return (
-        <Page title="Ballots">
-            {role === ROLE.member || role === ROLE.officer ? (
-                <div className="ballot-box-wrapper">{ballotBoxes}</div>
-            ) : (
-                <AdvancedBallotList role={role} ballots={ballots} ballotBoxes={ballotBoxes}/>
-            )}
-
         <Page title="Ballot List">
             <div className="ballot-box-wrapper">
             {ballots.map((ballot, index) => {
