@@ -33,7 +33,7 @@ const formHeadingStyle = {
 }
 
 export default function Description({societyObjs, description,setDescription,setTabValue}) {
-    const [societies, setSocieties] = React.useState([]);
+
     const [society,setSociety] = React.useState("");
     const [ballotName, setBallotName] = React.useState("");
 
@@ -44,20 +44,14 @@ export default function Description({societyObjs, description,setDescription,set
     const handleSocietyChange = (event) => {
         setSociety(event.target.value);
     };
-
+    
+    const [societies, setSocieties] = React.useState([]);
     //create array of society names to use in .map function
     React.useEffect(() => {
-        var temp = [];
-        
-        societyObjs.forEach(soc => {
-            console.log(`adding ${soc.name} to societies`);
-            temp.push(soc.name);
-            console.log(temp);
-        });
-
-        setSocieties(temp);
-        console.log(societies);
-    },[]);
+    const societyNames = societyObjs.map(soc => soc.societyName);
+    console.log("societyObjs", societyObjs);
+    setSocieties(societyNames);
+    }, [societyObjs]);
 
     const [errors, setErrors] = React.useState({
         society: false,
@@ -70,17 +64,14 @@ export default function Description({societyObjs, description,setDescription,set
                 <Typography variant="h6" style={{...formHeadingStyle}}>Ballot Details</Typography>
                 
                 <Select
-                    error={errors.society}
-                    value={society}
-                    label="Society"
-                    onChange={handleSocietyChange}>
-                    
-                    {societies.map((society) => {
-                        return (
-                            <MenuItem key={society} value={society}>{society}</MenuItem>
-                        )
-                    })}
-                </Select>
+                     error={errors.society}
+                     value={society}
+                     label="Society"
+                     onChange={handleSocietyChange}>
+                     {societies.map(societyName => (
+                         <MenuItem key={societyName} value={societyName}>{societyName}</MenuItem>
+                     ))}
+                 </Select>
 
                 <FormTextField label="Ballot Name" onChange={(event) => {
                     setBallotName(event.target.value)

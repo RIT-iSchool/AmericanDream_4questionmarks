@@ -8,8 +8,10 @@ import { Typography } from '@mui/material';
 import { useState } from 'react';
 import { Link } from "react-router-dom";
 import Axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+    const navigate = useNavigate();
     // TODO: session 
     const [isNewUser, setIsNewUser] = useState(true);
     const [user,setUser] = useState({
@@ -47,7 +49,17 @@ export default function Login() {
             const response = await Axios.post('http://localhost:8080/login', loginData);
             const userData = response.data;
             console.log('User data:', userData);
-            // Do something with the user data here, such as storing it in state.
+             if (userData.roleID === 1) {
+                    navigate('/vote');
+                } else if (userData.roleID === 2) {
+                    navigate('/ballotList');
+                } else if (userData.roleID === 3) {
+                    navigate('/createBallot');
+                } else if (userData.roleID === 4) {
+                    navigate('/createSociety');
+                } else {
+                    //nothing
+                }
         } catch (error) {
             console.error('Error logging in:', error);
             setErrorMsg('Login failed. Please check your credentials.');

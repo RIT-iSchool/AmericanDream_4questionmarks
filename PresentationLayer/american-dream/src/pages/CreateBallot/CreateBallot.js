@@ -58,38 +58,21 @@ export default function CreateBallot() {
         }
     }, [userRole, navigate]);
 
-    //TODO: transfer to context
-    const [societies, setSocieties] = React.useState([
-        {
-            SocietyID:1,
-            SocietyName: 'Clown Society',
-            SocietyDesc: 'funny'
-        },
-        {
-            SocietyID:2,
-            SocietyName: 'Labor Union',
-            SocietyDesc: 'passionate'
-        },
-        {
-            SocietyID:3,
-            SocietyName: 'Association for Computing Machinery',
-            SocietyDesc: 'not funny'
-        },
-    ]);
+
     const [description, setDescription] = React.useState({});
     const [ballotOffices, setBallotOffices] = React.useState([]);
     const [ballotInitiatives, setBallotInitiatives] = React.useState([]);
+    const [societies, setSocieties] = React.useState([]);
 
-    // React.useEffect(() => {
-    //     axios.get('http://localhost:8080/societies')
-    //     .then(response => {
-    //         setSocieties(response);
-    //     })
-    //     .catch(error => {
-            
-    //         console.log('Error:', error);
-    //     })
-    // }, []);
+    React.useEffect(() => {
+        axios.get('http://localhost:8080/societies')
+            .then(response => {
+                setSocieties(response.data); 
+            })
+            .catch(error => {
+                console.error('Error fetching societies:', error);
+            });
+    }, []);
 
     //TODO: disable "future" tabs if current tab inputs arent filled out
     const [tabValue, setTabValue] = React.useState('1');

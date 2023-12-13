@@ -23,8 +23,9 @@ const formHeadingStyle = {
     padding:'4px 0'
 }
 
-export default function Initiatives({societies, description, ballotOffices, ballotInitiatives, setBallotInitiatives, setTabValue}) {
+export default function Initiatives({societies, description, ballotOffices, ballotInitiatives = [], setBallotInitiatives, setTabValue}) {
     const navigate = useNavigate();
+    
 
     const [addInitiative, setAddInitiative] = React.useState(false);
 
@@ -169,7 +170,7 @@ export default function Initiatives({societies, description, ballotOffices, ball
                                 Abstain: true, //TODO: later, set as true for now
                                 BallotID: ballotIdCreated
                             };
-                            axios.post('', newBallotInitiative)
+                            axios.post('http://localhost:8080/ballotInitiatives', newBallotInitiative)
                                 .then(response => {
                                     console.log('Success:', response.data);
                                     initiativeIdCreated = response.data.InitiativeID;
@@ -180,11 +181,11 @@ export default function Initiatives({societies, description, ballotOffices, ball
 
                             //create ballot_opinion and insert into db
                             //TODO: validation that ballot exists
-                            var newBallotOpinion = {
+                            var newBallotOption = {
                                 Description: response1,
                                 InitiativeID: initiativeIdCreated
                             };
-                            axios.post('', newBallotOpinion)
+                            axios.post('http://localhost:8080/ballotOptions', newBallotOption)
                                 .then(response => {
                                     console.log('Success:', response.data);
                                 })
@@ -193,11 +194,11 @@ export default function Initiatives({societies, description, ballotOffices, ball
                                 });
 
                             //do twice since there are two responses
-                            var newBallotOpinion = {
+                            var newBallotOption = {
                                 Description: response2,
                                 InitiativeID: initiativeIdCreated
                             };
-                            axios.post('', newBallotOpinion)
+                            axios.post('', newBallotOption)
                                 .then(response => {
                                     console.log('Success:', response.data);
                                 })
