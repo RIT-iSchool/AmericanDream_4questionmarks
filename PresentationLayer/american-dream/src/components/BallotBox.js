@@ -15,6 +15,8 @@ export default function BallotBox({ ballot, role, editOnClick }) {
 
     return (
         <Link to={editOnClick ? "/editBallot" : ballot.hasStarted & !ballot.isFinished ? "/openBallot" : "/"} style={{ textDecoration: "none" }}>
+        <Link to={editOnClick ? "/editBallot" : ballot.hasStarted & !ballot.isFinished ? "/openBallot" : "/ballotList"} style={{ textDecoration: "none" }}>
+
             <div className={ballot.isFinished ? "ballot-box box-finished" : "ballot-box"}>
                 <Typography variant="h6" color={colors["on-surface"]}>
                     {ballot.title}
@@ -69,7 +71,7 @@ export default function BallotBox({ ballot, role, editOnClick }) {
                     <></>
                 )}
 
+
             </div>
-        </Link>
     );
 }

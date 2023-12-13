@@ -1,3 +1,7 @@
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+
 import "../assets/css/setup.css";
 import "../assets/css/variables.css";
 import "../assets/css/styles.css";
@@ -9,8 +13,10 @@ import "@fontsource/roboto/700.css";
 import CustomAppBar from "../components/CustomAppBar.js";
 import Typography from "@mui/material/Typography";
 import { colors } from "../utils/colors.js";
+
 import { sampleBallot } from "../utils/sampleBallot.js";
 import * as React from "react";
+
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
@@ -20,17 +26,48 @@ import CustomTabPanel from "../components/CustomTabPanel.jsx";
 import OfficeBallotSection from "../components/OfficeBallotSection.jsx";
 import BallotResponsesContext from "../utils/BallotResponsesContext.jsx";
 
-// TODO: will take in a ballot in JSON
-// for voting, write in needs to be id -2
 function OpenBallot() {
-    let ballot = sampleBallot;
-    
-    const {offices, initiatives, clearAll } = React.useContext(BallotResponsesContext);
-
+    const { ballotId } = useParams();
+    console.log("ballotId:", ballotId);
+    const [ballot, setBallot] = useState(null);
+    const { offices, initiatives, clearAll } = React.useContext(BallotResponsesContext);
     const [value, setValue] = React.useState(0);
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
+    const handleChange = (event, newValue) => setValue(newValue);
+
+    useEffect(() => {
+        const id = parseInt(ballotId, 10);
+        if (!isNaN(id)) {
+            axios.get(`http://localhost:8080/ballots/${id}`)
+            
+            .then(response => {
+                const fetchedBallot = response.data;
+
+                // Check and parse offices and initiatives if they are strings
+                if (typeof fetchedBallot.offices === 'string') {
+                    fetchedBallot.offices = JSON.parse(fetchedBallot.offices).offices || [];
+                }
+                if (typeof fetchedBallot.initiatives === 'string') {
+                    fetchedBallot.initiatives = JSON.parse(fetchedBallot.initiatives) || [];
+                }
+
+                // Initialize offices and initiatives as empty arrays if undefined
+                fetchedBallot.offices = fetchedBallot.offices || [];
+                fetchedBallot.initiatives = fetchedBallot.initiatives || [];
+
+                setBallot(fetchedBallot);
+            })
+            .catch(error => {
+                console.error(`Error fetching ballot with id ${ballotId}:`, error);
+            });
+        } else {
+            console.error("Invalid ballotId:", ballotId);
+        }
+    }, [ballotId]);
+
+    if (!ballot) {
+        return <div>Loading...</div>;
+    }
+
 
     return (
         <div>

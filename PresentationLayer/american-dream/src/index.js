@@ -46,6 +46,10 @@ const router = createBrowserRouter([
         element: <OpenBallot />,
     },
     {
+        path: "/ballots/:ballotId",
+        element: <OpenBallot />,
+    },
+    {
         path: "/statistics",
         element: <Statistics />,
     },
