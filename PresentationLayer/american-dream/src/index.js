@@ -13,6 +13,7 @@ import Societies from "./pages/Societies";
 import OpenBallot from "./pages/OpenBallot";
 import { BallotResponsesProvider } from "./utils/BallotResponsesContext";
 import Statistics from "./pages/Statistics";
+import CreateBallot from "./pages/CreateBallot/CreateBallot";
 import CreateSociety from "./pages/CreateNewSociety";
 import Progress from "./pages/Progress";
 import Results from "./pages/Results";
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
     {
       path: "/test",
       element: <App />
+    },
+    {
+        path: "/createBallot",
+        element: <CreateBallot />
     },
     {
         path: "/createAccount",
