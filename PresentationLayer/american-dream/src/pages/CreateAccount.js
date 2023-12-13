@@ -7,10 +7,8 @@ import { Typography } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as React from "react";
-
 import axios from 'axios';
 import Box from "@mui/material/Box";
-
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -18,7 +16,7 @@ import Select from "@mui/material/Select";
 import { ROLE } from "../utils/role";
 
 export default function CreateAccount({ props }) {
-    let userRole = ROLE.administrator; // TODO: get from database
+    let userRole = ROLE.administrator; // get from database
     const navigate = useNavigate();
 
     // role must be admin
@@ -101,39 +99,74 @@ export default function CreateAccount({ props }) {
     };
 
   return (
-        <Container maxWidth="sm" className="loginContainer">
+                <Container maxWidth="sm" className="loginContainer">
             <Stack spacing={10} direction="column" sx={{ textAlign: "center" }}>
+                <div>
+                    <img src={logo} className="logo" alt="4 question marks logo" />
+                </div>
+                
                 <form onSubmit={createUser}>
-                    <TextField
-                        label="First Name"
-                        value={fName}
-                        onChange={(e) => setFirstName(e.target.value)}
-                        margin="normal"
-                    />
-                    <TextField
-                        label="Last Name"
-                        value={lName}
-                        onChange={(e) => setLastName(e.target.value)}
-                        margin="normal"
-                    />
-                    <TextField
-                        label="Email"
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                        margin="normal"
-                    />
-                    <TextField
-                        label="Password"
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        margin="normal"
-                    />
+                    <Stack direction="column" spacing={4}>
+                        <Stack direction="column" spacing={0}>
+                            <Typography variant="h2" color="primary">
+                                Create a New User
+                            </Typography>
+                            {errorMsg && (
+                                <Typography
+                                    variant="subtitle1"
+                                    color="error"
+                                    sx={{ height: "24px" }}
+                                >
+                                    {errorMsg}
+                                </Typography>
+                            )}
+                        </Stack>
+
+                        <Stack direction="row" spacing={2} sx={{ justifyContent: "center", width: '100%' }}>
+                        <TextField
+                            label="First Name"
+                            value={fName}
+                            onChange={(e) => setFirstName(e.target.value)}
+                            margin="normal"
+                            InputLabelProps={{ style: { color: '#DBC3A1' } }}                         
+                        />
+                
+                       <TextField
+                           label="Last Name"
+                           value={lName}
+                           onChange={(e) => setLastName(e.target.value)}
+                           margin="normal"
+                           InputLabelProps={{ style: { color: '#DBC3A1' } }}
+                       />
+                    </Stack>
+                    <Stack direction="row" spacing={2} sx={{ justifyContent: "center", width: '100%' }}>
+                      <TextField
+                          label="Email"
+                          type="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          required
+                          margin="normal"
+                          InputLabelProps={{ style: { color: '#DBC3A1' } }}
+                      />
+                      <TextField
+                          label="Password"
+                          type="password"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          required
+                          margin="normal"
+                          InputLabelProps={{ style: { color: '#DBC3A1' } }}
+                      />
+                      </Stack>
+                    
                     <FormControl fullWidth margin="normal">
-                        <InputLabel id="role-select-label">Role</InputLabel>
+                        <InputLabel 
+                          id="role-select-label"
+                          sx={{ color: '#DBC3A1' }}
+                          >
+                          Role
+                        </InputLabel>
                         <Select 
                         value={roleName} 
                         onChange={(e) => 
@@ -146,7 +179,10 @@ export default function CreateAccount({ props }) {
                         </Select>
                     </FormControl>
                     <FormControl fullWidth margin="normal">
-                        <InputLabel id="society-select-label">Society</InputLabel>
+                        <InputLabel 
+                            id="society-select-label"
+                            sx={{ color: '#DBC3A1' }}
+                            >Society</InputLabel>
                         <Select
                             labelId="society-select-label"
                             value={societyID}
@@ -164,9 +200,12 @@ export default function CreateAccount({ props }) {
                     {errorMsg && (
                         <Typography color="error" margin="normal">{errorMsg}</Typography>
                     )}
-                    <Button variant="contained" type="submit" sx={{ mt: 2 }}>
-                        Create User
-                    </Button>
+                    <Stack direction={"column"} spacing={2}>
+                        <Button variant="contained" type="submit" sx={{ mt: 2 }}>
+                            Create User
+                        </Button>
+                    </Stack>
+                    </Stack>
                 </form>
             </Stack>
         </Container>
