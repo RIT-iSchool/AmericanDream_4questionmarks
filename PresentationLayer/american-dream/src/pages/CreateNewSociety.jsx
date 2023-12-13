@@ -85,7 +85,7 @@ export default function CreateSociety() {
 		axios.post('http://localhost:8080/societies', societyData)
 			.then(response => {
 				console.log('Society Created:', response.data);
-				// Handle further logic on successful creation (like redirecting)
+				navigate('/societies'); // Redirect to the desired page
 			})
 			.catch(error => {
 				console.error('Error creating society:', error);
