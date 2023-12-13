@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.test.users.User;
+
 
 
 @RestController
@@ -21,6 +23,11 @@ public class SocietyController {
 
     public SocietyController(SocietyRepository societyRepository) {
         this.societyRepository = societyRepository;
+    }
+    
+    @GetMapping("/{societyId}")
+    public Society getSocietyById(@PathVariable int societyId) {
+        return societyRepository.getSocietyById(societyId);
     }
     
     @GetMapping

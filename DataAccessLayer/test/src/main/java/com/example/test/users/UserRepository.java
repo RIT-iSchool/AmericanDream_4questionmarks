@@ -26,6 +26,8 @@ public interface UserRepository extends CrudRepository<User, Integer> {
 	@Query("SELECT * FROM User u WHERE u.SocietyID = :societyId AND (lower(u.fName) LIKE lower(concat('%', :searchTerm, '%')) OR lower(u.lName) LIKE lower(concat('%', :searchTerm, '%')))")
 	List<User> findBySocietyIdAndSearchTerm(@Param("societyId") int societyId, @Param("searchTerm") String searchTerm);
 
+    @Query("SELECT * FROM User u WHERE u.RoleID = :roleId")
+    List<User> findByRoleId(@Param("roleId") int roleId);
 }
 
 

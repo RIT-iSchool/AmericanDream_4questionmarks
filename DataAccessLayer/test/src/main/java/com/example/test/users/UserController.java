@@ -54,4 +54,10 @@ public class UserController {
         }
         return userRepository.findBySocietyIdAndSearchTerm(societyId, searchTerm);
     }
+    
+    @GetMapping("/role/{roleId}")
+    public ResponseEntity<List<User>> getUsersByRole(@PathVariable Integer roleId) {
+        List<User> users = userRepository.findByRoleId(roleId);
+        return ResponseEntity.ok(users);
+    }
 }
