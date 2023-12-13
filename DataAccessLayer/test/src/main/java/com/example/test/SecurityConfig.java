@@ -37,8 +37,6 @@ public class SecurityConfig {
 	                .requestMatchers("/ballots/**").permitAll()
 	                .requestMatchers("/ballotInitiatives").permitAll()
 	                .requestMatchers("/ballotInitiatives/*").permitAll()
-	                .requestMatchers("/ballotInitiatives").permitAll()
-	                .requestMatchers("/ballotInitiatives/*").permitAll()
 	                .requestMatchers("/ballotOptions").permitAll()
 	                .requestMatchers("/ballotOptions/*").permitAll()
 	                .requestMatchers("/role/**").permitAll()

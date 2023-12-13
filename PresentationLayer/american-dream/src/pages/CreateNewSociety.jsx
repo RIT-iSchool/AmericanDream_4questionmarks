@@ -58,9 +58,9 @@ export default function CreateSociety() {
 	const fetchUsersByRole = (roleId) => {
 		axios.get(`http://localhost:8080/users/role/${roleId}`)
 			.then(response => {
-				if (roleId === 2) { // 2 is the role ID for officers
+				if (roleId === 2) { // Assuming 2 is the role ID for officers
 					setOfficers(response.data);
-				} else if (roleId === 1) { // 1 is the role ID for members
+				} else if (roleId === 1) { // Assuming 1 is the role ID for members
 					setMembers(response.data);
 				}
 			})
