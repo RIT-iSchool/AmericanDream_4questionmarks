@@ -1,21 +1,9 @@
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import Tab from '@mui/material/Tab';
-import TabContext from '@mui/lab/TabContext';
-import TabList from '@mui/lab/TabList';
-import TabPanel from '@mui/lab/TabPanel';
-import Page from '../../components/Page';
 import { Button, Paper, Stack, TextField } from '@mui/material';
 import { colors } from '../../utils/colors';
 import styled from "@emotion/styled";
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import dayjs from 'dayjs'
 import "../../assets/css/styles.css";
-import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
-import Checkbox from '@mui/material/Checkbox';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { useEffect } from 'react';
@@ -29,31 +17,35 @@ const FormTextField = styled(TextField)({
     },
 });
 
-const formContainerStyle = {
-    padding: '40px 50px',
-    borderRadius: '10px',
-    backgroundColor: colors["purple"],
-  }
-
 const formHeadingStyle = {
     borderBottom:`1px solid ${colors["surface-variant"]}`, 
     color: colors["on-background"], 
     padding:'4px 0'
 }
 
-export default function Candidates() {
-    //TOOD: load offices from previously created offices
-    var offices = ['President', 'Vice President', 'Secretary'];
+const getOffices = (ballotOffices) => {
+    var offices = [];
 
-    const [office, setOffice] = React.useState('');
+    ballotOffices.forEach(ballotOffice => {
+        offices.push(ballotOffice.name)
+    });
+
+    return offices;
+}
+
+export default function Candidates({ballotOffices,setBallotOffices,setTabValue}) {
+    const offices = getOffices(ballotOffices);
+    
+    const [office, setOffice] = React.useState({
+        name: '',
+        id: '',
+    });
     const handleOfficeChange = (event) => {
         setOffice(event.target.value);
     }
 
-    const [candidate, setCandidate] = React.useState({});
     const [candidates, setCandidates] = React.useState([]);
     const [addCandidate, setAddCandidate] = React.useState(false);
-    const [candidateAdded, setCandidateAdded] = React.useState(false);
 
     const [name, setName] = React.useState('');
     const handleNameChange = (event) => {
@@ -112,7 +104,10 @@ export default function Candidates() {
         <Stack direction="column" spacing={5}>
             <Stack direction="column" spacing={3}>
                 <Stack direction="row" spacing={1} alignItems="flex-end" style={{...formHeadingStyle}}>
-                    <Typography variant="h6">Candidate {office ? `for ${office}` : ""}</Typography>
+                    <Typography variant="h6">Candidate {office.name!=="" ? `for ${office.name}` : ""}</Typography>
+                    {office.name ? 
+                        <Typography variant="body2" style={{paddingBottom:'4px'}}>{'(' + candidates.length +' total)'}</Typography>
+                    : ""}
                 </Stack>
 
                 <Select
@@ -122,36 +117,70 @@ export default function Candidates() {
                     
                     {offices.map((office) => {
                         return (
-                            <MenuItem value={office}>{office}</MenuItem>
+                            <MenuItem key={office} value={office}>{office}</MenuItem>
                         )
                     })}
                 </Select>
 
-                {office!="" &&
+                {office.name!="" &&
                 <>
                     <Stack direction="row" spacing={1} alignItems="flex-end" style={{...formHeadingStyle}}>
                         <Typography variant="h6">Candidate Details</Typography>
+                    <Typography variant="body2" style={{paddingBottom:'4px'}}>{'#' + (candidates.length+1)}</Typography>
                     </Stack>
                     
                     <Stack direction='column' spacing={4}>
-                        <FormTextField label="Name" onChange={handleNameChange} />
-                        <FormTextField label="Title" onChange={handleTitleChange} />
-                        <FormTextField label="Bio" onChange={handleBioChange} />
+                        <FormTextField label="Name" onChange={handleNameChange} error={errors.name} />
+                        <FormTextField label="Title" onChange={handleTitleChange} error={errors.title} />
+                        <FormTextField label="Bio" onChange={handleBioChange} errors={errors.bio} />
                         {/* TODO: image upload */}
                     </Stack>
 
-                    <Button variant="contained" onClick={() => {setAddCandidate(true)}}>
-                        {candidates.length > 1 ? `Add Another Candidate for ${office}` : `Add Candidate for ${office}`}
+                    <Button variant="outlined" onClick={() => {setAddCandidate(true)}}>
+                        Add Another Candidate for {office.name}
+                    </Button>
+                    
+                    <Button variant="contained" onClick={() => {
+                        //data validation
+                        if(name!=="" && title!=="" && bio!=="") {
+                            console.log(`name: ${name}, title: ${title}, bio: ${bio}`);
+
+                            //make temp candidate obj
+                            var temp = {
+                                id: `c${ballotOffices[0].candidates.length+1}`,
+                                name: name,
+                                position: title,
+                                bio: bio
+                            }
+
+                            console.log('candidate array');
+                            console.log(temp);
+
+                            //add to ballot offices
+                            // setBallotOffices([
+                            //     ...ballotOffices,
+                            //     office
+                            // ]);
+
+                            console.log(`added candidate to ${office} candidates array`);
+
+                            //go to next tab
+                            //setTabValue('3');
+                        } else {
+                            console.log('invalid form');
+                            //TODO: error handling and styling
+                        }
+                    }}>
+                        Save
                     </Button>
                 </>
                 }
-
             </Stack>
 
-            <Stack direction="row-reverse">
-                <Button>next</Button>
+            {/* <Stack direction="row-reverse">
+                <Button>done</Button>
                 <Button>back</Button>
-            </Stack>
+            </Stack> */}
         </Stack>
     )
 }

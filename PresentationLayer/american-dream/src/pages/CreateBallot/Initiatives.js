@@ -1,23 +1,9 @@
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import Tab from '@mui/material/Tab';
-import TabContext from '@mui/lab/TabContext';
-import TabList from '@mui/lab/TabList';
-import TabPanel from '@mui/lab/TabPanel';
-import Page from '../../components/Page';
-import { Button, Paper, Stack, TextField } from '@mui/material';
+import { Button, Stack, TextField } from '@mui/material';
 import { colors } from '../../utils/colors';
 import styled from "@emotion/styled";
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import dayjs from 'dayjs'
 import "../../assets/css/styles.css";
-import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
-import Checkbox from '@mui/material/Checkbox';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
 import { useEffect } from 'react';
 
 const FormTextField = styled(TextField)({
@@ -29,41 +15,34 @@ const FormTextField = styled(TextField)({
     },
 });
 
-const formContainerStyle = {
-    padding: '40px 50px',
-    borderRadius: '10px',
-    backgroundColor: colors["purple"],
-  }
-
 const formHeadingStyle = {
     borderBottom:`1px solid ${colors["surface-variant"]}`, 
     color: colors["on-background"], 
     padding:'4px 0'
 }
 
-export default function Initiatives() {
-    //Test data
-    // var initiatives = [
-    //     {
-    //         initiativeId: 1,
-    //         description: "initiative description 1",
-    //         abstrain: true,
-    //         ballotId: 1,
-    //     },
-    //     {
-    //         initiativeId: 2,
-    //         description: "initiative description 2",
-    //         abstrain: true,
-    //         ballotId: 2,
-    //     },
-    // ];
-
-    
-    const [initiative, setInitiative] = React.useState('');
-    const [initiatives, setInitiatives] = React.useState([]);
+export default function Initiatives({ballotInitiatives, setBallotInitiatives, setTabValue}) {
     const [addInitiative, setAddInitiative] = React.useState(false);
 
+    const [initiative, setInitiative] = React.useState('');
+    const handleInitiativeChange = (event) => {
+        setInitiative(event.target.value)
+    }
+
+    const [response1, setResponse1] = React.useState('');
+    const handleResponse1Change = (event) => {
+        setResponse1(event.target.value)
+    }
+
+    const [response2, setResponse2] = React.useState('');
+    const handleResponse2Change = (event) => {
+        setResponse2(event.target.value)
+    }
+
     const [errors, setErrors] = React.useState({
+        initiative: false,
+        response1: false,
+        response2: false,
     });
 
     return (
@@ -71,26 +50,92 @@ export default function Initiatives() {
             <Stack direction="column" spacing={3}>
                 <Stack direction="row" spacing={1} alignItems="flex-end" style={{...formHeadingStyle}}>
                     <Typography variant="h6">Initiative</Typography>
-                    <Typography variant="body2" style={{paddingBottom:'4px'}}>{'(' + initiatives.length +' total)'}</Typography>
+                    <Typography variant="body2" style={{paddingBottom:'4px'}}>{'(' + ballotInitiatives.length +' total)'}</Typography>
                 </Stack>
 
-                {addInitiative &&
-                    <>
-                    <FormTextField label="Initiative" />
-                    <FormTextField label="Response #1" />
-                    <FormTextField label="Response #2" />
-                    </>
+                {ballotInitiatives.length === 0 && !addInitiative &&
+                    <Button variant="outlined" onClick={() => {
+                        setAddInitiative(true)
+                        console.log('ballotInitiatives:');
+                        console.log(ballotInitiatives);
+                    }}> Add an initiative</Button>
                 }
 
-                <Button variant="contained" onClick={() => {setAddInitiative(true)}}>
-                    {initiatives.length > 1 ? "Add Another Initiative" : "Add Initiative"}
-                </Button>
+                {addInitiative &&
+                <>
+                    <FormTextField label="Initiative" onChange={handleInitiativeChange} error={errors.initiative} />
+                    <FormTextField label="Response #1" onChange={handleResponse1Change} error={errors.response1} />
+                    <FormTextField label="Response #2" onChange={handleResponse2Change} error={errors.response2} />
+
+                    {/* TODO: refactor addition into one reusable function */}
+                    <Button variant="outlined" onClick={() => {
+                        //data validation
+                        if(initiative!=="" && response1!=="" && response2!=="") {
+                            console.log(`initiative: ${initiative}, response: ${response1}, response2: ${response2}`);
+
+                            //make temp initiative obj
+                            var temp  = {
+                                description: initiative,
+                                //TOOD: abstain - default to true for now
+                                response1: response1,
+                                response2: response2
+                            }
+
+                            //add to iniatiatives array
+                            setBallotInitiatives([
+                                ...ballotInitiatives,
+                                temp
+                            ]);
+
+                            console.log('added initiative to ballotInitiatives array');
+
+                            //reset and clear current inputs
+                        } else {
+                            console.log('invalid form');
+                            //TODO: error handling and styling
+                        }
+                    }}>
+                        Add Another Initiative
+                    </Button>
+
+                    <Button variant="contained" onClick={() => {
+                        //data validation
+                        if(initiative!=="" && response1!=="" && response2!=="") {
+                            console.log(`initiative: ${initiative}, response: ${response1}, response2: ${response2}`);
+
+                            //make temp initiative obj
+                            var temp  = {
+                                description: initiative,
+                                //TOOD: abstain - default to true for now
+                                response1: response1,
+                                response2: response2
+                            }
+
+                            //add to iniatiatives array
+                            setBallotInitiatives([
+                                ...ballotInitiatives,
+                                temp
+                            ]);
+
+                            console.log('added initiative to ballotInitiatives array');
+
+                            //create ballot done
+                            //redirect to ballot list
+                        } else {
+                            console.log('invalid form');
+                            //TODO: error handling and styling
+                        }
+                    }}>
+                        Save
+                    </Button>
+                </>
+                }
             </Stack>
 
-            <Stack direction="row-reverse">
+            {/* <Stack direction="row-reverse">
                 <Button>done</Button>
                 <Button>back</Button>
-            </Stack>
+            </Stack> */}
         </Stack>
     )
 }
