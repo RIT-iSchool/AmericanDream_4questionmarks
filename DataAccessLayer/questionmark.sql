@@ -249,15 +249,27 @@ VALUES ('John', 'Smith', 'johnsmith@example.com', 'password123', 1, 1);
 INSERT INTO User (fName, lName, Email, Password, SocietyID, RoleID)
 VALUES ('Mary', 'Smith', 'marysmith@example.com', '$2a$10$tY0cgcloufJdzz0ZYlcdpeLD.OFstEBSlC69RcTwLz2ILsv.wke7G', 1, 1);
 
+INSERT INTO User (fName, lName, Email, Password, SocietyID, RoleID)
+VALUES ('J', 'Smith', 'jsmith@example.com', '$2a$10$tY0cgcloufJdzz0ZYlcdpeLD.OFstEBSlC69RcTwLz2ILsv.wke7G', 1, 2);
+
+INSERT INTO User (fName, lName, Email, Password, SocietyID, RoleID)
+VALUES ('M', 'Smith', 'msmith@example.com', '$2a$10$tY0cgcloufJdzz0ZYlcdpeLD.OFstEBSlC69RcTwLz2ILsv.wke7G', 1, 3);
+
+INSERT INTO User (fName, lName, Email, Password, SocietyID, RoleID)
+VALUES ('M', 'Smith', 'smith@example.com', '$2a$10$tY0cgcloufJdzz0ZYlcdpeLD.OFstEBSlC69RcTwLz2ILsv.wke7G', 1, 4);
+
+
 -- Insert into Response Table
 INSERT INTO Response (OptionID, UserID)
 VALUES (1, 1);
 
-INSERT INTO Response (OptionID, UserID)
+INSERT INTO Response (OptionID, UserID) 
 VALUES (2, 2);
 
 
 
 -- Insert into Vote Table
 INSERT INTO Vote (CandidateID, CandidateName, Abstain, VoteType, OfficeJSONID, BallotID, UserID)
-VALUES (2, 'John Smith', FALSE, 'NotWriteIn', 2, 1, 2);
+VALUES (1, 'John Smith', FALSE, 'NotWriteIn', 2, 1, 1);
+INSERT INTO Vote (CandidateID, CandidateName, Abstain, VoteType, OfficeJSONID, BallotID, UserID)
+VALUES (2, 'Mary Smith', FALSE, 'NotWriteIn', 2, 1, 2);
