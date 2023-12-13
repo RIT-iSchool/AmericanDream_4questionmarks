@@ -242,7 +242,7 @@ INSERT INTO Roles (RoleName) VALUES ('OFFICER');
 INSERT INTO Roles (RoleName) VALUES ('EMPLOYEE');
 INSERT INTO Roles (RoleName) VALUES ('ADMIN');
 
--- Insert into User Table
+-- Insert into User Table, TIP: John's password is not encoded and fails
 INSERT INTO User (fName, lName, Email, Password, SocietyID, RoleID)
 VALUES ('John', 'Smith', 'johnsmith@example.com', 'password123', 1, 1);
 
