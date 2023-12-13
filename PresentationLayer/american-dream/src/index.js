@@ -17,7 +17,6 @@ import CreateBallot from "./pages/CreateBallot/CreateBallot";
 import CreateSociety from "./pages/CreateNewSociety";
 import Progress from "./pages/Progress";
 import Results from "./pages/Results";
-import Initiatives from "./pages/CreateBallot/Initiatives";
 
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -71,10 +70,6 @@ const router = createBrowserRouter([
     {
         path: "/results",
         element: <Results />,
-    },
-    {
-        path: "/Initiatives",
-        element: <Initiatives />,
     }
 
 ]);

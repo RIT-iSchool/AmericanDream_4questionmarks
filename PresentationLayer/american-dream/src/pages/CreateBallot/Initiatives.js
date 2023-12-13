@@ -143,7 +143,7 @@ export default function Initiatives({societies, description, ballotOffices, ball
                             var newBallot = {
                                 ElectionStart: description.start.format("YYYY MM DD"),
                                 ElectionEnd: description.end.format("YYYY MM DD"),
-                                Offices: {offices: ballotOffices},
+                                Offices: ballotOffices,
                                 SocietyID: societyId,
                             };
 
@@ -194,7 +194,7 @@ export default function Initiatives({societies, description, ballotOffices, ball
                                 });
 
                             //do twice since there are two responses
-                            var newBallotOption = {
+                            newBallotOption = {
                                 Description: response2,
                                 InitiativeID: initiativeIdCreated
                             };
