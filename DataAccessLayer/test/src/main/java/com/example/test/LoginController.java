@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.test.LoginService;
+import com.example.test.users.User;
 
 
 @RestController
@@ -22,6 +24,7 @@ public class LoginController {
 	
     @Autowired
     private LoginService loginService;
+    private BCryptPasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user) {
