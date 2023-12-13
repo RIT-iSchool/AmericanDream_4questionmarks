@@ -97,7 +97,6 @@ export default function Societies() {
                     console.error('There was an error searching the societies', error);
                 });
         } else {
-            // fetch all societies when search term is cleared
             axios.get('http://localhost:8080/societies')
                 .then(response => {
                     setSocieties(response.data);

@@ -86,53 +86,62 @@ function OpenBallot() {
                         variant="scrollable"
                         scrollButtons="auto"
                     >
-                        {/* Candidate Positions */}
-                        {ballot.offices.map((position, index) => (
-                            <Tab
-                                key={index}
-                                label={position.title}
-                                {...a11yProps(index)}
-                            />
-                        ))}
-                        {/* Initiatives */}
-                        {ballot.initiatives.map((initiative, index) => (
-                            <Tab
-                                key={index}
-                                label={`Initiative ${index + 1}`}
-                                {...a11yProps(index)}
-                            />
-                        ))}
+                        {
+                            /* Candidate Positions */
+                            ballot.offices.map((position, index) => (
+                                <Tab
+                                    key={index}
+                                    label={position.title}
+                                    {...a11yProps(index)}
+                                />
+                            ))
+                        }
+                        {
+                            /* Initiatives */
+                            ballot.initiatives.map((initiative, index) => (
+                                <Tab
+                                    key={index}
+                                    label={`Initiative ${index + 1}`}
+                                    {...a11yProps(index)}
+                                />
+                            ))
+                        }
                     </Tabs>
                 </Box>
 
-                {/* Candidate Positions Tab Content */}
-                {ballot.offices.map((office, index) => (
-                    <OfficeBallotSection 
-                        key={index}
-                        index={index}
-                        value={value}
-                        office={office}
-                    />
-                ))}
-                {/* Initiatives Tab Content */}
-                {ballot.initiatives.map((initiative, index) => (
-                    <CustomTabPanel
-                        key={index}
-                        value={value}
-                        index={index + ballot.offices.length}
-                    >
-                        <InitiativeBox
-                            initiative={initiative}
+                {
+                    /* Candidate Positions Tab Content */
+                    ballot.offices.map((office, index) => (
+                        <OfficeBallotSection 
+                            key={index}
                             index={index}
+                            value={value}
+                            office={office}
                         />
-                    </CustomTabPanel>
-                ))}
+                    ))
+                }
+                {
+                    /* Initiatives Tab Content */
+                    ballot.initiatives.map((initiative, index) => (
+                        <CustomTabPanel
+                            key={index}
+                            value={value}
+                            index={index + ballot.offices.length}
+                        >
+                            <InitiativeBox
+                                initiative={initiative}
+                                index={index}
+                            />
+                        </CustomTabPanel>
+                    ))
+                }
 
                 <br />
                 <br />
                 <Button
                     variant={"contained"}
                     onClick={() => {
+                        // send vote off
                         console.log("offices: ", offices);
                         console.log("initiatives: ", initiatives);
                         // clearAll();
@@ -151,5 +160,7 @@ function a11yProps(index) {
         "aria-controls": `simple-tabpanel-${index}`,
     };
 }
+
+
 
 export default OpenBallot;

@@ -40,6 +40,12 @@ CREATE TABLE Ballot_Option (
     FOREIGN KEY (InitiativeID) REFERENCES Ballot_Initiative(InitiativeID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- Roles Table
+CREATE TABLE Roles (
+    RoleID INT AUTO_INCREMENT PRIMARY KEY,
+    RoleName VARCHAR(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 -- User Table
 CREATE TABLE User (
     UserID INT AUTO_INCREMENT PRIMARY KEY,
@@ -48,7 +54,9 @@ CREATE TABLE User (
     Email VARCHAR(100) NOT NULL UNIQUE,
     Password VARCHAR(60) NOT NULL,
     SocietyID INT NOT NULL,
-    FOREIGN KEY (SocietyID) REFERENCES Society(SocietyID)
+    RoleID INT NOT NULL,
+    FOREIGN KEY (SocietyID) REFERENCES Society(SocietyID),
+    FOREIGN KEY (RoleID) REFERENCES Roles(RoleID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Response Table
@@ -57,14 +65,6 @@ CREATE TABLE Response (
     OptionID INT NOT NULL,
     UserID INT NOT NULL,
     FOREIGN KEY (OptionID) REFERENCES Ballot_Option(OptionID),
-    FOREIGN KEY (UserID) REFERENCES User(UserID)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- Roles Table
-CREATE TABLE Roles (
-    RoleID INT AUTO_INCREMENT PRIMARY KEY,
-    RoleName VARCHAR(100) NOT NULL,
-    UserID INT NOT NULL,
     FOREIGN KEY (UserID) REFERENCES User(UserID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -134,7 +134,7 @@ END //
 -- Add User
 CREATE PROCEDURE AddUser(IN fName VARCHAR(50), IN lName VARCHAR(50), IN email VARCHAR(100), IN password VARCHAR(50), IN societyID INT)
 BEGIN
-    INSERT INTO User (fName, lName, Email, Password, SocietyID) VALUES (fName, lName, email, password, societyID);
+    INSERT INTO User (fName, lName, Email, Password, RoleID, SocietyID) VALUES (fName, lName, email, password, roleID, societyID);
 END //
 
 -- Submit Ballot Response
@@ -167,16 +167,16 @@ BEGIN
     SELECT * FROM Society;
 END //
 
--- List All Ballots
-CREATE PROCEDURE ListAllBallots()
-BEGIN
-    SELECT * FROM Ballot;
-END //
-
 -- List All Users
 CREATE PROCEDURE ListAllUsers()
 BEGIN
     SELECT * FROM User;
+END //
+
+-- List All Ballots
+CREATE PROCEDURE ListAllBallots()
+BEGIN
+    SELECT * FROM Ballot;
 END //
 
 DELIMITER ;
@@ -185,10 +185,13 @@ DELIMITER ;
 INSERT INTO Society (SocietyName, SocietyDesc)
 VALUES ('American Society', 'A society for hamburger people');
 
+INSERT INTO Society (SocietyName, SocietyDesc)
+VALUES ('Clown Society', 'A second joke');
+
 -- Insert into Ballot Table with JSON data
 INSERT INTO Ballot (BallotName, ElectionStart, ElectionEnd, Offices, SocietyID)
 VALUES (
-	'BallotNamed',
+    'BallotNamed',
     '2023-11-01',
     '2023-12-01',
     '{
@@ -223,25 +226,38 @@ VALUES (
 INSERT INTO Ballot_Initiative (Description, Abstain, BallotID)
 VALUES ('Initiative for Net Neutrality', FALSE, 1);
 
+INSERT INTO Ballot_Initiative (Description, Abstain, BallotID)
+VALUES ('Initiative for Test', FALSE, 1);
+
 -- Insert into Ballot_Option Table
 INSERT INTO Ballot_Option (Description, InitiativeID)
 VALUES ('Option 1 for Initiative', 1);
 
--- Insert into User Table
-INSERT INTO User (fName, lName, Email, Password, SocietyID)
-VALUES ('John', 'Smith', 'johnsmith@example.com', 'password123', 1);
+INSERT INTO Ballot_Option (Description, InitiativeID)
+VALUES ('Option 2 for Initiative 2', 2);
 
-INSERT INTO User (fName, lName, Email, Password, SocietyID)
-VALUES ('Mary', 'Smith', 'marysmith@example.com', '$2a$10$tY0cgcloufJdzz0ZYlcdpeLD.OFstEBSlC69RcTwLz2ILsv.wke7G', 1);
+-- Insert into Roles Table
+INSERT INTO Roles (RoleName) VALUES ('MEMBER');
+INSERT INTO Roles (RoleName) VALUES ('OFFICER');
+INSERT INTO Roles (RoleName) VALUES ('EMPLOYEE');
+INSERT INTO Roles (RoleName) VALUES ('ADMIN');
+
+-- Insert into User Table
+INSERT INTO User (fName, lName, Email, Password, SocietyID, RoleID)
+VALUES ('John', 'Smith', 'johnsmith@example.com', 'password123', 1, 1);
+
+INSERT INTO User (fName, lName, Email, Password, SocietyID, RoleID)
+VALUES ('Mary', 'Smith', 'marysmith@example.com', '$2a$10$tY0cgcloufJdzz0ZYlcdpeLD.OFstEBSlC69RcTwLz2ILsv.wke7G', 1, 1);
 
 -- Insert into Response Table
 INSERT INTO Response (OptionID, UserID)
 VALUES (1, 1);
 
--- Insert into Roles Table
-INSERT INTO Roles (RoleName, UserID) VALUES ('ROLE_ADMIN', 1);
-INSERT INTO Roles (RoleName, UserID) VALUES ('ROLE_USER', 2);
+INSERT INTO Response (OptionID, UserID)
+VALUES (2, 2);
+
+
 
 -- Insert into Vote Table
 INSERT INTO Vote (CandidateID, CandidateName, Abstain, VoteType, OfficeJSONID, BallotID, UserID)
-VALUES (1, 'John Smith', FALSE, 'NotWriteIn', 1, 1, 1);
+VALUES (2, 'John Smith', FALSE, 'NotWriteIn', 2, 1, 2);

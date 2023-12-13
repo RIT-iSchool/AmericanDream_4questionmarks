@@ -7,6 +7,7 @@ import { Typography } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as React from "react";
+import axios from 'axios';
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -30,201 +31,140 @@ export default function CreateAccount({ props }) {
 
     var societies = [
         {
-            id: 0,
-            title: "Clown Society",
-            link: "/",
-        },
-        {
             id: 1,
-            title: "Labor Union",
+            title: "Professional Society",
             link: "/",
         },
         {
             id: 2,
-            title: "Association for Computing Machinery",
+            title: "American Dream",
             link: "/",
-        },
+        }
     ];
+    
+    const roleMap = {
+        "Professional society members": 1,  // ID for 'Professional society members'
+        "Professional society officers": 2, // ID for 'Professional society officers'
+        "American Dream employees": 3,      // ID for 'American Dream employees'
+        "American Dream administrators": 4  // ID for 'American Dream administrators'
+    };
 
-    const [user, setUser] = useState({
-        email: "",
-        password: "",
-        role: "",
-        society: "",
-    });
-
+    const [fName, setFirstName] = useState("");
+    const [lName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [passwordErr, setPasswordErr] = useState("");
-    const [role, setRole] = React.useState("");
-    const [roleErr, setRoleErr] = useState("");
-    const [society, setSociety] = React.useState("");
-    const [societyErr, setSocietyErr] = useState("");
+    const [roleName, setRoleName] = useState("");
+    const [societyID, setSocietyID] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
 
     console.log(errorMsg);
+    
+    
+    const validateForm = () => {
+        if (fName === "" || lName === "" || email === "" || password.length < 8 || roleName === "" || societyID === "") {
+            setErrorMsg("Please fill in all required fields");
+            return false;
+        }
+        return true;
+    };
+    
 
     const createUser = (event) => {
         event.preventDefault();
         setErrorMsg("");
+        
+        const roleID = roleMap[roleName];
 
-        if (email === "") {
-            setErrorMsg("Invalid email");
-        }
-        if (password.length < 8) {
-            setPasswordErr(true);
-            setErrorMsg("Invalid password");
-        }
-        if (role === "") {
-            setRoleErr(true);
-            setErrorMsg("Please pick a role");
-        }
-        if (society === "") {
-            setSocietyErr(true);
-            setErrorMsg("Please pick a society");
-        }
-        if (
-            email &&
-            password &&
-            errorMsg === "" &&
-            !passwordErr &&
-            !roleErr & !societyErr
-        ) {
-            setUser({
-                ...user,
-                email: email,
-                password: password,
-                role: role,
-                society: society,
+        if (validateForm()) {
+            const newUser = {
+                fName,
+                lName,
+                email,
+                password,
+                roleID,
+                societyID
+            };
+            console.log(societyID);
+            console.log(fName);
+            axios.post('http://localhost:8080/users', newUser)
+            .then(response => {
+                console.log('Success:', response.data);
+                // do something else?
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                setErrorMsg("An error occurred while creating the user.");
             });
-            setErrorMsg("");
-            console.log("new user: " + JSON.stringify(user));
         }
     };
 
-    return (
+  return (
         <Container maxWidth="sm" className="loginContainer">
             <Stack spacing={10} direction="column" sx={{ textAlign: "center" }}>
-                <div>
-                    <img
-                        src={logo}
-                        className="logo"
-                        alt="4 question marks logo"
-                    />
-                </div>
-
                 <form onSubmit={createUser}>
-                    <Stack direction={"column"} spacing={4}>
-                        <Stack direction="column" spacing={0}>
-                            <Typography variant="h2" color="primary">
-                                Create a New User
-                            </Typography>
-                            <Typography
-                                variant="subtitle1"
-                                color="error"
-                                sx={{ height: "24px" }}
-                            >
-                                {errorMsg}
-                            </Typography>
-                        </Stack>
-
-                        <Stack direction={"column"} spacing={2}>
-                            <TextField
-                                label="Email"
-                                type="email"
-                                InputLabelProps={{
-                                    style: { color: "#DBC3A1" },
-                                }}
-                                onChange={(e) => setEmail(e.target.value)}
-                                required
-                                value={email}
-                            />
-
-                            <TextField
-                                label="Password"
-                                type="password"
-                                InputLabelProps={{
-                                    style: { color: "#DBC3A1" },
-                                }}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
-                                value={password}
-                                error={passwordErr}
-                            />
-                        </Stack>
-
-                        <FormControl fullWidth>
-                            <InputLabel
-                                id="demo-simple-select-label"
-                                InputLabelProps={{
-                                    style: { color: "#DBC3A1" },
-                                }}
-                            >
-                                Role
-                            </InputLabel>
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                value={role}
-                                label="Age"
-                                onChange={(e) => {
-                                    setRole(e.target.value);
-                                }}
-                                error={roleErr}
-                            >
-                                <MenuItem value={ROLE.member}>Member</MenuItem>
-                                <MenuItem value={ROLE.officer}>
-                                    Officer
+                    <TextField
+                        label="First Name"
+                        value={fName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        margin="normal"
+                    />
+                    <TextField
+                        label="Last Name"
+                        value={lName}
+                        onChange={(e) => setLastName(e.target.value)}
+                        margin="normal"
+                    />
+                    <TextField
+                        label="Email"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                        margin="normal"
+                    />
+                    <TextField
+                        label="Password"
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        margin="normal"
+                    />
+                    <FormControl fullWidth margin="normal">
+                        <InputLabel id="role-select-label">Role</InputLabel>
+                        <Select 
+                        value={roleName} 
+                        onChange={(e) => 
+                        setRoleName(e.target.value)} 
+                        required
+                        >
+                          {Object.keys(roleMap).map((name, index) => (
+                            <MenuItem key={index} value={name}>{name}</MenuItem>
+                          ))}
+                        </Select>
+                    </FormControl>
+                    <FormControl fullWidth margin="normal">
+                        <InputLabel id="society-select-label">Society</InputLabel>
+                        <Select
+                            labelId="society-select-label"
+                            value={societyID}
+                            label="Society"
+                            onChange={(e) => setSocietyID(e.target.value)}
+                            required
+                        >
+                            {societies.map((society) => (
+                                <MenuItem key={society.id} value={society.id}>
+                                    {society.title}
                                 </MenuItem>
-                                <MenuItem value={ROLE.employee}>
-                                    Employee
-                                </MenuItem>
-                                <MenuItem value={ROLE.administrator}>
-                                    Administrator
-                                </MenuItem>
-                            </Select>
-                        </FormControl>
-
-                        <FormControl fullWidth>
-                            <InputLabel
-                                id="demo-simple-select-label"
-                                InputLabelProps={{
-                                    style: { color: "#DBC3A1" },
-                                }}
-                            >
-                                Society
-                            </InputLabel>
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                value={society}
-                                label="Society"
-                                onChange={(e) => {
-                                    setSociety(e.target.value);
-                                }}
-                                error={societyErr}
-                            >
-                                {societies.map((society, index) => {
-                                    return (
-                                        <MenuItem
-                                            key={society.id}
-                                            value={society.id}
-                                        >
-                                            {society.title}
-                                        </MenuItem>
-                                    );
-                                })}
-                            </Select>
-                        </FormControl>
-
-                        <Stack direction={"column"} spacing={2}>
-                            <Button variant="contained" type="submit">
-                                <Typography variant="h7">
-                                    Create User
-                                </Typography>
-                            </Button>
-                        </Stack>
-                    </Stack>
+                            ))}
+                        </Select>
+                    </FormControl>
+                    {errorMsg && (
+                        <Typography color="error" margin="normal">{errorMsg}</Typography>
+                    )}
+                    <Button variant="contained" type="submit" sx={{ mt: 2 }}>
+                        Create User
+                    </Button>
                 </form>
             </Stack>
         </Container>
