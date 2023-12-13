@@ -4,7 +4,9 @@ import { Button, Stack, TextField } from '@mui/material';
 import { colors } from '../../utils/colors';
 import styled from "@emotion/styled";
 import "../../assets/css/styles.css";
-import { useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
+import axios from 'axios';
+
 
 const FormTextField = styled(TextField)({
     '& .MuiFormLabel-root': {
@@ -21,7 +23,9 @@ const formHeadingStyle = {
     padding:'4px 0'
 }
 
-export default function Initiatives({ballotInitiatives, setBallotInitiatives, setTabValue}) {
+export default function Initiatives({societies, description, ballotOffices, ballotInitiatives, setBallotInitiatives, setTabValue}) {
+    const navigate = useNavigate();
+
     const [addInitiative, setAddInitiative] = React.useState(false);
 
     const [initiative, setInitiative] = React.useState('');
@@ -68,7 +72,7 @@ export default function Initiatives({ballotInitiatives, setBallotInitiatives, se
                     <FormTextField label="Response #2" onChange={handleResponse2Change} error={errors.response2} />
 
                     {/* TODO: refactor addition into one reusable function */}
-                    <Button variant="outlined" onClick={() => {
+                    {/* <Button variant="outlined" onClick={() => {
                         //data validation
                         if(initiative!=="" && response1!=="" && response2!=="") {
                             console.log(`initiative: ${initiative}, response: ${response1}, response2: ${response2}`);
@@ -90,13 +94,16 @@ export default function Initiatives({ballotInitiatives, setBallotInitiatives, se
                             console.log('added initiative to ballotInitiatives array');
 
                             //reset and clear current inputs
+                            setInitiative("");
+                            setResponse1("");
+                            setResponse2("");
                         } else {
                             console.log('invalid form');
                             //TODO: error handling and styling
                         }
                     }}>
                         Add Another Initiative
-                    </Button>
+                    </Button> */}
 
                     <Button variant="contained" onClick={() => {
                         //data validation
@@ -119,9 +126,89 @@ export default function Initiatives({ballotInitiatives, setBallotInitiatives, se
 
                             console.log('added initiative to ballotInitiatives array');
 
-                            //create ballot done
-                            //redirect to ballot list
-                        } else {
+                            //get societyId
+                            var societyId;
+                            societies.forEach(soc => {
+                                if (soc.SocietyName == description.society) {
+                                    console.log(`society ${description.society} found in societies array`);
+                                    societyId = soc.SocietyID;
+                                } else {
+                                    console.log(`society ${description.society} not found in societies array`);
+                                    societyId = -1;
+                                }
+                            });
+
+                            //create the ballot to insert into db
+                            var newBallot = {
+                                ElectionStart: description.start.format("YYYY MM DD"),
+                                ElectionEnd: description.end.format("YYYY MM DD"),
+                                Offices: {offices: ballotOffices},
+                                SocietyID: societyId,
+                            };
+
+                            console.log('ballot to be inserted into database');
+                            console.log(newBallot);
+
+                            //create ballot via backend
+                            var ballotIdCreated;
+                            axios.post('http://localhost:8080/ballots', newBallot)
+                                .then(response => {
+                                    console.log('Success:', response.data);
+                                    ballotIdCreated = response.data.BallotID;
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                });
+
+                            //create ballot_initiative and insert into db
+                            //TODO: validation that ballot exists
+                            //TODO: handle multiple initiatives
+                            var initiativeIdCreated;
+                            var newBallotInitiative = {
+                                Description: initiative,
+                                Abstain: true, //TODO: later, set as true for now
+                                BallotID: ballotIdCreated
+                            };
+                            axios.post('', newBallotInitiative)
+                                .then(response => {
+                                    console.log('Success:', response.data);
+                                    initiativeIdCreated = response.data.InitiativeID;
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                });
+
+                            //create ballot_opinion and insert into db
+                            //TODO: validation that ballot exists
+                            var newBallotOpinion = {
+                                Description: response1,
+                                InitiativeID: initiativeIdCreated
+                            };
+                            axios.post('', newBallotOpinion)
+                                .then(response => {
+                                    console.log('Success:', response.data);
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                });
+
+                            //do twice since there are two responses
+                            var newBallotOpinion = {
+                                Description: response2,
+                                InitiativeID: initiativeIdCreated
+                            };
+                            axios.post('', newBallotOpinion)
+                                .then(response => {
+                                    console.log('Success:', response.data);
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                });
+                            
+                            //done, redirect to ballot list
+                            navigate("/", {replace:true});
+                        } 
+                        else {
                             console.log('invalid form');
                             //TODO: error handling and styling
                         }

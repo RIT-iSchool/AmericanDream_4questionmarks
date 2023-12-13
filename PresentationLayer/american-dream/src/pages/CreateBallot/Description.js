@@ -32,10 +32,8 @@ const formHeadingStyle = {
     padding:'4px 0'
 }
 
-export default function Description({description,setDescription,setTabValue}) {
-    //TODO: load societies list inside useEffect
-    const societies = ['Clown Society', 'Labor Union', 'Association for Computing Machinery'];
-
+export default function Description({societyObjs, description,setDescription,setTabValue}) {
+    const [societies, setSocieties] = React.useState([]);
     const [society,setSociety] = React.useState("");
     const [ballotName, setBallotName] = React.useState("");
 
@@ -46,6 +44,20 @@ export default function Description({description,setDescription,setTabValue}) {
     const handleSocietyChange = (event) => {
         setSociety(event.target.value);
     };
+
+    //create array of society names to use in .map function
+    React.useEffect(() => {
+        var temp = [];
+        
+        societyObjs.forEach(soc => {
+            console.log(`adding ${soc.name} to societies`);
+            temp.push(soc.name);
+            console.log(temp);
+        });
+
+        setSocieties(temp);
+        console.log(societies);
+    },[]);
 
     const [errors, setErrors] = React.useState({
         society: false,
