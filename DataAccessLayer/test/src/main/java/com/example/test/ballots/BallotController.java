@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+
 
 @RestController
 @RequestMapping("/ballots")
@@ -29,6 +31,16 @@ public class BallotController {
     public List<Ballot> getAllBallots() {
         return ballotRepository.getAllBallots();
     }
+
+    @PostMapping
+    public ResponseEntity<Ballot> createBallot(@RequestBody Ballot newBallot) {
+    try {
+        Ballot savedBallot = ballotRepository.save(newBallot);
+        return ResponseEntity.ok(savedBallot);
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+}
 
     @PutMapping("/{ballotId}")
     public ResponseEntity<Ballot> updateBallot(@PathVariable int ballotId, @RequestBody Ballot ballotDetails) {
